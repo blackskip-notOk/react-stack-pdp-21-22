@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "lib": ["es2015"],
+    "module": "ES6",
+    "outDir": "dist",
+    "sourceMap": true,
+    "strict": true,
+    "target": "es5",
+    "jsx": "react",
+    "noImplicitAny": true,
+    "allowJs": true,
+    "moduleResolution": "Node",
+    "allowSyntheticDefaultImports": true
+    }
+  },
+  "include": ["src"],
+  "files": [
+    "./typings/index.d.ts",
+    "./src/index.tsx"
+  ]
+}
