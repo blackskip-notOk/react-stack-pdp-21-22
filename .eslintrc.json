@@ -8,14 +8,16 @@
         "plugin:react/recommended",
         "plugin:@typescript-eslint/recommended",
         "plugin:jsx-a11y/recommended",
-        "plugin:prettier/recommended"
+        "plugin:prettier/recommended",
+        "react-app",
+        "react-app/jest"
     ],
     "parser": "@typescript-eslint/parser",
     "parserOptions": {
         "ecmaFeatures": {
             "jsx": true
         },
-        "ecmaVersion": 13,
+        "ecmaVersion": 6,
         "sourceType": "module"
     },
     "plugins": [

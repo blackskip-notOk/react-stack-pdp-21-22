@@ -1,14 +1,17 @@
 const path = require('path');
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const TerserPlugin = require('terser-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const webpack = require("webpack");
 
 module.exports = {
     entry: {
-        main: path.resolve(__dirname, 'src/index.tsx'),
+        main: path.resolve(__dirname, './src/index.tsx'),
     },
     output: {
         path: path.join(__dirname, 'dist', 'assets'),
         filename: 'bundle.js',
+        publicPath: "/"
     },
     mode: 'production',
     optimization: {
@@ -38,16 +41,19 @@ module.exports = {
         ],
     },
     externals: {
-        "react": "React",
-        "react-dom": "ReactDOM"
     },
     plugins: [
         new HtmlWebpackPlugin({
-            template: "./src/index.html"
+            template: "./public/index.html"
+        },),
+        new webpack.ProvidePlugin({
+            "React": "react",
+            "react-dom": "ReactDOM"
         }),
+        new CleanWebpackPlugin(),
     ],
     resolve: {
         extensions: ["", ".webpack.js", ".web.js", ".ts", ".tsx", ".js"]
     },
-    devtool: 'source-map'
+    devtool: "source-map",
 }

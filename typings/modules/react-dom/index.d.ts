@@ -19,7 +19,7 @@ namespace ReactDOM {
     function findDOMNode(instance: ReactInstance): Element;
 
     function render<P extends DOMAttributes<T>, T extends Element>(
-        element: DOMElement<P, T>,
+        element: JSX.Element,
         container: Element | null,
         callback?: (element: T) => any): T;
     function render<P>(

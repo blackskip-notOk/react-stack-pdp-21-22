@@ -1,0 +1,18 @@
+{
+  "short_name": "React App",
+  "name": "PDP 21-22 React/Mobx app",
+  "lang": "ru",
+  "dir": "ltr",
+  "icons": [{
+    "src": "icon/favicon.png",
+    "sizes": "64x64",
+    "type": "image/webp"
+  }
+  ],
+  "start_url": "index.html",
+  "orientation": "landscape",
+  "display": "browser",
+  "scope": "/",
+  "theme_color": "#000000",
+  "background_color": "#ffffff"
+}

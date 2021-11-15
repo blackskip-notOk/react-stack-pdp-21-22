@@ -688,15 +688,15 @@ namespace React {
 
         /**
          * Shorthand property to set the values for one or more of:
-         * background-clip, background-color, background-image,
+         * background-clip, background-color, background-icon,
          * background-origin, background-position, background-repeat,
          * background-size, and background-attachment.
          */
         background?: CSSWideKeyword | any;
 
         /**
-         * If a background-image is specified, this property determines
-         * whether that image's position is fixed within the viewport,
+         * If a background-icon is specified, this property determines
+         * whether that icon's position is fixed within the viewport,
          * or scrolls along with its containing block.
          * See CSS 3 background-attachment property https://drafts.csswg.org/css-backgrounds-3/#the-background-attachment
          */
@@ -704,7 +704,7 @@ namespace React {
 
         /**
          * This property describes how the element's background images should blend with each other and the element's background color.
-         * The value is a list of blend modes that corresponds to each background image. Each element in the list will apply to the corresponding element of background-image. If a property doesn’t have enough comma-separated values to match the number of layers, the UA must calculate its used value by repeating the list of values until there are enough.
+         * The value is a list of blend modes that corresponds to each background icon. Each element in the list will apply to the corresponding element of background-icon. If a property doesn’t have enough comma-separated values to match the number of layers, the UA must calculate its used value by repeating the list of values until there are enough.
          */
         backgroundBlendMode?: CSSWideKeyword | any;
 
@@ -716,7 +716,7 @@ namespace React {
         backgroundComposite?: CSSWideKeyword | any;
 
         /**
-         * Applies one or more background images to an element. These can be any valid CSS image, including url() paths to image files or CSS gradients.
+         * Applies one or more background images to an element. These can be any valid CSS icon, including url() paths to icon files or CSS gradients.
          */
         backgroundImage?: CSSWideKeyword | any;
 
@@ -726,7 +726,7 @@ namespace React {
         backgroundOrigin?: CSSWideKeyword | any;
 
         /**
-         * Sets the position of a background image.
+         * Sets the position of a background icon.
          */
         backgroundPosition?: CSSWideKeyword | any;
 
@@ -802,12 +802,12 @@ namespace React {
         borderCornerShape?: CSSWideKeyword | any;
 
         /**
-         * The property border-image-source is used to set the image to be used instead of the border style. If this is set to none the border-style is used instead.
+         * The property border-icon-source is used to set the icon to be used instead of the border style. If this is set to none the border-style is used instead.
          */
         borderImageSource?: CSSWideKeyword | any;
 
         /**
-         * The border-image-width CSS property defines the offset to use for dividing the border image in nine parts, the top-left corner, central top edge, top-right-corner, central right edge, bottom-right corner, central bottom edge, bottom-left corner, and central right edge. They represent inward distance from the top, right, bottom, and left edges.
+         * The border-icon-width CSS property defines the offset to use for dividing the border icon in nine parts, the top-left corner, central top edge, top-right-corner, central right edge, bottom-right corner, central bottom edge, bottom-left corner, and central right edge. They represent inward distance from the top, right, bottom, and left edges.
          */
         borderImageWidth?: CSSWideKeyword | any;
 
@@ -1088,7 +1088,7 @@ namespace React {
         fillRule?: CSSWideKeyword | any;
 
         /**
-         * Applies various image processing effects. This property is largely unsupported. See Compatibility section for more information.
+         * Applies various icon processing effects. This property is largely unsupported. See Compatibility section for more information.
          */
         filter?: CSSWideKeyword | any;
 
@@ -1349,12 +1349,12 @@ namespace React {
         lineHeight?: CSSWideKeyword | "normal" | number | CSSLength | CSSPercentage;
 
         /**
-         * Shorthand property that sets the list-style-type, list-style-position and list-style-image properties in one declaration.
+         * Shorthand property that sets the list-style-type, list-style-position and list-style-icon properties in one declaration.
          */
         listStyle?: CSSWideKeyword | any;
 
         /**
-         * This property sets the image that will be used as the list item marker. When the image is available, it will replace the marker set with the 'list-style-type' marker. That also means that if the image is not available, it will show the style specified by list-style-property
+         * This property sets the icon that will be used as the list item marker. When the icon is available, it will replace the marker set with the 'list-style-type' marker. That also means that if the icon is not available, it will show the style specified by list-style-property
          */
         listStyleImage?: CSSWideKeyword | any;
 
@@ -1404,7 +1404,7 @@ namespace React {
         marqueeStyle?: CSSWideKeyword | any;
 
         /**
-         * This property is shorthand for setting mask-image, mask-mode, mask-repeat, mask-position, mask-clip, mask-origin, mask-composite and mask-size. Omitted values are set to their original properties' initial values.
+         * This property is shorthand for setting mask-icon, mask-mode, mask-repeat, mask-position, mask-clip, mask-origin, mask-composite and mask-size. Omitted values are set to their original properties' initial values.
          */
         mask?: CSSWideKeyword | any;
 
@@ -1414,22 +1414,22 @@ namespace React {
         maskBorder?: CSSWideKeyword | any;
 
         /**
-         * This property specifies how the images for the sides and the middle part of the mask image are scaled and tiled. The first keyword applies to the horizontal sides, the second one applies to the vertical ones. If the second keyword is absent, it is assumed to be the same as the first, similar to the CSS border-image-repeat property.
+         * This property specifies how the images for the sides and the middle part of the mask icon are scaled and tiled. The first keyword applies to the horizontal sides, the second one applies to the vertical ones. If the second keyword is absent, it is assumed to be the same as the first, similar to the CSS border-icon-repeat property.
          */
         maskBorderRepeat?: CSSWideKeyword | any;
 
         /**
-         * This property specifies inward offsets from the top, right, bottom, and left edges of the mask image, dividing it into nine regions: four corners, four edges, and a middle. The middle image part is discarded and treated as fully transparent black unless the fill keyword is present. The four values set the top, right, bottom and left offsets in that order, similar to the CSS border-image-slice property.
+         * This property specifies inward offsets from the top, right, bottom, and left edges of the mask icon, dividing it into nine regions: four corners, four edges, and a middle. The middle icon part is discarded and treated as fully transparent black unless the fill keyword is present. The four values set the top, right, bottom and left offsets in that order, similar to the CSS border-icon-slice property.
          */
         maskBorderSlice?: CSSWideKeyword | any;
 
         /**
-         * Specifies an image to be used as a mask. An image that is empty, fails to download, is non-existent, or cannot be displayed is ignored and does not mask the element.
+         * Specifies an icon to be used as a mask. An icon that is empty, fails to download, is non-existent, or cannot be displayed is ignored and does not mask the element.
          */
         maskBorderSource?: CSSWideKeyword | any;
 
         /**
-         * This property sets the width of the mask box image, similar to the CSS border-image-width property.
+         * This property sets the width of the mask box icon, similar to the CSS border-icon-width property.
          */
         maskBorderWidth?: CSSWideKeyword | any;
 
@@ -1642,7 +1642,7 @@ namespace React {
         rubyPosition?: CSSWideKeyword | any;
 
         /**
-         * Defines the alpha channel threshold used to extract a shape from an image. Can be thought of as a "minimum opacity" threshold; that is, a value of 0.5 means that the shape will enclose all the pixels that are more than 50% opaque.
+         * Defines the alpha channel threshold used to extract a shape from an icon. Can be thought of as a "minimum opacity" threshold; that is, a value of 0.5 means that the shape will enclose all the pixels that are more than 50% opaque.
          */
         shapeImageThreshold?: CSSWideKeyword | any;
 
