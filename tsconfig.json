@@ -22,10 +22,11 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": false,
+    "useDefineForClassFields": true,
+    "experimentalDecorators": true
   },
   "include": ["src"],
   "files": [
-    "./typings/index.d.ts",
     "./src/index.tsx"
   ]
 }
