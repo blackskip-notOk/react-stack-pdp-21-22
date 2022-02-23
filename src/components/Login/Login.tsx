@@ -10,7 +10,7 @@ export const Login: FC = () => {
 	const {message, inizialized} = useStore($inizialize);
 
 	const localMessage = message === SERVER_MESSAGES.NOT_AUTHORIZED
-	? SERVER_MESSAGES_DESCRIPTIONS[message] : message;
+	? SERVER_MESSAGES_DESCRIPTIONS.notAutorized : message;
 
 	return (
 		<div className={styles.loginContainer}>

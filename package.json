@@ -1,13 +1,13 @@
 {
   "name": "pdp-2022",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "React based project for pdp-2022",
   "repository": "https://github.com/blackskip-notOk/react-stack-pdp-21-22",
   "author": "Ilya Babanov <ilbabanov@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "dev": "vite",
+    "start": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
     "prepare": "husky install",
@@ -16,6 +16,8 @@
   },
   "dependencies": {
     "@ant-design/icons": "^4.7.0",
+    "@hookform/resolvers": "^2.8.8",
+    "@types/ramda": "^0.27.64",
     "antd": "^4.18.7",
     "axios": "^0.25.0",
     "effector": "^22.2.0",
@@ -24,11 +26,13 @@
     "effector-storage": "^5.0.0",
     "effector-utils": "^0.1.0",
     "postcss": "^8.4.6",
+    "ramda": "^0.28.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-hook-form": "^7.27.0",
     "react-query": "^3.34.13",
-    "react-router-dom": "6"
+    "react-router-dom": "6",
+    "yup": "^0.32.11"
   },
   "devDependencies": {
     "@testing-library/dom": "^8.11.3",
@@ -54,7 +58,6 @@
     "identity-obj-proxy": "^3.0.0",
     "jest": "^27.5.1",
     "jest-circus": "^27.5.1",
-    "jest-scss-transform": "^1.0.1",
     "jest-watch-typeahead": "^1.0.0",
     "postcss-load-config": "^3.1.3",
     "pre-commit": "^1.2.2",

@@ -3,6 +3,7 @@ export const RESPONSE_STATUSES = {
 };
 
 export const RESULT_CODES = {
-    error: 1,
     success: 0,
+    error: 1,
+    secure: 10,
 };
