@@ -1,10 +1,9 @@
 import { FC, useEffect, useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
-import { useLogin } from '../../../api/loginApi/LoginApi';
 import { LoginFormData } from './types';
 import { Input, Checkbox, Button, Form } from 'antd';
-import inputStyles from '../../../styles/Input.module.css';
-import buttonStyles from '../../../styles/Button.module.css';
+import inputStyles from '@styles/Input.module.less';
+import buttonStyles from '@styles/Button.module.css';
 import { preventDefault } from '../../../utils';
 import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -16,6 +15,8 @@ import { RESULT_CODES } from '../../../constants/systemConstants';
 import { useNavigate } from 'react-router-dom';
 import { NAVLINKS } from '../../../constants/routerConstants';
 import { setOwner } from '../../../effector/ownerStore/ownerStore';
+import { useLogin } from '../../../api/loginApi/LoginApi';
+import styles from '../Login.module.less';
 
 export const LoginForm: FC = () => {
 	const navigate = useNavigate();
@@ -105,7 +106,7 @@ export const LoginForm: FC = () => {
 							/>
 						)}
 					/>
-					<p>{errors.email?.message}</p>
+					<p className={styles.errorMessage}>{errors.email?.message}</p>
 				</Form.Item>
 				<Form.Item
 					className={inputStyles.container}
@@ -130,7 +131,7 @@ export const LoginForm: FC = () => {
 							/>
 						)}
 					/>
-					<p>{errors.password?.message}</p>
+					<p className={styles.errorMessage}>{errors.password?.message}</p>
 				</Form.Item>
 				<Form.Item
 					className={inputStyles.container}
@@ -169,8 +170,8 @@ export const LoginForm: FC = () => {
 						/>
 					</Form.Item>
 				)}
-				{isError && <p>{error?.message}</p>}
-				{serverError && <p>{serverError}</p>}
+				{isError && <p className={styles.errorMessage}>{error?.message}</p>}
+				{serverError && <p className={styles.errorMessage}>{serverError}</p>}
 				<Form.Item className={buttonStyles.buttonContainer}>
 					<Button
 						disabled={!isDirty}

@@ -1,6 +1,6 @@
 import { Suspense, useEffect } from 'react'
 import './App.css'
-import appStyles from './styles/App.module.css';
+import appStyles from './styles/App.module.less';
 import 'antd/dist/antd.css';
 import { useStore } from 'effector-react';
 import { $inizialize, inizialize } from './effector/initialStore/InitialStore';
@@ -50,13 +50,13 @@ export const App = () => {
 	return (
 			<Suspense fallback={<Loader />}>
 				<div className={appStyles.appWrapper}>
-					<div className={appStyles.headerWrapper}>
+					<header className={appStyles.headerWrapper}>
 						<Header />
-					</div>
-					<div className={appStyles.navBarWrapper}>
+					</header>
+					<nav className={appStyles.navBarWrapper}>
 						<NavBar />
-					</div>
-					<div className={appStyles.contentWrapper}>
+					</nav>
+					<main className={appStyles.contentWrapper}>
 						<Routes>
 							<Route path={NAVLINKS.HOME} element={<Home />} />
 							<Route path={NAVLINKS.LOGIN} element={<Login />} />
@@ -64,8 +64,8 @@ export const App = () => {
 							<Route path={NAVLINKS.MESSAGES} element={<Messages />} />
 							<Route path='*' element={<NotFound />} />
 						</Routes>
-					</div>
-					<div className={appStyles.footerWrapper}>Footer</div>
+					</main>
+					<footer className={appStyles.footerWrapper}>Footer</footer>
 				</div>
 			</Suspense>
 	);

@@ -1,4 +1,4 @@
-import { createEvent, createStore } from "effector";
+import { createEvent, createStore } from "effector-logger";
 import { Inizialize } from './types';
 
 const defaultStore = {

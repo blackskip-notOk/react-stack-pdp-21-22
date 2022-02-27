@@ -1,0 +1,24 @@
+@import '../../styles/variables.module.less';
+
+.loginContainer {
+    display: grid;
+    width: 100%;
+    justify-items: center;
+    align-content: flex-start;
+};
+
+.autorizationError {
+    margin: @margin_middle;
+    font-size: small;
+    font-weight: 600;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    color: @error_message_text_dark;
+};
+
+:global(.ant-form-item-label > label) {
+    color: @form_label_dark;
+};
+
+.errorMessage {
+    color: @error_message_text_dark;
+}

@@ -1,3 +1,5 @@
+@import '../styles/variables.module.less';
+
 .appWrapper {
     min-width: 600px;
     max-width: 100vw;
@@ -10,28 +12,28 @@
         "nav content"
         "footer footer";
     overflow: hidden;
-    border: 1px solid forestgreen;
+    background-color: @background_dark;
 }
 
 .headerWrapper {
     grid-area: header;
     height: 100%;
-    border: 1px solid darkblue;
+    // border: 1px solid darkblue;
 }
 
 .navBarWrapper {
     grid-area: nav;
-    border: 1px solid khaki;
+    // border: 1px solid khaki;
 }
 
 .contentWrapper {
     grid-area: content;
     display: flex;
     justify-content: flex-start;
-    border: 1px solid fuchsia;
+    // border: 1px solid fuchsia;
 }
 
 .footerWrapper {
     grid-area: footer;
-    border: 1px solid lawngreen;
+    // border: 1px solid lawngreen;
 }
