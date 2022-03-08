@@ -2,8 +2,8 @@ import { AxiosError } from 'axios';
 import { AuthResponse, LoginResponse } from './types';
 import { instance } from './../index';
 import { useMutation } from 'react-query';
-import { API, MUTATION_KEYS } from '@/constants/apiConstants';
-import { LoginFormData } from '@/components/Login/LoginForm/types';
+import { API, MUTATION_KEYS } from '../../constants/apiConstants';
+import { LoginFormData } from '../../components/Login/LoginForm/types';
 
 export const fetchInizialize = async (): Promise<AuthResponse> => {
 	const response = await instance.get(API.authMe);
