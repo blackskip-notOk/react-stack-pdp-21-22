@@ -1,21 +1,22 @@
 import { SyntheticEvent } from "react";
-import { getCaptchaFx, setLoginError } from "../models/login";
+import { getCaptchaFx, setLoginError, setLoginSuccesData } from "../models/login";
 import { SERVER_MESSAGES, SERVER_MESSAGES_DESCRIPTIONS } from "../constants/serverMessages";
 import { RESULT_CODES } from "../constants/systemConstants";
-import { LoginResponse, TransformedLoginResponse } from "../models/login/types";
+import { LoginResponse } from "../models/login/types";
+import { authFx, autorize } from "../models/auth";
 
 export const preventDefault = (event: SyntheticEvent) => {
     event.preventDefault()
 };
 
-export const transformLoginResponse = (response: LoginResponse) => {
+export const transformLoginResponse = (response: LoginResponse): void => {
     const { resultCode, data, messages } = response;
     const [ message ] = messages;
 
-    const { error, secure, } = RESULT_CODES;
+    const { error, secure, success } = RESULT_CODES;
 
     if (resultCode === error || resultCode === secure) {
-        resultCode === secure && getCaptchaFx(null);
+        resultCode === secure && getCaptchaFx();
         if (message === SERVER_MESSAGES.MAX_ATTEMPT) {
             setLoginError({
                 error: SERVER_MESSAGES_DESCRIPTIONS.maxAttempt,
@@ -34,5 +35,7 @@ export const transformLoginResponse = (response: LoginResponse) => {
         }
     }
 
-    return { data: data };
+    if (resultCode === success) {
+        setLoginSuccesData(data);
+    }
 };

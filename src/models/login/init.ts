@@ -1,4 +1,4 @@
-import { $captchaUrl, $loginError, checkLoginResponse, getCaptchaFx, setLoginError, unSetLoginError } from './index';
+import { $captchaUrl, $loginError, checkLoginResponse, getCaptchaFx, setLoginError, unSetLoginError, setLoginSuccesData, unSetLoginSuccessData } from './index';
 import { API } from './../../constants/apiConstants';
 import { $loginResponse, $owner, deleteOwner, loginFx, setOwner } from ".";
 import { instance } from "..";
@@ -12,9 +12,6 @@ loginFx.use(async (loginData: LoginFormData): Promise<LoginResponse> => {
 	const response = await instance.post(API.login, loginData);
 	return response.data;
 });
-
-// loginFx.doneData.watch(handleSetOwner);
-// loginFx.doneData.watch(result => { console.log(result) });
 
 loginFx
 .watch(() => console.log(`вызван эффект ${loginFx.shortName}`));
@@ -35,11 +32,13 @@ getCaptchaFx.use(async (): Promise<CaptchaUrlResponse> => {
 		return response.data;
 });
 
-getCaptchaFx.doneData.watch(data => console.log(data));
+getCaptchaFx.watch(() => console.log(`вызван эффект ${getCaptchaFx.shortName}`));
 
 $captchaUrl.on(getCaptchaFx.doneData, (_, captchaUrl) => captchaUrl);
 
 $loginResponse
+.on(setLoginSuccesData, (_, data) => ({ userId: data.userId }))
+.reset(unSetLoginSuccessData)
 .watch(data => console.log(data));
 
 $owner
@@ -48,5 +47,5 @@ $owner
 
 $owner
 .watch(state => console.log(
-    `Состояние ${$owner.shortName} логин: ${state.isOwner}, пользовательский ID: ${state.ownerId}`
+    `Состояние ${$owner.shortName}: логин - ${state.isOwner}, пользовательский ID - ${state.ownerId}`
 ));

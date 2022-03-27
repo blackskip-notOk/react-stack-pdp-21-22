@@ -1,10 +1,10 @@
-import { FC, useReducer } from 'react';
+import { FC, useEffect, useReducer } from 'react';
 import buttonStyles from '@styles/Button.module.less';
 import inputStyles from '@styles/Input.module.less';
 import { preventDefault } from '../../../utils';
 import { useNavigate } from 'react-router-dom';
 import styles from '../Login.module.less';
-import { $captchaUrl, $loginError, $serverSideError, getCaptchaFx, loginFx } from '../../../models/login/index';
+import { $captchaUrl, $loginError, $loginResponse, $serverSideError, getCaptchaFx, loginFx } from '../../../models/login/index';
 import { useStore } from 'effector-react';
 import {
 	Checkbox,
@@ -26,6 +26,8 @@ import { loginSchema } from '../utils/loginSchema';
 import { LoginFormData } from './types';
 import { Box } from '@mui/system';
 import { isEmpty } from 'ramda';
+import { $auth } from '../../../models/auth';
+import { NAVLINKS } from '../../../constants/routerConstants';
 
 export const LoginForm: FC = () => {
 	const navigate = useNavigate();
@@ -35,6 +37,11 @@ export const LoginForm: FC = () => {
 	const { error: serverError, isNeedCaptcha } = useStore($loginError);
 	const serverSideError = useStore($serverSideError);
 	const { url } = useStore($captchaUrl);
+	const { isAuth } = useStore($auth);
+
+	// useEffect(() => {
+	// 	isAuth && navigate(NAVLINKS.HOME);
+	// }, [isAuth]);
 
 	const { control, handleSubmit, formState: { errors }, } = useForm<LoginFormData>({
 		defaultValues: {
@@ -54,16 +61,8 @@ export const LoginForm: FC = () => {
 
 	const onSubmit: SubmitHandler<LoginFormData> = data => loginFx(data);
 
-	// useEffect(() => {
-	// 	// if (data && data.resultCode === RESULT_CODES.success) {
-	// 		// inizialize({ inizialized: true, message: data.messages[0] });
-	// 		setOwner({isOwner: true, ownerId: data.data.userId});
-	// 		navigate(NAVLINKS.HOME);
-	// 	}
-	// }, [data]);
-
 	const handleGetCaptcha = () => {
-		getCaptchaFx(null)
+		getCaptchaFx()
 	};
 
 	return (
@@ -80,7 +79,7 @@ export const LoginForm: FC = () => {
 							label='Email'
 							variant='outlined'
 							helperText={errors.email?.message ?? ' '}
-							error={!!errors.email}
+							error={!!errors.email || !!serverError}
 							fullWidth
 							color='success'
 							margin='normal'
@@ -98,7 +97,7 @@ export const LoginForm: FC = () => {
 							<InputLabel
 								htmlFor='password'
 								color='success'
-								error={!!errors.password}
+								error={!!errors.password || !!serverError}
 							>
 								Password
 							</InputLabel>
@@ -108,7 +107,7 @@ export const LoginForm: FC = () => {
 								label='Password'
 								type={showPassword ? 'text' : 'password'}
 								margin='dense'
-								error={!!errors.password}
+								error={!!errors.password || !!serverError}
 								placeholder='enter your password'
 								endAdornment={
 									<InputAdornment position='end'>

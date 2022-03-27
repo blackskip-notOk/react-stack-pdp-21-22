@@ -36,5 +36,5 @@ $auth
 
 $auth
 .watch(state => console.log(
-    `Состояние ${$auth.shortName} авторизация пройдена: ${state.isAuth}, сообщение: ${state.message ?? 'Autorization success'}`
+    `Состояние ${$auth.shortName}: авторизация пройдена - ${state.isAuth}, сообщение - ${state.message ?? 'Autorization success'}`
 ));

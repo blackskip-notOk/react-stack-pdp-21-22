@@ -1,7 +1,7 @@
 import { BaseResponse } from "../types";
 
 export interface LoginData {
-    userId: number | null
+    userId: number
 };
 
 type Login = Omit<BaseResponse, 'fieldsErrors'>;
@@ -17,13 +17,10 @@ export interface LoginFormData {
 	captcha?: string,
 };
 
-export interface TransformedLoginResponse {
-    data?: LoginData,
+export interface LoginError {
     error?: string,
     isNeedCaptcha?: boolean,
 };
-
-export type LoginError = Omit<TransformedLoginResponse, 'data'>;
 
 export interface CaptchaUrlResponse {
     url: string,

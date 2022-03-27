@@ -2,7 +2,9 @@ import { AxiosError } from 'axios';
 import { createEffect, createEvent, createStore } from "effector-logger";
 import { AuthResponse, AuthState } from "./types";
 
-export const autorize = createEvent<AuthState>();
+export const autorize = createEvent<AuthState>({
+	name: 'autorization check'
+});
 export const unautorize = createEvent<AuthState>();
 
 const defaultStore = { isAuth: false, message: '' };
