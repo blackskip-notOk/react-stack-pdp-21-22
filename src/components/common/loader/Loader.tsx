@@ -1,3 +1,4 @@
+import { useStore } from "effector-react";
 import { FC } from "react";
 import styles from './Loader.module.css';
 

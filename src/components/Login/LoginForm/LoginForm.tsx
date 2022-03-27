@@ -1,201 +1,219 @@
-import { FC, useEffect, useState } from 'react';
-import { Controller, SubmitHandler, useForm } from 'react-hook-form';
-import { LoginFormData } from './types';
-import { Input, Checkbox, Button, Form } from 'antd';
+import { FC, useReducer } from 'react';
+import buttonStyles from '@styles/Button.module.less';
 import inputStyles from '@styles/Input.module.less';
-import buttonStyles from '@styles/Button.module.css';
 import { preventDefault } from '../../../utils';
-import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { schema } from './yup';
-import { loginErrorTransform } from '../utils';
-import { getCaptchaUrl } from '../../../api/securityApi/SecurityApi';
-import { inizialize } from '../../../effector/initialStore/InitialStore';
-import { RESULT_CODES } from '../../../constants/systemConstants';
 import { useNavigate } from 'react-router-dom';
-import { NAVLINKS } from '../../../constants/routerConstants';
-import { setOwner } from '../../../effector/ownerStore/ownerStore';
-import { useLogin } from '../../../api/loginApi/LoginApi';
 import styles from '../Login.module.less';
+import { $captchaUrl, $loginError, $serverSideError, getCaptchaFx, loginFx } from '../../../models/login/index';
+import { useStore } from 'effector-react';
+import {
+	Checkbox,
+	FormControl,
+	FormControlLabel,
+	FormHelperText,
+	IconButton,
+	InputAdornment,
+	InputLabel,
+	OutlinedInput,
+	TextField,
+} from '@mui/material';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
+import SendIcon from '@mui/icons-material/Send';
+import { LoadingButton } from '@mui/lab';
+import { useForm, Controller, SubmitHandler } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { loginSchema } from '../utils/loginSchema';
+import { LoginFormData } from './types';
+import { Box } from '@mui/system';
+import { isEmpty } from 'ramda';
 
 export const LoginForm: FC = () => {
 	const navigate = useNavigate();
 
-	const [captchaUrl, setCaptchaUrl] = useState('');
-	const [serverError, setServerError] = useState<string | null>(null);
+	const fetchingLoginData = useStore(loginFx.pending);
+	const fetchingCaptchaUrl = useStore(getCaptchaFx.pending);
+	const { error: serverError, isNeedCaptcha } = useStore($loginError);
+	const serverSideError = useStore($serverSideError);
+	const { url } = useStore($captchaUrl);
 
-	const login = useLogin();
-	const { mutate, isError, isLoading, error, data } = login;
-
-	const isNeedCaptcha = data?.resultCode === RESULT_CODES.secure;
-
-	const {
-		control,
-		handleSubmit,
-		formState: { errors, isDirty, isSubmitting, isValidating },
-	} = useForm<LoginFormData>({
-		mode: 'onSubmit',
-		reValidateMode: 'onChange',
-		criteriaMode: 'all',
-		shouldFocusError: true,
-		shouldUnregister: true,
-		resolver: yupResolver(schema),
+	const { control, handleSubmit, formState: { errors }, } = useForm<LoginFormData>({
+		defaultValues: {
+			email: '',
+			password: '',
+			rememberMe: true,
+			captcha: '',
+		},
+		resolver: yupResolver(loginSchema),
 	});
 
-	const onSubmit: SubmitHandler<LoginFormData> = (data) => {
-		const loginData = {
-			email: data.email,
-			password: data.password,
-			rememberMe: data.rememberMe,
-			captcha: data.captcha,
-		};
-		mutate(loginData);
-	};
 
-	useEffect(() => {
-		if (data && data.resultCode === RESULT_CODES.success) {
-			inizialize({ inizialized: true, message: data.messages[0] });
-			setOwner({isOwner: true, ownerId: data.data.userId});
-			navigate(NAVLINKS.HOME);
-		}
-	}, [data]);
+	const [showPassword, toggleShowPassword] = useReducer(
+		(showPassword) => !showPassword,
+		false
+	);
 
-	useEffect(() => {
-		setServerError(loginErrorTransform(data));
-	}, [data]);
+	const onSubmit: SubmitHandler<LoginFormData> = data => loginFx(data);
 
-	useEffect(() => {
-		isNeedCaptcha &&
-			getCaptchaUrl().then((response) => {
-				setCaptchaUrl(response.url);
-			});
-	}, [isNeedCaptcha]);
+	// useEffect(() => {
+	// 	// if (data && data.resultCode === RESULT_CODES.success) {
+	// 		// inizialize({ inizialized: true, message: data.messages[0] });
+	// 		setOwner({isOwner: true, ownerId: data.data.userId});
+	// 		navigate(NAVLINKS.HOME);
+	// 	}
+	// }, [data]);
 
 	const handleGetCaptcha = () => {
-		getCaptchaUrl().then((response) => {
-			setCaptchaUrl(response.url);
-		});
+		getCaptchaFx(null)
 	};
 
 	return (
 		<>
-			<Form
-				layout='vertical'
-				name='login'
-				scrollToFirstError
-				size='large'
-				onFinish={handleSubmit(onSubmit)}
-			>
-				<Form.Item
-					className={inputStyles.container}
-					htmlFor='email'
-					label='Email'
-					required
-				>
-					<Controller
-						name='email'
-						control={control}
-						render={({ field }) => (
-							<Input
+			<form onSubmit={handleSubmit(onSubmit)}>
+				<Controller
+					name='email'
+					control={control}
+					render={({ field }) => (
+						<Box className={inputStyles.container}>
+						<TextField
+							{...field}
+							id='email'
+							label='Email'
+							variant='outlined'
+							helperText={errors.email?.message ?? ' '}
+							error={!!errors.email}
+							fullWidth
+							color='success'
+							margin='normal'
+							focused
+							placeholder='enter your email'
+						/>
+						</Box>
+					)}
+				/>
+				<Controller
+					name='password'
+					control={control}
+					render={({ field }) => (
+						<FormControl color='success' variant='outlined' fullWidth focused className={inputStyles.container}>
+							<InputLabel
+								htmlFor='password'
+								color='success'
+								error={!!errors.password}
+							>
+								Password
+							</InputLabel>
+							<OutlinedInput
 								{...field}
-								allowClear
-								size='middle'
-								type='email'
-								placeholder='Введите email'
-								onPressEnter={preventDefault}
-							/>
-						)}
-					/>
-					<p className={styles.errorMessage}>{errors.email?.message}</p>
-				</Form.Item>
-				<Form.Item
-					className={inputStyles.container}
-					htmlFor='password'
-					label='Password'
-					required
-				>
-					<Controller
-						name='password'
-						control={control}
-						render={({ field }) => (
-							<Input.Password
-								{...field}
-								allowClear
-								size='middle'
-								type='password'
-								placeholder='Введите пароль'
-								onPressEnter={preventDefault}
-								iconRender={(visible) =>
-									visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
+								id='password'
+								label='Password'
+								type={showPassword ? 'text' : 'password'}
+								margin='dense'
+								error={!!errors.password}
+								placeholder='enter your password'
+								endAdornment={
+									<InputAdornment position='end'>
+										<IconButton
+											aria-label='toggle password visibility'
+											onClick={toggleShowPassword}
+											onMouseDown={preventDefault}
+											edge='end'
+										>
+											{showPassword ? (
+												<VisibilityOff color='success' />
+											) : (
+												<Visibility color='success' />
+											)}
+										</IconButton>
+									</InputAdornment>
 								}
 							/>
-						)}
-					/>
-					<p className={styles.errorMessage}>{errors.password?.message}</p>
-				</Form.Item>
-				<Form.Item
-					className={inputStyles.container}
-					htmlFor='rememberMe'
-					label='Remember me?'
-					valuePropName='checked'
-				>
-					<Controller
-						name='rememberMe'
-						control={control}
-						render={({ field: { value, onChange, ...restProps } }) => (
-							<Checkbox {...restProps} onChange={onChange} checked={value} />
-						)}
-					/>
-				</Form.Item>
-				{isNeedCaptcha && (
-					<Form.Item
-						className={inputStyles.container}
-						htmlFor='captcha'
-						label='Captcha code'
-						required
-					>
-						<Controller
-							name='captcha'
-							control={control}
-							render={({ field }) => (
-								<Input
+							<FormHelperText id='passwordError' error={!!errors.password}>
+								{errors.password?.message ?? ' '}
+							</FormHelperText>
+						</FormControl>
+					)}
+				/>
+				<Controller
+					name='rememberMe'
+					control={control}
+					defaultValue={true}
+					render={({ field }) => (
+						<FormControlLabel
+							className={styles.checkBox}
+							control={
+								<Checkbox
 									{...field}
-									allowClear
-									size='middle'
-									type='text'
-									placeholder='Введите код с картинки'
-									onPressEnter={preventDefault}
+									defaultChecked
+									sx={{ '& .MuiSvgIcon-root': { fontSize: 28 } }}
+									color='success'
+									inputProps={{
+										'aria-label': 'remember me checkbox',
+									}}
 								/>
-							)}
+							}
+							label='Remember me?'
+							labelPlacement='start'
 						/>
-					</Form.Item>
+					)}
+				/>{' '}
+				{isNeedCaptcha && (
+					<Controller
+					name='captcha'
+					control={control}
+					render={({ field }) => (
+						<Box className={inputStyles.container}>
+						<TextField
+							{...field}
+							id='captcha'
+							label='Captcha'
+							variant='outlined'
+							required
+							helperText={errors.captcha?.message ?? ' '}
+							error={!!errors.captcha}
+							fullWidth
+							color='success'
+							margin='normal'
+							focused
+							placeholder='enter text from picture'
+						/>
+						</Box>
+					)}
+				/>
 				)}
-				{isError && <p className={styles.errorMessage}>{error?.message}</p>}
-				{serverError && <p className={styles.errorMessage}>{serverError}</p>}
-				<Form.Item className={buttonStyles.buttonContainer}>
-					<Button
-						disabled={!isDirty}
-						htmlType='submit'
-						loading={isSubmitting || isValidating || isLoading}
-						shape='round'
-						size='middle'
-						type='primary'
-					>
-						Логин
-					</Button>
-				</Form.Item>
-			</Form>
+				{serverSideError && <Box className={styles.autorizationError}>{serverSideError.message}</Box>}
+
+				{serverError && <Box className={styles.autorizationError}>{serverError}</Box>}
+
+				<Box className={buttonStyles.buttonContainer}>
+				<LoadingButton
+					size='large'
+					endIcon={<SendIcon />}
+					type='submit'
+					loading={fetchingLoginData}
+					disabled={fetchingLoginData || !isEmpty(errors)}
+					loadingPosition='end'
+					variant='contained'
+					color='success'
+				>
+					Логин
+				</LoadingButton>
+				</Box>
+			</form>
 			{isNeedCaptcha && (
 				<div className={buttonStyles.buttonContainer}>
-					<Button
+					<LoadingButton
 						onClick={handleGetCaptcha}
-						shape='round'
-						size='middle'
-						type='primary'
+						size='large'
+					endIcon={<SendIcon />}
+					loading={fetchingCaptchaUrl}
+					disabled={fetchingCaptchaUrl}
+					loadingPosition='end'
+					variant='contained'
+					color='success'
 					>
 						Другая картинка
-					</Button>
-					{captchaUrl && <img src={captchaUrl} alt='captcha' />}
+					</LoadingButton>
+					{url && <img src={url} alt='captcha' className={styles.img} />}
 				</div>
 			)}
 		</>

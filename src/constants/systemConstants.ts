@@ -1,5 +1,7 @@
 export const RESPONSE_STATUSES = {
-    success: 200
+    success: 200,
+    clientError: 404,
+    serverError: 500,
 };
 
 export const RESULT_CODES = {

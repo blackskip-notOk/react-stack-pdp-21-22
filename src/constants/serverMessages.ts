@@ -8,4 +8,5 @@ export const SERVER_MESSAGES_DESCRIPTIONS = {
     notAutorized: 'Вы не авторизованны, залогиньтесь или зарегистрируйтесь',
     wrongLogin: 'Неверный логин или пароль',
     maxAttempt: 'Превышено количество попыток',
+    someError: 'Непредвиденная ошибка',
 }

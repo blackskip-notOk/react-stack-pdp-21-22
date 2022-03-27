@@ -8,17 +8,21 @@
 };
 
 .autorizationError {
+    text-align: center;
     margin: @margin_middle;
-    font-size: small;
+    font-size: medium;
     font-weight: 600;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     color: @error_message_text_dark;
 };
 
-:global(.ant-form-item-label > label) {
-    color: @form_label_dark;
-};
+.checkBox {
+    margin-bottom: @margin_middle;
+    color: @success_text;
+}
 
-.errorMessage {
-    color: @error_message_text_dark;
+.img {
+    width: 100%;
+    margin-top: @margin_large;
+    border: 1px solid @success_text
 }

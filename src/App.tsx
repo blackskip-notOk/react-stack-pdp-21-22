@@ -3,10 +3,7 @@ import './App.css'
 import appStyles from './styles/App.module.less';
 import 'antd/dist/antd.css';
 import { useStore } from 'effector-react';
-import { $inizialize, inizialize } from './effector/initialStore/InitialStore';
 import { Route, Routes, useNavigate } from 'react-router-dom';
-import { fetchInizialize } from './api/loginApi/LoginApi';
-import { RESPONSE_STATUSES, RESULT_CODES } from './constants/systemConstants';
 import { NAVLINKS } from './constants/routerConstants';
 import { Loader } from './components/common/loader/Loader';
 import { Header } from './components/Header/Header';
@@ -16,35 +13,18 @@ import { Login } from './components/Login/Login';
 import { Messages } from './components/Messages/Messages';
 import { NotFound } from './components/NotFoundPage/NotFound';
 import { Profile } from './components/Profile/Profile';
-
+import { $auth, authFx } from './models/auth';
 
 export const App = () => {
-	const inizialized = useStore($inizialize);
+	const { isAuth } = useStore($auth);
+
 	const navigate = useNavigate();
 
 	useEffect(() => {
-		fetchInizialize()
-			.then((authResponse) => {
-				if (authResponse.status === RESPONSE_STATUSES.success) {
-					const { authInfo } = authResponse;
-
-					if (authInfo.resultCode === RESULT_CODES.error) {
-						inizialize({ inizialized: false, message: authInfo.messages[0] });
-					}
-					if (authInfo.resultCode === RESULT_CODES.success) {
-						inizialize({ inizialized: true, message: authInfo.messages[0] });
-					}
-				}
-			})
-			.catch((error) => {
-				console.error(error);
-				inizialize({ inizialized: false, message: `${error}` });
-			})
-			.finally(() => {
-				if (!inizialized.inizialized) {
-					navigate(NAVLINKS.LOGIN);
-				}
-			});
+		authFx();
+		if (!isAuth) {
+			navigate(NAVLINKS.LOGIN);
+		}
 	}, []);
 
 	return (

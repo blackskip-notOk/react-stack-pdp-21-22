@@ -9,11 +9,3 @@ export const API = {
 	login: `${AUTH}/${LOGIN}`,
 	captchaUrl: `${SECURITY}/${CAPTCHA}`,
 };
-
-export const QUERY_KEYS = {
-	captchaUrl: [CAPTCHA],
-};
-
-export const MUTATION_KEYS = {
-	LOGIN: 'login'
-};

@@ -1,20 +1,20 @@
 import { useStore } from 'effector-react';
 import { FC } from 'react';
 import { SERVER_MESSAGES, SERVER_MESSAGES_DESCRIPTIONS } from '../../constants/serverMessages';
-import { $inizialize } from '../../effector/initialStore/InitialStore';
 import { LoginForm } from './LoginForm/LoginForm';
 import styles from './Login.module.less';
+import { $auth } from '../../models/auth/index';
 
 export const Login: FC = () => {
 
-	const {message, inizialized} = useStore($inizialize);
+	const {message, isAuth} = useStore($auth);
 
 	const localMessage = message === SERVER_MESSAGES.NOT_AUTHORIZED
 	? SERVER_MESSAGES_DESCRIPTIONS.notAutorized : message;
 
 	return (
 		<div className={styles.loginContainer}>
-			{!inizialized && <div className={styles.autorizationError}>{localMessage}</div>}
+			{!isAuth && <div className={styles.autorizationError}>{localMessage}</div>}
 			<LoginForm />
 		</div>
 	);
