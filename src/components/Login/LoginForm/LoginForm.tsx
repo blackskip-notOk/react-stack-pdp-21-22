@@ -4,7 +4,7 @@ import inputStyles from '@styles/Input.module.less';
 import { preventDefault } from '../../../utils';
 import { useNavigate } from 'react-router-dom';
 import styles from '../Login.module.less';
-import { $captchaUrl, $loginError, $loginResponse, $serverSideError, getCaptchaFx, loginFx } from '../../../models/login/index';
+import { $captchaUrl, $loginResponse, $serverSideError, getCaptchaFx, loginFx } from '../../../models/login/index';
 import { useStore } from 'effector-react';
 import {
 	Checkbox,
@@ -23,25 +23,27 @@ import { LoadingButton } from '@mui/lab';
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { loginSchema } from '../utils/loginSchema';
-import { LoginFormData } from './types';
 import { Box } from '@mui/system';
 import { isEmpty } from 'ramda';
 import { $auth } from '../../../models/auth';
 import { NAVLINKS } from '../../../constants/routerConstants';
+import { LoginFormData } from '../../../models/login/types';
 
 export const LoginForm: FC = () => {
 	const navigate = useNavigate();
 
 	const fetchingLoginData = useStore(loginFx.pending);
 	const fetchingCaptchaUrl = useStore(getCaptchaFx.pending);
-	const { error: serverError, isNeedCaptcha } = useStore($loginError);
 	const serverSideError = useStore($serverSideError);
-	const { url } = useStore($captchaUrl);
+	const captchaUrl = useStore($captchaUrl);
 	const { isAuth } = useStore($auth);
+	const { error: loginError, isNeedCaptcha } = useStore($loginResponse);
 
-	// useEffect(() => {
-	// 	isAuth && navigate(NAVLINKS.HOME);
-	// }, [isAuth]);
+	console.log('loginForm render');
+
+	useEffect(() => {
+		isAuth && navigate(NAVLINKS.HOME);
+	}, [isAuth]);
 
 	const { control, handleSubmit, formState: { errors }, } = useForm<LoginFormData>({
 		defaultValues: {
@@ -53,7 +55,6 @@ export const LoginForm: FC = () => {
 		resolver: yupResolver(loginSchema),
 	});
 
-
 	const [showPassword, toggleShowPassword] = useReducer(
 		(showPassword) => !showPassword,
 		false
@@ -62,7 +63,7 @@ export const LoginForm: FC = () => {
 	const onSubmit: SubmitHandler<LoginFormData> = data => loginFx(data);
 
 	const handleGetCaptcha = () => {
-		getCaptchaFx()
+		getCaptchaFx(true)
 	};
 
 	return (
@@ -79,7 +80,7 @@ export const LoginForm: FC = () => {
 							label='Email'
 							variant='outlined'
 							helperText={errors.email?.message ?? ' '}
-							error={!!errors.email || !!serverError}
+							error={!!errors.email || !!loginError}
 							fullWidth
 							color='success'
 							margin='normal'
@@ -97,7 +98,7 @@ export const LoginForm: FC = () => {
 							<InputLabel
 								htmlFor='password'
 								color='success'
-								error={!!errors.password || !!serverError}
+								error={!!errors.password || !!loginError}
 							>
 								Password
 							</InputLabel>
@@ -107,7 +108,7 @@ export const LoginForm: FC = () => {
 								label='Password'
 								type={showPassword ? 'text' : 'password'}
 								margin='dense'
-								error={!!errors.password || !!serverError}
+								error={!!errors.password || !!loginError}
 								placeholder='enter your password'
 								endAdornment={
 									<InputAdornment position='end'>
@@ -181,7 +182,7 @@ export const LoginForm: FC = () => {
 				)}
 				{serverSideError && <Box className={styles.autorizationError}>{serverSideError.message}</Box>}
 
-				{serverError && <Box className={styles.autorizationError}>{serverError}</Box>}
+				{loginError && <Box className={styles.autorizationError}>{loginError}</Box>}
 
 				<Box className={buttonStyles.buttonContainer}>
 				<LoadingButton
@@ -212,7 +213,7 @@ export const LoginForm: FC = () => {
 					>
 						Другая картинка
 					</LoadingButton>
-					{url && <img src={url} alt='captcha' className={styles.img} />}
+					{captchaUrl && <img src={captchaUrl.url} alt='captcha' className={styles.img} />}
 				</div>
 			)}
 		</>

@@ -1,9 +1,8 @@
+import { fetchAuthApi } from './../../api/authApi';
 import { SERVER_MESSAGES_DESCRIPTIONS } from './../../constants/serverMessages';
-import { API } from './../../constants/apiConstants';
-import { $auth, autorize, authFx, unautorize } from ".";
+import { $auth, autorize, authFx, unautorize, $owner, deleteOwner } from ".";
 import { AuthResponse } from "./types";
 import { RESPONSE_STATUSES, RESULT_CODES } from '../../constants/systemConstants';
-import { instance } from '..';
 
 const updateAuth = ((authResponse: AuthResponse) => {
     if (authResponse.status === RESPONSE_STATUSES.success) {
@@ -21,14 +20,11 @@ const updateAuth = ((authResponse: AuthResponse) => {
     }
 });
 
-authFx.use(async (): Promise<AuthResponse> => {
-    const response = await instance.get(API.authMe);
-    return {status: response.status, authInfo: response.data};
-});
+authFx
+.use(fetchAuthApi)
+.watch(() => console.log(`вызван эффект ${authFx.shortName} - запрос авторизации`));
 
 authFx.doneData.watch(updateAuth);
-
-authFx.watch(() => console.log(`вызван эффект ${authFx.shortName} - запрос авторизации`));
 
 $auth
 .on(autorize, (_, data) => ({isAuth: data.isAuth, message: data.message}))
@@ -36,5 +32,13 @@ $auth
 
 $auth
 .watch(state => console.log(
-    `Состояние ${$auth.shortName}: авторизация пройдена - ${state.isAuth}, сообщение - ${state.message ?? 'Autorization success'}`
+    `Состояние ${$auth.shortName}: авторизация пройдена - ${state.isAuth}, сообщение - ${state.message}`
+));
+
+$owner
+.reset(deleteOwner);
+
+$owner
+.watch(state => console.log(
+    `Состояние ${$owner.shortName}: логин - ${state.isOwner}, пользовательский ID - ${state.ownerId}`
 ));
