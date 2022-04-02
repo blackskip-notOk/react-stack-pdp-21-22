@@ -1,3 +1,8 @@
+export enum APP_MESSAGES {
+    NOT_ROOT = 'Failed to find the root element',
+}
+
+
 export enum SERVER_MESSAGES {
     NOT_AUTHORIZED = 'You are not authorized',
     WRONG_LOGIN = 'Incorrect Email or Password',

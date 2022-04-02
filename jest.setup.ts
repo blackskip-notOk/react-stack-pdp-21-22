@@ -1,11 +1,7 @@
 import '@testing-library/jest-dom/extend-expect';
 import { server } from './src/mocks/server';
-import { QueryCache } from 'react-query'
 
-const queryCache = new QueryCache()
-afterEach(() => {
-  queryCache.clear()
-});
+globalThis.IS_REACT_ACT_ENVIRONMENT = true;
 
 beforeAll(() => server.listen());
 
