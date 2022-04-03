@@ -45,8 +45,6 @@ export const LoginForm: FC = () => {
 	const { isAuth } = useStore($auth);
 	const { error: loginError, isNeedCaptcha } = useStore($loginResponse);
 
-	console.log('loginForm render');
-
 	useEffect(() => {
 		isAuth && navigate(NAVLINKS.HOME);
 	}, [isAuth]);
@@ -106,11 +104,13 @@ export const LoginForm: FC = () => {
 							variant='outlined'
 							fullWidth
 							focused
-							className={inputStyles.container}>
+							className={inputStyles.container}
+						>
 							<InputLabel
 								htmlFor='password'
 								color='success'
-								error={!!errors.password || !!loginError}>
+								error={!!errors.password || !!loginError}
+							>
 								Password
 							</InputLabel>
 							<OutlinedInput
@@ -127,7 +127,8 @@ export const LoginForm: FC = () => {
 											aria-label='toggle password visibility'
 											onClick={toggleShowPassword}
 											onMouseDown={preventDefault}
-											edge='end'>
+											edge='end'
+										>
 											{showPassword ? (
 												<VisibilityOff color='success' />
 											) : (
@@ -203,7 +204,8 @@ export const LoginForm: FC = () => {
 						disabled={fetchingLoginData || !isEmpty(errors)}
 						loadingPosition='end'
 						variant='contained'
-						color='success'>
+						color='success'
+					>
 						Логин
 					</LoadingButton>
 				</Box>
@@ -218,7 +220,8 @@ export const LoginForm: FC = () => {
 						disabled={fetchingCaptchaUrl}
 						loadingPosition='end'
 						variant='contained'
-						color='success'>
+						color='success'
+					>
 						Другая картинка
 					</LoadingButton>
 					{captchaUrl && <img src={captchaUrl.url} alt='captcha' className={styles.img} />}
