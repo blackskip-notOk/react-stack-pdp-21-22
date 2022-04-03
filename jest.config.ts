@@ -3,6 +3,7 @@ export default {
 		name: 'REACT_APP',
 		color: 'magenta',
 	},
+	roots: ['<rootDir>/src'],
 	testEnvironment: 'jsdom',
 	transform: {
 		'^.+\\.tsx?$': 'ts-jest',
@@ -14,11 +15,17 @@ export default {
 	},
 	setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
 	collectCoverage: true,
-	collectCoverageFrom: ['**/*.{ts, tsx, js,jsx}', '!**/node_modules/**'],
+	collectCoverageFrom: [
+		'**/*.{ts, tsx, js,jsx}',
+		'!**/node_modules/**',
+		'!**/*.config.{ts, js}',
+		'!**/*.d.ts',
+	],
+	testRegex: '(/__tests__/.*|(\\.|/)(test|spec))\\.tsx?$',
 	coverageDirectory: '<rootDir>/coverage',
 	coveragePathIgnorePatterns: ['<rootDir>/.husky/', '<rootDir>/node_modules/'],
 	errorOnDeprecated: true,
-	moduleFileExtensions: ["tsx", "ts", "js", "jsx", "json", "node"],
+	moduleFileExtensions: ['tsx', 'ts', 'js', 'jsx', 'json', 'node'],
 	notify: true,
 	notifyMode: 'failure-change',
 };

@@ -1,5 +1,4 @@
-import { useStore } from "effector-react";
-import { FC } from "react";
+import { FC } from 'react';
 import styles from './Loader.module.css';
 
-export const Loader: FC = () => <div className={styles.loader}></div>
+export const Loader: FC = () => <div className={styles.loader}></div>;

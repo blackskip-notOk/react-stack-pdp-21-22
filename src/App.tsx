@@ -1,7 +1,6 @@
-import { Suspense, useEffect } from 'react'
-import './App.css'
+import { Suspense, useEffect } from 'react';
+import './App.css';
 import appStyles from './styles/App.module.less';
-import 'antd/dist/antd.css';
 import { useStore } from 'effector-react';
 import { Route, Routes, useNavigate } from 'react-router-dom';
 import { NAVLINKS } from './constants/routerConstants';
@@ -25,28 +24,28 @@ export const App = () => {
 		if (!isAuth) {
 			navigate(NAVLINKS.LOGIN);
 		}
-	}, []);
+	}, []); // eslint-disable-line react-hooks/exhaustive-deps
 
 	return (
-			<Suspense fallback={<Loader />}>
-				<div className={appStyles.appWrapper}>
-					<header className={appStyles.headerWrapper}>
-						<Header />
-					</header>
-					<nav className={appStyles.navBarWrapper}>
-						<NavBar />
-					</nav>
-					<main className={appStyles.contentWrapper}>
-						<Routes>
-							<Route path={NAVLINKS.HOME} element={<Home />} />
-							<Route path={NAVLINKS.LOGIN} element={<Login />} />
-							<Route path={NAVLINKS.PROFILE} element={<Profile />} />
-							<Route path={NAVLINKS.MESSAGES} element={<Messages />} />
-							<Route path='*' element={<NotFound />} />
-						</Routes>
-					</main>
-					<footer className={appStyles.footerWrapper}>Footer</footer>
-				</div>
-			</Suspense>
+		<Suspense fallback={<Loader />}>
+			<div className={appStyles.appWrapper}>
+				<header className={appStyles.headerWrapper}>
+					<Header />
+				</header>
+				<nav className={appStyles.navBarWrapper}>
+					<NavBar />
+				</nav>
+				<main className={appStyles.contentWrapper}>
+					<Routes>
+						<Route path={NAVLINKS.HOME} element={<Home />} />
+						<Route path={NAVLINKS.LOGIN} element={<Login />} />
+						<Route path={NAVLINKS.PROFILE} element={<Profile />} />
+						<Route path={NAVLINKS.MESSAGES} element={<Messages />} />
+						<Route path='*' element={<NotFound />} />
+					</Routes>
+				</main>
+				<footer className={appStyles.footerWrapper}>Footer</footer>
+			</div>
+		</Suspense>
 	);
 };
