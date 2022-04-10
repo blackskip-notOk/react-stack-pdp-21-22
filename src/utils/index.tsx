@@ -53,5 +53,5 @@ export const getIsAuth = (clockData: TransformLoginResponse): AuthState => ({
 
 export const getIsOwner = (clockData: TransformLoginResponse): Owner => ({
 	isOwner: !!clockData.data,
-	ownerId: clockData.data ? clockData.data.userId : null,
+	ownerId: clockData.data ? clockData.data.userId : undefined,
 });

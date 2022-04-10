@@ -11,12 +11,12 @@
 		"build": "tsc && vite build",
 		"preview": "vite preview",
 		"prepare": "husky install",
-		"test": "jest --bail --runInBand",
+		"test": "jest --bail --runInBand --coverage=false",
 		"lint": "eslint --debug src/",
 		"lint:write": "eslint --debug src/ --fix",
 		"prettier": "prettier --write src/**/*.{ts,tsx}",
 		"postinstall": "husky install",
-		"test:commit": "jest --bail --lastCommit --logHeapUsage"
+		"test:commit": "jest --bail --lastCommit --logHeapUsage --coverage=true"
 	},
 	"dependencies": {
 		"@emotion/react": "^11.8.2",

@@ -1,7 +1,7 @@
 import { BaseResponse } from '../types';
 
 export interface LoginData {
-	userId: number;
+	userId?: number;
 }
 
 type Login = Omit<BaseResponse, 'fieldsErrors'>;

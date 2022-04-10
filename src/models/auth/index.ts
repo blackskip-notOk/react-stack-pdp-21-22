@@ -23,7 +23,7 @@ export const authFx = createEffect<void, AuthResponse, AxiosError>({
 
 export const deleteOwner = createEvent<Owner>();
 
-const defaultOwnerStore = { isOwner: false, ownerId: null };
+const defaultOwnerStore = { isOwner: false, ownerId: undefined };
 
 export const $owner = createStore<Owner>(defaultOwnerStore, {
 	name: 'owner',
