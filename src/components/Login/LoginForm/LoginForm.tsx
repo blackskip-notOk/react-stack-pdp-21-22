@@ -1,10 +1,16 @@
 import { FC, useEffect, useReducer } from 'react';
-import buttonStyles from '@styles/Button.module.less';
-import inputStyles from '@styles/Input.module.less';
+import buttonStyles from '../../../styles/Button.module.less';
+import inputStyles from '../../../styles/Input.module.less';
 import { preventDefault } from '../../../utils';
 import { useNavigate } from 'react-router-dom';
 import styles from '../Login.module.less';
-import { $captchaUrl, $loginResponse, $serverSideError, getCaptchaFx, loginFx } from '../../../models/login/index';
+import {
+	$captchaUrl,
+	$loginResponse,
+	$serverSideError,
+	getCaptchaFx,
+	loginFx,
+} from '../../../models/login/index';
 import { useStore } from 'effector-react';
 import {
 	Checkbox,
@@ -39,13 +45,15 @@ export const LoginForm: FC = () => {
 	const { isAuth } = useStore($auth);
 	const { error: loginError, isNeedCaptcha } = useStore($loginResponse);
 
-	console.log('loginForm render');
-
 	useEffect(() => {
 		isAuth && navigate(NAVLINKS.HOME);
 	}, [isAuth]);
 
-	const { control, handleSubmit, formState: { errors }, } = useForm<LoginFormData>({
+	const {
+		control,
+		handleSubmit,
+		formState: { errors },
+	} = useForm<LoginFormData>({
 		defaultValues: {
 			email: '',
 			password: '',
@@ -55,15 +63,12 @@ export const LoginForm: FC = () => {
 		resolver: yupResolver(loginSchema),
 	});
 
-	const [showPassword, toggleShowPassword] = useReducer(
-		(showPassword) => !showPassword,
-		false
-	);
+	const [showPassword, toggleShowPassword] = useReducer((showPassword) => !showPassword, false);
 
-	const onSubmit: SubmitHandler<LoginFormData> = data => loginFx(data);
+	const onSubmit: SubmitHandler<LoginFormData> = (data) => loginFx(data);
 
 	const handleGetCaptcha = () => {
-		getCaptchaFx(true)
+		getCaptchaFx(true);
 	};
 
 	return (
@@ -74,19 +79,19 @@ export const LoginForm: FC = () => {
 					control={control}
 					render={({ field }) => (
 						<Box className={inputStyles.container}>
-						<TextField
-							{...field}
-							id='email'
-							label='Email'
-							variant='outlined'
-							helperText={errors.email?.message ?? ' '}
-							error={!!errors.email || !!loginError}
-							fullWidth
-							color='success'
-							margin='normal'
-							focused
-							placeholder='enter your email'
-						/>
+							<TextField
+								{...field}
+								id='email'
+								label='Email'
+								variant='outlined'
+								helperText={errors.email?.message ?? ' '}
+								error={!!errors.email || !!loginError}
+								fullWidth
+								color='success'
+								margin='normal'
+								focused
+								placeholder='enter your email'
+							/>
 						</Box>
 					)}
 				/>
@@ -94,7 +99,13 @@ export const LoginForm: FC = () => {
 					name='password'
 					control={control}
 					render={({ field }) => (
-						<FormControl color='success' variant='outlined' fullWidth focused className={inputStyles.container}>
+						<FormControl
+							color='success'
+							variant='outlined'
+							fullWidth
+							focused
+							className={inputStyles.container}
+						>
 							<InputLabel
 								htmlFor='password'
 								color='success'
@@ -158,45 +169,45 @@ export const LoginForm: FC = () => {
 				/>{' '}
 				{isNeedCaptcha && (
 					<Controller
-					name='captcha'
-					control={control}
-					render={({ field }) => (
-						<Box className={inputStyles.container}>
-						<TextField
-							{...field}
-							id='captcha'
-							label='Captcha'
-							variant='outlined'
-							required
-							helperText={errors.captcha?.message ?? ' '}
-							error={!!errors.captcha}
-							fullWidth
-							color='success'
-							margin='normal'
-							focused
-							placeholder='enter text from picture'
-						/>
-						</Box>
-					)}
-				/>
+						name='captcha'
+						control={control}
+						render={({ field }) => (
+							<Box className={inputStyles.container}>
+								<TextField
+									{...field}
+									id='captcha'
+									label='Captcha'
+									variant='outlined'
+									required
+									helperText={errors.captcha?.message ?? ' '}
+									error={!!errors.captcha}
+									fullWidth
+									color='success'
+									margin='normal'
+									focused
+									placeholder='enter text from picture'
+								/>
+							</Box>
+						)}
+					/>
 				)}
-				{serverSideError && <Box className={styles.autorizationError}>{serverSideError.message}</Box>}
-
+				{serverSideError && (
+					<Box className={styles.autorizationError}>{serverSideError.message}</Box>
+				)}
 				{loginError && <Box className={styles.autorizationError}>{loginError}</Box>}
-
 				<Box className={buttonStyles.buttonContainer}>
-				<LoadingButton
-					size='large'
-					endIcon={<SendIcon />}
-					type='submit'
-					loading={fetchingLoginData}
-					disabled={fetchingLoginData || !isEmpty(errors)}
-					loadingPosition='end'
-					variant='contained'
-					color='success'
-				>
-					Логин
-				</LoadingButton>
+					<LoadingButton
+						size='large'
+						endIcon={<SendIcon />}
+						type='submit'
+						loading={fetchingLoginData}
+						disabled={fetchingLoginData || !isEmpty(errors)}
+						loadingPosition='end'
+						variant='contained'
+						color='success'
+					>
+						Логин
+					</LoadingButton>
 				</Box>
 			</form>
 			{isNeedCaptcha && (
@@ -204,12 +215,12 @@ export const LoginForm: FC = () => {
 					<LoadingButton
 						onClick={handleGetCaptcha}
 						size='large'
-					endIcon={<SendIcon />}
-					loading={fetchingCaptchaUrl}
-					disabled={fetchingCaptchaUrl}
-					loadingPosition='end'
-					variant='contained'
-					color='success'
+						endIcon={<SendIcon />}
+						loading={fetchingCaptchaUrl}
+						disabled={fetchingCaptchaUrl}
+						loadingPosition='end'
+						variant='contained'
+						color='success'
 					>
 						Другая картинка
 					</LoadingButton>

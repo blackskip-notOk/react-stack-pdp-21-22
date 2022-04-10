@@ -1,9 +1,10 @@
+import { fetchAuthApi } from './../../api/authApi';
 import { AxiosError } from 'axios';
-import { createEffect, createEvent, createStore } from "effector-logger";
-import { AuthResponse, AuthState, Owner } from "./types";
+import { createEffect, createEvent, createStore } from 'effector';
+import { AuthResponse, AuthState, Owner } from './types';
 
 export const autorize = createEvent<AuthState>({
-	name: 'autorization check'
+	name: 'autorization check',
 });
 
 export const unautorize = createEvent<AuthState>();
@@ -15,14 +16,15 @@ export const $auth = createStore<AuthState>(defaultAuthStore, {
 	serialize: 'ignore',
 });
 
-export const authFx = createEffect<void, AuthResponse, AxiosError>(
-	{ name: 'fetch auth' }
-);
+export const authFx = createEffect<void, AuthResponse, AxiosError>({
+	name: 'fetch auth',
+	handler: fetchAuthApi,
+});
 
 export const deleteOwner = createEvent<Owner>();
 
-const defaultOwnerStore = { isOwner: false, ownerId: null };
+const defaultOwnerStore = { isOwner: false, ownerId: undefined };
 
 export const $owner = createStore<Owner>(defaultOwnerStore, {
-    name: 'owner'
+	name: 'owner',
 });

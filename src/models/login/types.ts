@@ -1,32 +1,32 @@
-import { BaseResponse } from "../types";
+import { BaseResponse } from '../types';
 
 export interface LoginData {
-    userId: number
-};
+	userId?: number;
+}
 
 type Login = Omit<BaseResponse, 'fieldsErrors'>;
 
 export interface TransformLoginResponse {
-    data?: LoginData,
-    error?: string,
-    isNeedCaptcha?: boolean,
-};
+	data?: LoginData;
+	error?: string;
+	isNeedCaptcha?: boolean;
+}
 
 export type LoginError = Omit<TransformLoginResponse, 'data'>;
 
 export type LoginSuccess = Pick<TransformLoginResponse, 'data'>;
 
 export interface LoginResponse extends Login {
-    data: LoginData
-};
+	data: LoginData;
+}
 
 export interface LoginFormData {
-	email: string,
-	password: string,
-	rememberMe?: boolean,
-	captcha?: string,
-};
+	email: string;
+	password: string;
+	rememberMe?: boolean;
+	captcha?: string;
+}
 
 export interface CaptchaUrlResponse {
-    url: string,
-};
+	url: string;
+}
