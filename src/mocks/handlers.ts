@@ -4,7 +4,7 @@ import { API } from '../constants/apiConstants';
 const isAuth = false;
 
 export const handlers = [
-	rest.get(API.authMe, (req, res, ctx) => {
+	rest.get(`${API.baseURL}/${API.authMe}`, (req, res, ctx) => {
 		if (!isAuth) {
 			return res(
 				ctx.status(200),
@@ -32,7 +32,7 @@ export const handlers = [
 		);
 	}),
 
-	rest.post(API.login, (req, res, ctx) => {
+	rest.post(`${API.baseURL}/${API.login}`, (req, res, ctx) => {
 		return res(
 			ctx.status(200),
 			ctx.json({

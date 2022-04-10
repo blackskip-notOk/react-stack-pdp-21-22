@@ -1,6 +1,6 @@
 import { FC, useEffect, useReducer } from 'react';
-import buttonStyles from '@styles/Button.module.less';
-import inputStyles from '@styles/Input.module.less';
+import buttonStyles from '../../../styles/Button.module.less';
+import inputStyles from '../../../styles/Input.module.less';
 import { preventDefault } from '../../../utils';
 import { useNavigate } from 'react-router-dom';
 import styles from '../Login.module.less';

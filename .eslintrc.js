@@ -1,13 +1,28 @@
 module.exports = {
-	env: {
-		browser: true,
-		es2021: true,
-		node: true,
+	parser: '@typescript-eslint/parser',
+	parserOptions: {
+		// project: ['./tsconfig.json'],
+		ecmaFeatures: {
+			jsx: true,
+		},
+		ecmaVersion: 'latest',
+		sourceType: 'module',
 	},
 	settings: {
 		react: {
 			version: 'detect',
 		},
+		// 'import/resolver': {
+		// 	node: {
+		// 	  paths: ['src'],
+		// 	  extensions: ['.js', '.jsx', '.ts', '.tsx'],
+		// 	},
+		//   },
+	},
+	env: {
+		browser: true,
+		es2021: true,
+		node: true,
 	},
 	extends: [
 		'eslint:recommended',
@@ -18,15 +33,6 @@ module.exports = {
 		'plugin:@typescript-eslint/recommended',
 		'plugin:prettier/recommended',
 	],
-	parser: '@typescript-eslint/parser',
-	parserOptions: {
-		project: ['./tsconfig.json'],
-		ecmaFeatures: {
-			jsx: true,
-		},
-		ecmaVersion: 'latest',
-		sourceType: 'module',
-	},
 	plugins: ['react', 'react-hooks', 'jsx-a11y', '@typescript-eslint', 'prettier', 'effector'],
 	rules: {
 		'linebreak-style': 0,
