@@ -1,6 +1,6 @@
 import { fetchAuthApi } from './../../api/authApi';
 import { AxiosError } from 'axios';
-import { createEffect, createEvent, createStore } from 'effector';
+import { createEffect, createEvent, createStore } from 'effector-logger';
 import { AuthResponse, AuthState, Owner } from './types';
 
 export const autorize = createEvent<AuthState>({
@@ -20,6 +20,8 @@ export const authFx = createEffect<void, AuthResponse, AxiosError>({
 	name: 'fetch auth',
 	handler: fetchAuthApi,
 });
+
+export const setOwner = createEvent<Owner>();
 
 export const deleteOwner = createEvent<Owner>();
 

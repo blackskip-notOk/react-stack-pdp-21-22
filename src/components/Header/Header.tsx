@@ -14,8 +14,8 @@ export const Header: FC = () => {
 		<div role='presentation' onClick={handleClick}>
 			<img src={logo} alt='react-logo' className={styles.logo} />
 			<div>
-				<NavLink to={`${NAVLINKS.PROFILE}`}>Profile</NavLink>
-				<NavLink to={`${NAVLINKS.LOGIN}`}>Login</NavLink>
+				{/* <NavLink to={`${NAVLINKS.PROFILE}`}>Profile</NavLink>
+				<NavLink to={`${NAVLINKS.LOGIN}`}>Login</NavLink> */}
 			</div>
 		</div>
 	);

@@ -1,4 +1,4 @@
-import { Suspense, useEffect } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import './App.css';
 import appStyles from './styles/App.module.less';
 import { useStore } from 'effector-react';
@@ -19,6 +19,8 @@ export const App = () => {
 
 	const navigate = useNavigate();
 
+	const [showGreeting, setShowGreeting] = useState(false);
+
 	useEffect(() => {
 		authFx();
 		if (!isAuth) {
@@ -29,22 +31,29 @@ export const App = () => {
 	return (
 		<Suspense fallback={<Loader />}>
 			<div className={appStyles.appWrapper}>
-				<header className={appStyles.headerWrapper}>
-					<Header />
-				</header>
-				<nav className={appStyles.navBarWrapper}>
-					<NavBar />
-				</nav>
+				{isAuth && (
+					<header className={appStyles.headerWrapper}>
+						<Header />
+					</header>
+				)}
+				{isAuth && (
+					<nav className={appStyles.navBarWrapper}>
+						<NavBar />
+					</nav>
+				)}
 				<main className={appStyles.contentWrapper}>
 					<Routes>
-						<Route path={NAVLINKS.HOME} element={<Home />} />
-						<Route path={NAVLINKS.LOGIN} element={<Login />} />
+						<Route
+							path={NAVLINKS.HOME}
+							element={<Home showGreeting={showGreeting} setShowGreeting={setShowGreeting} />}
+						/>
+						<Route path={NAVLINKS.LOGIN} element={<Login setShowGreeting={setShowGreeting} />} />
 						<Route path={NAVLINKS.PROFILE} element={<Profile />} />
 						<Route path={NAVLINKS.MESSAGES} element={<Messages />} />
 						<Route path='*' element={<NotFound />} />
 					</Routes>
 				</main>
-				<footer className={appStyles.footerWrapper}>Footer</footer>
+				{isAuth && <footer className={appStyles.footerWrapper}>Footer</footer>}
 			</div>
 		</Suspense>
 	);

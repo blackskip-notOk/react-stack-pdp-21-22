@@ -1,6 +1,6 @@
 import { fetchAuthApi } from './../../api/authApi';
 import { SERVER_MESSAGES_DESCRIPTIONS } from './../../constants/serverMessages';
-import { $auth, autorize, authFx, unautorize, $owner, deleteOwner } from '.';
+import { $auth, autorize, authFx, unautorize, $owner, deleteOwner, setOwner } from '.';
 import { AuthResponse } from './types';
 import { RESPONSE_STATUSES, RESULT_CODES } from '../../constants/systemConstants';
 
@@ -14,6 +14,7 @@ const updateAuth = (authResponse: AuthResponse): void => {
 
 		if (authInfo.resultCode === RESULT_CODES.success) {
 			autorize({ isAuth: true, message: authInfo.messages[0] });
+			setOwner({ isOwner: true, ownerId: authInfo.data.id });
 		}
 	} else if (
 		authResponse.status === RESPONSE_STATUSES.clientError ||
@@ -38,7 +39,9 @@ $auth.watch((state) =>
 	),
 );
 
-$owner.reset(deleteOwner);
+$owner
+	.on(setOwner, (_, data) => ({ isOwner: data.isOwner, ownerId: data.ownerId }))
+	.reset(deleteOwner);
 
 $owner.watch((state) =>
 	console.log(

@@ -9,3 +9,5 @@ export const RESULT_CODES = {
 	error: 1,
 	secure: 10,
 };
+
+export const ERROR_MESSAGE_DURATION = 5000;

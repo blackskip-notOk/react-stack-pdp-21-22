@@ -5,11 +5,10 @@ import { forward, sample } from 'effector';
 import {
 	getIsAuth,
 	getIsNeedCaptcha,
-	getIsOwner,
 	getLoginResponse,
 	transformLoginResponse,
 } from '../../utils/index';
-import { $auth, $owner } from '../auth';
+import { $auth } from '../auth';
 import { fetchCaptchaApi } from '../../api/captchaApi';
 
 loginFx.use(fetchLoginApi).watch(() => console.log(`вызван эффект ${loginFx.shortName}`));
@@ -43,10 +42,4 @@ sample({
 	clock: $loginResponse,
 	fn: getIsAuth,
 	target: $auth,
-});
-
-sample({
-	clock: $loginResponse,
-	fn: getIsOwner,
-	target: $owner,
 });

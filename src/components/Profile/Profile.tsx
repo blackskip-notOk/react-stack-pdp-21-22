@@ -1,5 +1,52 @@
-import { FC } from 'react';
+import { Alert, Slide, Snackbar } from '@mui/material';
+import { useStore } from 'effector-react';
+import { FC, useEffect, useState } from 'react';
+import { ERROR_MESSAGE_DURATION } from '../../constants/systemConstants';
+import { $owner } from '../../models/auth';
+import { $profile, $profileError, getProfileFx } from '../../models/profile';
+import styles from './Profile.module.less';
 
 export const Profile: FC = () => {
-	return <div>Profile</div>;
+	const { ownerId } = useStore($owner);
+	const profileError = useStore($profileError);
+	const profileData = useStore($profile);
+
+	const [showErrow, setShowError] = useState(false);
+
+	useEffect(() => {
+		if (profileError) {
+			setShowError(true);
+		}
+	}, [profileError]);
+
+	useEffect(() => {
+		getProfileFx(ownerId);
+	}, []);
+
+	const handleErrorClose = () => {
+		setShowError(false);
+	};
+
+	return (
+		<div className={styles.profileContainer}>
+			{profileData && (
+				<>
+					<div>{profileData.fullName}</div>
+					<div>{profileData.lookingForAJobDescription}</div>
+				</>
+			)}
+			<Snackbar
+				open={showErrow}
+				autoHideDuration={ERROR_MESSAGE_DURATION}
+				anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+				TransitionComponent={Slide}
+				onClose={handleErrorClose}
+			>
+				<Alert onClose={handleErrorClose} color='error' severity='error'>
+					<span className={styles.profileError}>{profileError?.message}</span>
+				</Alert>
+			</Snackbar>
+			Profile
+		</div>
+	);
 };

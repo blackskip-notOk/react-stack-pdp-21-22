@@ -34,8 +34,9 @@ import { isEmpty } from 'ramda';
 import { $auth } from '../../../models/auth';
 import { NAVLINKS } from '../../../constants/routerConstants';
 import { LoginFormData } from '../../../models/login/types';
+import { LoginProps } from '../types';
 
-export const LoginForm: FC = () => {
+export const LoginForm: FC<LoginProps> = ({ setShowGreeting }) => {
 	const navigate = useNavigate();
 
 	const fetchingLoginData = useStore(loginFx.pending);
@@ -46,6 +47,7 @@ export const LoginForm: FC = () => {
 	const { error: loginError, isNeedCaptcha } = useStore($loginResponse);
 
 	useEffect(() => {
+		setShowGreeting(true);
 		isAuth && navigate(NAVLINKS.HOME);
 	}, [isAuth]);
 
