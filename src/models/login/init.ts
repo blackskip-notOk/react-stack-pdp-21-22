@@ -8,7 +8,7 @@ import {
 	resetLoginResponse,
 } from './index';
 import { $loginResponse, loginFx } from '.';
-import { forward, sample } from 'effector-logger';
+import { forward, sample } from 'effector';
 import {
 	getIsAuth,
 	getIsNeedCaptcha,

@@ -1,6 +1,6 @@
 import { fetchAuthApi } from '@/api/authApi';
 import { AxiosError } from 'axios';
-import { createEffect, createEvent, createStore } from 'effector-logger';
+import { createEffect, createEvent, createStore } from 'effector';
 import { AuthResponse, AuthState, Owner } from './types';
 
 export const autorize = createEvent<AuthState>({

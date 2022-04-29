@@ -1,5 +1,5 @@
 import { AxiosError } from 'axios';
-import { createEffect, createEvent, createStore, restore } from 'effector-logger';
+import { createEffect, createEvent, createStore, restore } from 'effector';
 import {
 	CaptchaUrlResponse,
 	LoginFormData,
