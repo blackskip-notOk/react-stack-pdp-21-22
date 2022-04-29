@@ -16,7 +16,8 @@
 		"lint:write": "eslint --debug src/ --fix",
 		"prettier": "prettier --write src/**/*.{ts,tsx}",
 		"postinstall": "husky install",
-		"test:commit": "jest --bail --lastCommit --logHeapUsage --coverage=true"
+		"test:commit": "jest --bail --lastCommit --logHeapUsage --coverage=false",
+		"test:push": "jest --bail --logHeapUsage --coverage=true"
 	},
 	"dependencies": {
 		"@emotion/react": "^11.9.0",
