@@ -5,7 +5,10 @@ import { sample } from 'effector';
 
 $profileError
 	.on(setProfileError, (_, data) => {
-		return { status: data.response?.status, message: data.response?.data.message };
+		return {
+			status: data.response?.status,
+			message: data.response?.data.message,
+		};
 	})
 	.reset(unSetProfileError);
 

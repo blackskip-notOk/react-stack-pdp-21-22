@@ -1,6 +1,8 @@
 import { Alert, Slide, Snackbar } from '@mui/material';
 import { useStore } from 'effector-react';
-import { FC, useEffect, useState } from 'react';
+import { FC, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { NAVLINKS } from '../../constants/routerConstants';
 import { ERROR_MESSAGE_DURATION } from '../../constants/systemConstants';
 import { $auth } from '../../models/auth';
 import { Posts } from '../Post/Posts';
@@ -8,9 +10,15 @@ import styles from './Home.module.less';
 import { HomeProps } from './types';
 
 export const Home: FC<HomeProps> = ({ showGreeting, setShowGreeting }) => {
+	const navigate = useNavigate();
+
 	const { isAuth } = useStore($auth);
 
-	// useEffect(() => )
+	useEffect(() => {
+		if (!isAuth) {
+			navigate(NAVLINKS.LOGIN, { replace: true });
+		}
+	}, [isAuth]);
 
 	const handleErrorClose = () => {
 		setShowGreeting(false);

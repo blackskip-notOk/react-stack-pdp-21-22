@@ -47,8 +47,10 @@ export const LoginForm: FC<LoginProps> = ({ setShowGreeting }) => {
 	const { error: loginError, isNeedCaptcha } = useStore($loginResponse);
 
 	useEffect(() => {
-		setShowGreeting(true);
-		isAuth && navigate(NAVLINKS.HOME);
+		if (isAuth) {
+			setShowGreeting(true);
+			navigate(NAVLINKS.HOME);
+		}
 	}, [isAuth]);
 
 	const {

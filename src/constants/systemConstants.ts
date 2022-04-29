@@ -11,3 +11,4 @@ export const RESULT_CODES = {
 };
 
 export const ERROR_MESSAGE_DURATION = 5000;
+export const MODAL_SHOW_DURATION = 500;

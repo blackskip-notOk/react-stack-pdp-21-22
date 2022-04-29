@@ -14,7 +14,7 @@ export const NavBar: FC = () => {
 					<NavLink to={NAVLINKS.PROFILE}>Profile</NavLink>
 				</div>
 			)}
-			<NavLink to={`${NAVLINKS.LOGIN}`}>Login</NavLink>
+			{/* <NavLink to={`${NAVLINKS.LOGIN}`}>Login</NavLink> */}
 		</>
 	);
 };

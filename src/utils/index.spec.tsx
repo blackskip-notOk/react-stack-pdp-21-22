@@ -10,7 +10,9 @@ describe('app utils', () => {
 			data: { userId: 1 },
 		};
 
-		expect(transformLoginResponse(successResponse)).toEqual({ data: { userId: 1 } });
+		expect(transformLoginResponse(successResponse)).toEqual({
+			data: { userId: 1 },
+		});
 	});
 	test('if wrong login / password transformLoginResponse should return error message', () => {
 		const errorResponse = {

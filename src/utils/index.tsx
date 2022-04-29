@@ -3,9 +3,6 @@ import { AuthState, Owner } from '../models/auth/types';
 import { SERVER_MESSAGES, SERVER_MESSAGES_DESCRIPTIONS } from '../constants/serverMessages';
 import { RESULT_CODES } from '../constants/systemConstants';
 import { LoginResponse, TransformLoginResponse } from '../models/login/types';
-import { ProfileResponse, ProfileState } from '../models/profile/types';
-import { useStore } from 'effector-react';
-import { $owner } from 'src/models/auth';
 
 export const preventDefault = (event: SyntheticEvent) => {
 	event.preventDefault();
@@ -54,9 +51,12 @@ export const getIsAuth = (clockData: TransformLoginResponse): AuthState => ({
 	message: clockData.data ? SERVER_MESSAGES.AUTORIZATION_SUCCESS : SERVER_MESSAGES.NOT_AUTHORIZED,
 });
 
-// TODO take this and madde it for sample
+export const getIsOwner = (clockData: TransformLoginResponse): Owner => ({
+	isOwner: !!clockData.data,
+	ownerId: clockData.data ? clockData.data.userId : undefined,
+});
 
-// export const getIsOwner = (clockData: TransformLoginResponse): Owner => ({
-// 	isOwner: !!clockData.data,
-// 	ownerId: clockData.data ? clockData.data.userId : undefined,
-// });
+export const resetIsAuth = (): AuthState => ({
+	isAuth: false,
+	message: SERVER_MESSAGES.LOGOUT,
+});

@@ -20,7 +20,10 @@ const updateAuth = (authResponse: AuthResponse): void => {
 		authResponse.status === RESPONSE_STATUSES.clientError ||
 		authResponse.status === RESPONSE_STATUSES.serverError
 	) {
-		autorize({ isAuth: false, message: SERVER_MESSAGES_DESCRIPTIONS.someError });
+		autorize({
+			isAuth: false,
+			message: SERVER_MESSAGES_DESCRIPTIONS.someError,
+		});
 	}
 };
 

@@ -7,6 +7,7 @@ export enum SERVER_MESSAGES {
 	WRONG_LOGIN = 'Incorrect Email or Password',
 	MAX_ATTEMPT = 'Incorrect anti-bot symbols',
 	AUTORIZATION_SUCCESS = 'Autorization success',
+	LOGOUT = 'you have logged out of your account',
 }
 
 export const SERVER_MESSAGES_DESCRIPTIONS = {
@@ -14,5 +15,6 @@ export const SERVER_MESSAGES_DESCRIPTIONS = {
 	wrongLogin: 'Неверный логин или пароль',
 	maxAttempt: 'Превышено количество попыток',
 	someError: 'Непредвиденная ошибка',
-	autorized: 'Вы авторизованныб добро пожаловать',
+	autorized: 'Вы авторизованны, добро пожаловать',
+	logout: 'Вы вышли из своего аккаунта',
 };
