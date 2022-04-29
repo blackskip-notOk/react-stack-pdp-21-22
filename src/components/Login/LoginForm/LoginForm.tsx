@@ -1,7 +1,7 @@
 import { FC, useEffect, useReducer } from 'react';
-import buttonStyles from '../../../styles/Button.module.less';
-import inputStyles from '../../../styles/Input.module.less';
-import { preventDefault } from '../../../utils';
+import buttonStyles from '@/styles/Button.module.less';
+import inputStyles from '@/styles/Input.module.less';
+import { preventDefault } from '@/utils';
 import { useNavigate } from 'react-router-dom';
 import styles from '../Login.module.less';
 import {
@@ -10,7 +10,7 @@ import {
 	$serverSideError,
 	getCaptchaFx,
 	loginFx,
-} from '../../../models/login/index';
+} from '@/models/login/index';
 import { useStore } from 'effector-react';
 import {
 	Checkbox,
@@ -31,9 +31,9 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { loginSchema } from '../utils/loginSchema';
 import { Box } from '@mui/system';
 import { isEmpty } from 'ramda';
-import { $auth } from '../../../models/auth';
-import { NAVLINKS } from '../../../constants/routerConstants';
-import { LoginFormData } from '../../../models/login/types';
+import { $auth } from '@/models/auth';
+import { NAVLINKS } from '@/constants/routerConstants';
+import { LoginFormData } from '@/models/login/types';
 import { LoginProps } from '../types';
 
 export const LoginForm: FC<LoginProps> = ({ setShowGreeting }) => {

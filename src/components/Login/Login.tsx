@@ -1,10 +1,10 @@
 import { useStore } from 'effector-react';
 import { FC } from 'react';
-import { SERVER_MESSAGES, SERVER_MESSAGES_DESCRIPTIONS } from '../../constants/serverMessages';
+import { SERVER_MESSAGES, SERVER_MESSAGES_DESCRIPTIONS } from '@/constants/serverMessages';
 import { LoginForm } from './LoginForm/LoginForm';
 import styles from './Login.module.less';
-import { $auth } from '../../models/auth/index';
-import { SINGUP } from '../../constants/apiConstants';
+import { $auth } from '@/models/auth/index';
+import { SINGUP } from '@/constants/apiConstants';
 import { LoginProps } from './types';
 
 export const Login: FC<LoginProps> = ({ setShowGreeting }) => {

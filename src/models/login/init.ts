@@ -1,5 +1,5 @@
-import { $owner, unautorize } from '../../models/auth';
-import { fetchLoginApi, fetchLogoutApi } from './../../api/loginApi';
+import { $owner, unautorize } from '@/models/auth';
+import { fetchLoginApi, fetchLogoutApi } from '@/api/loginApi';
 import {
 	$captchaUrl,
 	getCaptchaFx,
@@ -16,9 +16,9 @@ import {
 	getLoginResponse,
 	transformLoginResponse,
 	resetIsAuth,
-} from '../../utils/index';
+} from '@/utils/index';
 import { $auth } from '../auth';
-import { fetchCaptchaApi } from '../../api/captchaApi';
+import { fetchCaptchaApi } from '@/api/captchaApi';
 
 $loginResponse.reset(resetLoginResponse);
 

@@ -1,8 +1,8 @@
 import { useStore } from 'effector-react';
 import { FC } from 'react';
 import { NavLink } from 'react-router-dom';
-import { $owner } from '../../models/auth';
-import { NAVLINKS } from '../../constants/routerConstants';
+import { $owner } from '@/models/auth';
+import { NAVLINKS } from '@/constants/routerConstants';
 
 export const NavBar: FC = () => {
 	const { isOwner } = useStore($owner);

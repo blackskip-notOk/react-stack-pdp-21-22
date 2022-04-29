@@ -1,8 +1,8 @@
 import { AxiosError } from 'axios';
-import { setProfileError } from '../models/profile';
-import { API } from './../constants/apiConstants';
+import { setProfileError } from '@/models/profile';
+import { API } from '@/constants/apiConstants';
 import { instance } from '.';
-import { ProfileResponse, UserId } from '../models/profile/types';
+import { ProfileResponse, UserId } from '@/models/profile/types';
 
 export const fetchProfileApi = async (userId: UserId): Promise<ProfileResponse> => {
 	try {

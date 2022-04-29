@@ -1,6 +1,6 @@
-import { API } from './../constants/apiConstants';
+import { API } from '@/constants/apiConstants';
 import { instance } from '.';
-import { AuthResponse } from './../models/auth/types';
+import { AuthResponse } from '@/models/auth/types';
 
 export const fetchAuthApi = async (): Promise<AuthResponse> => {
 	const response = await instance.get(API.authMe);

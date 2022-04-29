@@ -1,6 +1,6 @@
-import { fetchProfileApi } from './../../api/profileApi';
+import { fetchProfileApi } from '@/api/profileApi';
 import { createEffect, createEvent, createStore } from 'effector';
-import { ProfileError, ProfileResponse, ProfileState, UserId } from './types';
+import { ProfileError, ProfileResponse, UserId } from './types';
 import { AxiosError } from 'axios';
 
 const defaultProfileStore = {

@@ -1,8 +1,8 @@
-import { fetchAuthApi } from './../../api/authApi';
-import { SERVER_MESSAGES_DESCRIPTIONS } from './../../constants/serverMessages';
+import { fetchAuthApi } from '@/api/authApi';
+import { SERVER_MESSAGES_DESCRIPTIONS } from '@/constants/serverMessages';
 import { $auth, autorize, authFx, unautorize, $owner, deleteOwner, setOwner } from '.';
 import { AuthResponse } from './types';
-import { RESPONSE_STATUSES, RESULT_CODES } from '../../constants/systemConstants';
+import { RESPONSE_STATUSES, RESULT_CODES } from '@/constants/systemConstants';
 
 const updateAuth = (authResponse: AuthResponse): void => {
 	if (authResponse.status === RESPONSE_STATUSES.success) {

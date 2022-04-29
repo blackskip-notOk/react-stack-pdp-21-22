@@ -1,11 +1,11 @@
 import LogoutIcon from '@mui/icons-material/Logout';
 import { Button, Dialog, DialogContent, DialogTitle, Typography } from '@mui/material';
 import { FC, type SyntheticEvent, useReducer, type MouseEvent } from 'react';
-import { logoutFx } from '../../models/login';
-import logo from '../../image/React-icon.svg.png';
+import { logoutFx } from '@/models/login';
+import logo from '@/image/React-icon.svg.png';
 import styles from './Header.module.less';
-import { MODAL_SHOW_DURATION } from '../../constants/systemConstants';
-import { ReasonModalClose } from '../../commonTypes';
+import { MODAL_SHOW_DURATION } from '@/constants/systemConstants';
+import { ReasonModalClose } from '@/commonTypes';
 
 export const Header: FC = () => {
 	const [openModal, setOpenModal] = useReducer((openModal) => !openModal, false);

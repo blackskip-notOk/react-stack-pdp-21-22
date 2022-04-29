@@ -1,9 +1,9 @@
 import { Alert, Slide, Snackbar } from '@mui/material';
 import { useStore } from 'effector-react';
 import { FC, useEffect, useState } from 'react';
-import { ERROR_MESSAGE_DURATION } from '../../constants/systemConstants';
-import { $owner } from '../../models/auth';
-import { $profile, $profileError, getProfileFx } from '../../models/profile';
+import { ERROR_MESSAGE_DURATION } from '@/constants/systemConstants';
+import { $owner } from '@/models/auth';
+import { $profile, $profileError, getProfileFx } from '@/models/profile';
 import styles from './Profile.module.less';
 
 export const Profile: FC = () => {
@@ -20,7 +20,9 @@ export const Profile: FC = () => {
 	}, [profileError]);
 
 	useEffect(() => {
-		getProfileFx(ownerId);
+		if (ownerId) {
+			getProfileFx(ownerId);
+		}
 	}, []);
 
 	const handleErrorClose = () => {

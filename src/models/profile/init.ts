@@ -1,4 +1,4 @@
-import { fetchProfileApi } from './../../api/profileApi';
+import { fetchProfileApi } from '@/api/profileApi';
 import { getProfileFx, $profile } from '.';
 import { $profileError, setProfileError, unSetProfileError } from '.';
 import { sample } from 'effector';
