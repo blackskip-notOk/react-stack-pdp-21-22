@@ -1,4 +1,4 @@
-import { Suspense, useEffect, useState } from 'react';
+import { lazy, Suspense, useEffect, useState } from 'react';
 import './App.css';
 import appStyles from './styles/App.module.less';
 import { useStore } from 'effector-react';
@@ -9,10 +9,13 @@ import { Header } from './components/Header/Header';
 import { NavBar } from './components/NavBar/NavBar';
 import { Home } from './components/Home/Home';
 import { Login } from './components/Login/Login';
-import { Messages } from './components/Messages/Messages';
 import { NotFound } from './components/NotFoundPage/NotFound';
-import { Profile } from './components/Profile/Profile';
 import { $auth, authFx } from './models/auth';
+import { Profile } from './components/Profile/Profile';
+
+const Messages = lazy(() =>
+	import('./components/Messages/Messages').then((module) => ({ default: module.Messages })),
+);
 
 export const App = () => {
 	const { isAuth } = useStore($auth);
@@ -49,7 +52,14 @@ export const App = () => {
 						/>
 						<Route path={NAVLINKS.LOGIN} element={<Login setShowGreeting={setShowGreeting} />} />
 						<Route path={NAVLINKS.PROFILE} element={<Profile />} />
-						<Route path={NAVLINKS.MESSAGES} element={<Messages />} />
+						<Route
+							path={NAVLINKS.MESSAGES}
+							element={
+								<Suspense fallback={<Loader />}>
+									<Messages />
+								</Suspense>
+							}
+						/>
 						<Route path='*' element={<NotFound />} />
 					</Routes>
 				</main>

@@ -10,8 +10,6 @@ export const fetchProfileApi = async (userId: UserId): Promise<ProfileResponse> 
 		return response.data;
 	} catch (e: unknown) {
 		const error = e as AxiosError;
-
-		console.log(error);
 		if (error.isAxiosError) {
 			setProfileError(error);
 		}

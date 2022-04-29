@@ -15,6 +15,7 @@ export const NavBar: FC = () => {
 				</div>
 			)}
 			{/* <NavLink to={`${NAVLINKS.LOGIN}`}>Login</NavLink> */}
+			<NavLink to={`${NAVLINKS.MESSAGES}`}>Messages</NavLink>
 		</>
 	);
 };
