@@ -6,6 +6,7 @@ const LOGOUT = 'logout';
 const SECURITY = 'security';
 const CAPTCHA = 'get-captcha-url';
 const PROFILE = 'profile';
+const USERS = 'users';
 
 export const API = {
 	baseURL: 'https://social-network.samuraijs.com/api/1.0',
@@ -14,4 +15,5 @@ export const API = {
 	logout: `${AUTH}/${LOGOUT}`,
 	captchaUrl: `${SECURITY}/${CAPTCHA}`,
 	profile: `${PROFILE}/{userId}`,
+	users: `${USERS}`,
 };

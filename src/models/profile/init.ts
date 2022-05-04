@@ -1,5 +1,6 @@
+import { setProfileLoading, unSetProfileLoading } from './index';
 import { fetchProfileApi } from '@/api/profileApi';
-import { getProfileFx, $profile } from '.';
+import { getProfileFx, $profile, $profileLoading } from '.';
 import { $profileError, setProfileError, unSetProfileError } from '.';
 import { sample } from 'effector';
 
@@ -23,25 +24,4 @@ sample({
 	target: $profile,
 });
 
-// sample({
-// 	clock: $loginResponse,
-// 	fn: getIsNeedCaptcha,
-// 	target: getCaptchaTrigger,
-// });
-
-// forward({
-// 	from: getCaptchaTrigger,
-// 	to: getCaptchaFx,
-// });
-
-// getCaptchaFx
-// 	.use(fetchCaptchaApi)
-// 	.watch(() => console.log(`вызван эффект ${getCaptchaFx.shortName}`));
-
-// $captchaUrl.on(getCaptchaFx.doneData, (_, captchaUrl) => captchaUrl);
-
-// sample({
-// 	clock: $loginResponse,
-// 	fn: getIsAuth,
-// 	target: $auth,
-// });
+$profileLoading.on(setProfileLoading, (_, data) => data).reset(unSetProfileLoading);

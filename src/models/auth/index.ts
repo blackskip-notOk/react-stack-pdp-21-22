@@ -30,3 +30,11 @@ const defaultOwnerStore = { isOwner: false, ownerId: undefined };
 export const $owner = createStore<Owner>(defaultOwnerStore, {
 	name: 'owner',
 });
+
+export const setAuthLoading = createEvent<boolean>();
+
+export const unSetAuthLoading = createEvent<boolean>();
+
+export const $authLoading = createStore<boolean>(true, {
+	name: 'loading auth data',
+});

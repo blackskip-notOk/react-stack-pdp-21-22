@@ -3,4 +3,5 @@ export const NAVLINKS = {
 	PROFILE: 'profile',
 	MESSAGES: 'messages',
 	LOGIN: 'login',
+	USERS: 'users',
 };

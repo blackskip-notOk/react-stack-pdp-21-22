@@ -9,13 +9,16 @@ export const NavBar: FC = () => {
 
 	return (
 		<>
+			<NavLink to={`${NAVLINKS.HOME}`} end>
+				Home
+			</NavLink>
 			{isOwner && (
 				<div>
 					<NavLink to={NAVLINKS.PROFILE}>Profile</NavLink>
 				</div>
 			)}
-			{/* <NavLink to={`${NAVLINKS.LOGIN}`}>Login</NavLink> */}
 			<NavLink to={`${NAVLINKS.MESSAGES}`}>Messages</NavLink>
+			<NavLink to={`${NAVLINKS.USERS}`}>Users</NavLink>
 		</>
 	);
 };

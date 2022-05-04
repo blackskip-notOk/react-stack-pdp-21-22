@@ -1,7 +1,7 @@
-import { fetchProfileApi } from '@/api/profileApi';
 import { createEffect, createEvent, createStore } from 'effector';
-import { ProfileError, ProfileResponse, UserId } from './types';
+import { ProfileResponse, UserId } from './types';
 import { AxiosError } from 'axios';
+import { BaseError } from '../types';
 
 const defaultProfileStore = {
 	userId: undefined,
@@ -27,12 +27,19 @@ export const $profile = createStore<ProfileResponse>(defaultProfileStore, {
 
 export const getProfileFx = createEffect<UserId | undefined, ProfileResponse, AxiosError>({
 	name: 'fetch profile',
-	handler: fetchProfileApi,
 });
 
 export const setProfileError = createEvent<AxiosError>();
 export const unSetProfileError = createEvent<null>();
 
-export const $profileError = createStore<ProfileError | null>(null, {
+export const $profileError = createStore<BaseError | null>(null, {
 	name: 'profileErrorStore',
+});
+
+export const setProfileLoading = createEvent<boolean>();
+
+export const unSetProfileLoading = createEvent<boolean>();
+
+export const $profileLoading = createStore<boolean>(false, {
+	name: 'loading profile data',
 });

@@ -28,8 +28,3 @@ export interface ProfileResponse {
 export interface ProfileState extends ProfileResponse {
 	isOwner: boolean;
 }
-
-export interface ProfileError {
-	status?: number;
-	message?: string;
-}

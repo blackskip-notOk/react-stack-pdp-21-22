@@ -1,6 +1,16 @@
+import { setAuthLoading, unSetAuthLoading } from './index';
 import { fetchAuthApi } from '@/api/authApi';
 import { SERVER_MESSAGES_DESCRIPTIONS } from '@/constants/serverMessages';
-import { $auth, autorize, authFx, unautorize, $owner, deleteOwner, setOwner } from '.';
+import {
+	$auth,
+	autorize,
+	authFx,
+	unautorize,
+	$owner,
+	deleteOwner,
+	setOwner,
+	$authLoading,
+} from '.';
 import { AuthResponse } from './types';
 import { RESPONSE_STATUSES, RESULT_CODES } from '@/constants/systemConstants';
 
@@ -52,3 +62,5 @@ $owner.watch((state) =>
 		пользовательский ID - ${state.ownerId}`,
 	),
 );
+
+$authLoading.on(setAuthLoading, (_, data) => data).reset(unSetAuthLoading);
