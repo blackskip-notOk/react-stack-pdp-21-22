@@ -8,6 +8,7 @@ import { $auth } from '@/models/auth';
 import { Posts } from '../Post/Posts';
 import styles from './Home.module.less';
 import { HomeProps } from './types';
+import { BackgroundUniverse } from '@/components/common/Background/BackgroundUniverse';
 
 export const Home: FC<HomeProps> = ({ showGreeting, setShowGreeting }) => {
 	const location = useLocation();
@@ -32,6 +33,7 @@ export const Home: FC<HomeProps> = ({ showGreeting, setShowGreeting }) => {
 	return (
 		<>
 			<div className={styles.homeContainer}>
+				<BackgroundUniverse />
 				<Posts />
 			</div>
 			<Snackbar
