@@ -4,10 +4,14 @@ import { FC, type SyntheticEvent, useReducer, type MouseEvent } from 'react';
 import { logoutFx } from '@/models/login';
 import logo from '@/image/React-icon.svg.png';
 import styles from './Header.module.less';
-import { MODAL_SHOW_DURATION } from '@/constants/systemConstants';
+import { MODAL_SHOW_DURATION, SESSION_STORAGE } from '@/constants/systemConstants';
 import { ReasonModalClose } from '@/commonTypes';
+import { useNavigate } from 'react-router-dom';
+import { NAVLINKS } from '@/constants/routerConstants';
 
 export const Header: FC = () => {
+	const navigate = useNavigate();
+
 	const [openModal, setOpenModal] = useReducer((openModal) => !openModal, false);
 
 	const handleClick = (event: MouseEvent<HTMLElement>) => {
@@ -22,6 +26,8 @@ export const Header: FC = () => {
 	};
 
 	const handleLogout = () => {
+		sessionStorage.setItem(SESSION_STORAGE.LOCATION, NAVLINKS.LOGIN);
+		navigate(NAVLINKS.LOGIN);
 		logoutFx();
 	};
 
