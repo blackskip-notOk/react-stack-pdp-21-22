@@ -27,6 +27,8 @@
 		"@mui/lab": "^5.0.0-alpha.79",
 		"@mui/material": "^5.6.3",
 		"@mui/styled-engine-sc": "^5.6.1",
+		"@react-rxjs/core": "^0.9.6",
+		"@react-rxjs/utils": "^0.9.5",
 		"@types/ramda": "^0.28.7",
 		"axios": "^0.26.1",
 		"effector": "^22.2.0",

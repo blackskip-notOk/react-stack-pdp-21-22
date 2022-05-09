@@ -1,13 +1,8 @@
-import { SESSION_STORAGE } from '@/constants/systemConstants';
-import { FC, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useSetSessionLocation } from '@/hooks/useSetSessionLocation';
+import { FC } from 'react';
 
 export const Messages: FC = () => {
-	const location = useLocation();
-
-	useEffect(() => {
-		sessionStorage.setItem(SESSION_STORAGE.LOCATION, location.pathname);
-	});
+	useSetSessionLocation();
 
 	return <div>Messages</div>;
 };

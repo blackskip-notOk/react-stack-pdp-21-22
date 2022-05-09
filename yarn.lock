@@ -937,6 +937,19 @@
   resolved "https://registry.yarnpkg.com/@popperjs/core/-/core-2.11.5.tgz#db5a11bf66bdab39569719555b0f76e138d7bd64"
   integrity sha512-9X2obfABZuDVLCgPK9aX0a/x4jaOEweTTWE2+9sr0Qqqevj2Uv5XorvusThmc9XGYpS9yI+fhh8RTafBtGposw==
 
+"@react-rxjs/core@^0.9.6":
+  version "0.9.6"
+  resolved "https://registry.yarnpkg.com/@react-rxjs/core/-/core-0.9.6.tgz#7f4f61403009c53a09d36a1a389b5ba4a0c5fccd"
+  integrity sha512-OEyGPca1LXz06iLZMJyFniE3fFaqNvS/+jdpk7gtNFLGmwCo5H6HPAGFEEhui90A0BpLR1hSzDHy3L9b3I9rZw==
+  dependencies:
+    "@rxstate/core" "^0.0.1"
+    use-sync-external-store "^1.0.0"
+
+"@react-rxjs/utils@^0.9.5":
+  version "0.9.5"
+  resolved "https://registry.yarnpkg.com/@react-rxjs/utils/-/utils-0.9.5.tgz#e880e7bec46f6153f9402e9acc42b28225a468d2"
+  integrity sha512-RXVw8JAnBvKb23CixtrH7w5CKiiJodyck8T0s8o94XSor5XfsqpDrDk8Cq8iwyrxvvSL3+BoNAA+WCbVFTVhcg==
+
 "@reactivex/rxjs@^6.6.7":
   version "6.6.7"
   resolved "https://registry.yarnpkg.com/@reactivex/rxjs/-/rxjs-6.6.7.tgz#52ab48f989aba9cda2b995acc904a43e6e1b3b40"
@@ -951,6 +964,11 @@
   dependencies:
     estree-walker "^2.0.1"
     picomatch "^2.2.2"
+
+"@rxstate/core@^0.0.1":
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/@rxstate/core/-/core-0.0.1.tgz#899c8c863b1c251368cde9b23bcc79a10da87a70"
+  integrity sha512-be8446G5eapl6X8IAuYvvYY78CnyuXX7pASAYG2Ww95hCbqfNLSYXqknvWeUJ4ovO63l5xdM29ct0uUysKDyog==
 
 "@sinonjs/commons@^1.7.0":
   version "1.8.3"
@@ -5526,6 +5544,11 @@ uri-js@^4.2.2:
   integrity sha512-7rKUyy33Q1yc98pQ1DAmLtwX109F7TIfWlW1Ydo8Wl1ii1SeHieeh0HHfPeL2fMXK6z0s8ecKs9frCuLJvndBg==
   dependencies:
     punycode "^2.1.0"
+
+use-sync-external-store@^1.0.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/use-sync-external-store/-/use-sync-external-store-1.1.0.tgz#3343c3fe7f7e404db70f8c687adf5c1652d34e82"
+  integrity sha512-SEnieB2FPKEVne66NpXPd1Np4R1lTNKfjuy3XdIoPQKYBAFdzbzSZlSn1KJZUiihQLQC5Znot4SBz1EOTBwQAQ==
 
 util-deprecate@^1.0.1, util-deprecate@^1.0.2, util-deprecate@~1.0.1:
   version "1.0.2"

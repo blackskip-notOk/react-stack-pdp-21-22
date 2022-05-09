@@ -2,7 +2,7 @@ import { MutableRefObject, useEffect, useRef } from 'react';
 import { fromEvent, Observable, Subject, Subscription } from 'rxjs';
 
 export const useSearch = (
-	ref: MutableRefObject<Element>,
+	ref: MutableRefObject<Element | null>,
 	eventName: string,
 	action$: (event$: Observable<Event>) => Observable<Event>,
 ) => {
@@ -27,4 +27,5 @@ export const useSearch = (
 	}, [eventName, ref]);
 };
 
+// need to try it later
 // https://stackblitz.com/edit/react-from-event

@@ -1,8 +1,9 @@
 import { SyntheticEvent } from 'react';
 import { AuthState, Owner } from '../models/auth/types';
 import { SERVER_MESSAGES, SERVER_MESSAGES_DESCRIPTIONS } from '../constants/serverMessages';
-import { RESULT_CODES } from '../constants/systemConstants';
+import { RESULT_CODES, SESSION_STORAGE } from '../constants/systemConstants';
 import { LoginResponse, TransformLoginResponse } from '../models/login/types';
+import { UsersRequest } from '@/models/users/types';
 
 export const preventDefault = (event: SyntheticEvent) => {
 	event.preventDefault();
@@ -60,3 +61,8 @@ export const resetIsAuth = (): AuthState => ({
 	isAuth: false,
 	message: SERVER_MESSAGES.LOGOUT,
 });
+
+export const saveSessionParams = (params: UsersRequest): void => {
+	const savedRequestParams = JSON.stringify({ ...params });
+	sessionStorage.setItem(SESSION_STORAGE.USERS_REQUEST_PARAMS, savedRequestParams);
+};

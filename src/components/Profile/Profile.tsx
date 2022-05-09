@@ -1,15 +1,15 @@
 import { Alert, Slide, Snackbar } from '@mui/material';
 import { useStore } from 'effector-react';
 import { FC, useEffect, useState } from 'react';
-import { ERROR_MESSAGE_DURATION, SESSION_STORAGE } from '@/constants/systemConstants';
+import { ERROR_MESSAGE_DURATION } from '@/constants/systemConstants';
 import { $owner } from '@/models/auth';
 import { $profile, $profileError, $profileLoading, getProfileFx } from '@/models/profile';
 import styles from './Profile.module.less';
 import { Loader } from '../common/loader/Loader';
-import { useLocation } from 'react-router-dom';
+import { useSetSessionLocation } from '@/hooks/useSetSessionLocation';
 
 export const Profile: FC = () => {
-	const location = useLocation();
+	useSetSessionLocation();
 
 	const { ownerId } = useStore($owner);
 	const profileError = useStore($profileError);
@@ -17,10 +17,6 @@ export const Profile: FC = () => {
 	const isProfileLoading = useStore($profileLoading);
 
 	const [showErrow, setShowError] = useState(false);
-
-	useEffect(() => {
-		sessionStorage.setItem(SESSION_STORAGE.LOCATION, location.pathname);
-	});
 
 	useEffect(() => {
 		if (profileError) {

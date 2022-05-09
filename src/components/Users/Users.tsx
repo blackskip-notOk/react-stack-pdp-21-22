@@ -6,22 +6,33 @@ import {
 	getUsersFx,
 	setUsersRequestParams,
 } from '@/models/users';
-import { InputAdornment, List, Stack, TablePagination, TextField } from '@mui/material';
+import { Button, InputAdornment, List, Stack, TablePagination, TextField } from '@mui/material';
 import { useStore } from 'effector-react';
-import { FC, useEffect, type MouseEvent, type ChangeEvent, useMemo, useRef } from 'react';
-import { useLocation } from 'react-router-dom';
+import {
+	FC,
+	useEffect,
+	type MouseEvent,
+	type ChangeEvent,
+	useMemo,
+	useState,
+	type KeyboardEvent,
+} from 'react';
 import { Loader } from '../common/loader/Loader';
 import { User } from '../User/User';
 import styles from './Users.module.less';
 import SearchIcon from '@mui/icons-material/Search';
-import { fromEvent } from 'rxjs';
+import HighlightOffIcon from '@mui/icons-material/HighlightOff';
+import { saveSessionParams } from '@/utils';
+import { useSetSessionLocation } from '@/hooks/useSetSessionLocation';
 
 export const Users: FC = () => {
-	const location = useLocation();
+	useSetSessionLocation();
 
 	const usersData = useStore($users);
 	const requestParams = useStore($usersRequestParams);
 	const isUsersLoading = useStore($usersLoading);
+
+	const [searchText, setSearchText] = useState('');
 
 	const savedRequestParams = sessionStorage.getItem(SESSION_STORAGE.USERS_REQUEST_PARAMS);
 
@@ -30,47 +41,46 @@ export const Users: FC = () => {
 		[savedRequestParams, requestParams],
 	);
 
-	const searchRef = useRef(null);
-
-	useEffect(() => {
-		sessionStorage.setItem(SESSION_STORAGE.LOCATION, location.pathname);
-	});
-
 	useEffect(() => {
 		getUsersFx(currentParams);
 	}, [currentParams]);
 
-	// useEffect(() => {
-	// 	const searchStream$ = fromEvent(searchRef.current, 'onChange');
-	// 	searchStream$.subscribe(change => console.log(change));
-	// https://www.youtube.com/watch?v=i_bwptbaSRA
-
-	// }, [])
-
 	const handlePageChange = (event: MouseEvent<HTMLButtonElement> | null, page: number) => {
-		const savedRequestParams = JSON.stringify({ ...requestParams, page: page + 1 });
-		sessionStorage.setItem(SESSION_STORAGE.USERS_REQUEST_PARAMS, savedRequestParams);
-
 		const newRequestParams = { ...requestParams, page: page + 1 };
+		saveSessionParams(newRequestParams);
 		setUsersRequestParams(newRequestParams);
 	};
 
 	const handleOnRowPerPageChange = (event: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
-		const savedRequestParams = JSON.stringify({
-			...requestParams,
-			count: Number(event.target.value),
-		});
-		sessionStorage.setItem(SESSION_STORAGE.USERS_REQUEST_PARAMS, savedRequestParams);
-
 		const newRequestParams = { ...requestParams, count: Number(event.target.value) };
+		saveSessionParams(newRequestParams);
 		setUsersRequestParams(newRequestParams);
 	};
 
 	const handleOnChangeSearchInput = (
 		event: ChangeEvent<HTMLTextAreaElement | HTMLInputElement> | undefined,
 	) => {
-		const text = event && event;
-		return text;
+		if (event) {
+			const text = event.currentTarget.value;
+			setSearchText(text);
+		}
+	};
+
+	const handleOnClearSearchInput = () => {
+		saveSessionParams({ ...requestParams, term: '' });
+		setSearchText('');
+	};
+
+	const handleSearch = () => {
+		const newParams = { ...requestParams, page: 1, term: searchText };
+		saveSessionParams(newParams);
+		setUsersRequestParams(newParams);
+	};
+
+	const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
+		if (event.code === 'Enter') {
+			handleSearch();
+		}
 	};
 
 	const user = usersData.items.map((item) => <User key={item.id} user={item} />);
@@ -79,24 +89,35 @@ export const Users: FC = () => {
 		<div className={styles.usersContainer}>
 			{isUsersLoading && <Loader />}
 			<Stack spacing={2}>
-				<TextField
-					id='search'
-					name='search'
-					ref={searchRef}
-					label='Найти пользователя'
-					color='secondary'
-					variant='filled'
-					maxRows={1}
-					type='search'
-					InputProps={{
-						startAdornment: (
-							<InputAdornment position='start'>
-								<SearchIcon />
-							</InputAdornment>
-						),
-					}}
-					onChange={handleOnChangeSearchInput}
-				/>
+				<div className={styles.searchContainer}>
+					<TextField
+						id='search'
+						name='search'
+						label='Найти пользователя'
+						color='secondary'
+						variant='filled'
+						maxRows={1}
+						value={searchText}
+						InputProps={{
+							startAdornment: (
+								<InputAdornment position='start'>
+									<SearchIcon />
+								</InputAdornment>
+							),
+							endAdornment: searchText ? (
+								<InputAdornment position='end' onClick={handleOnClearSearchInput}>
+									<HighlightOffIcon />
+								</InputAdornment>
+							) : null,
+						}}
+						onChange={handleOnChangeSearchInput}
+						onKeyDown={handleKeyDown}
+						placeholder={'Поиск по никнэйму'}
+					/>
+					<Button color='secondary' variant='contained' size='large' onClick={handleSearch}>
+						{'Поиск'}
+					</Button>
+				</div>
 			</Stack>
 			{!isUsersLoading && <List>{user}</List>}
 			<Stack spacing={2}>
