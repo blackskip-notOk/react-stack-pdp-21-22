@@ -6,7 +6,17 @@ import {
 	getUsersFx,
 	setUsersRequestParams,
 } from '@/models/users';
-import { Button, InputAdornment, List, Stack, TablePagination, TextField } from '@mui/material';
+import {
+	Button,
+	Checkbox,
+	FormControlLabel,
+	InputAdornment,
+	List,
+	Stack,
+	Switch,
+	TablePagination,
+	TextField,
+} from '@mui/material';
 import { useStore } from 'effector-react';
 import {
 	FC,
@@ -16,6 +26,7 @@ import {
 	useMemo,
 	useState,
 	type KeyboardEvent,
+	useReducer,
 } from 'react';
 import { Loader } from '../common/loader/Loader';
 import { User } from '../User/User';
@@ -24,6 +35,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import { saveSessionParams } from '@/utils';
 import { useSetSessionLocation } from '@/hooks/useSetSessionLocation';
+import { UsersRequest } from '@/models/users/types';
 
 export const Users: FC = () => {
 	useSetSessionLocation();
@@ -33,16 +45,24 @@ export const Users: FC = () => {
 	const isUsersLoading = useStore($usersLoading);
 
 	const [searchText, setSearchText] = useState('');
+	const [onlyFriends, setOnlyFriends] = useState(false);
+	const [onlyNotFriends, setOnlyNotFriends] = useState(false);
 
 	const savedRequestParams = sessionStorage.getItem(SESSION_STORAGE.USERS_REQUEST_PARAMS);
 
-	const currentParams = useMemo(
+	const currentParams: UsersRequest = useMemo(
 		() => (savedRequestParams ? JSON.parse(savedRequestParams) : { ...requestParams }),
 		[savedRequestParams, requestParams],
 	);
 
 	useEffect(() => {
 		getUsersFx(currentParams);
+
+		if (currentParams.friend) {
+			setOnlyFriends(true);
+		} else if (currentParams.friend === false) {
+			setOnlyNotFriends(true);
+		}
 	}, [currentParams]);
 
 	const handlePageChange = (event: MouseEvent<HTMLButtonElement> | null, page: number) => {
@@ -67,7 +87,9 @@ export const Users: FC = () => {
 	};
 
 	const handleOnClearSearchInput = () => {
-		saveSessionParams({ ...requestParams, term: '' });
+		const newParams = { ...requestParams, page: 1, term: '' };
+		saveSessionParams(newParams);
+		setUsersRequestParams(newParams);
 		setSearchText('');
 	};
 
@@ -80,6 +102,26 @@ export const Users: FC = () => {
 	const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
 		if (event.code === 'Enter') {
 			handleSearch();
+		}
+	};
+
+	const handleFriendsChange = () => {
+		setOnlyFriends(!onlyFriends);
+		const newParams = { ...requestParams, friend: onlyFriends ? undefined : true };
+		saveSessionParams(newParams);
+		setUsersRequestParams(newParams);
+		if (onlyNotFriends) {
+			setOnlyNotFriends(false);
+		}
+	};
+
+	const handleNotFriendsChange = () => {
+		setOnlyNotFriends(!onlyNotFriends);
+		const newParams = { ...requestParams, friend: onlyNotFriends ? undefined : false };
+		saveSessionParams(newParams);
+		setUsersRequestParams(newParams);
+		if (onlyFriends) {
+			setOnlyFriends(false);
 		}
 	};
 
@@ -118,6 +160,34 @@ export const Users: FC = () => {
 						{'Поиск'}
 					</Button>
 				</div>
+			</Stack>
+			<Stack spacing={2}>
+				<FormControlLabel
+					value='onlyFriends'
+					control={
+						<Checkbox
+							checked={onlyFriends}
+							onChange={handleFriendsChange}
+							color='secondary'
+							inputProps={{ 'aria-label': 'controlled' }}
+						/>
+					}
+					label='Показать только друзей'
+					labelPlacement='start'
+				/>
+				<FormControlLabel
+					value='onlyNotFriends'
+					control={
+						<Checkbox
+							checked={onlyNotFriends}
+							onChange={handleNotFriendsChange}
+							color='secondary'
+							inputProps={{ 'aria-label': 'controlled' }}
+						/>
+					}
+					label='Показать только не друзей'
+					labelPlacement='start'
+				/>
 			</Stack>
 			{!isUsersLoading && <List>{user}</List>}
 			<Stack spacing={2}>
