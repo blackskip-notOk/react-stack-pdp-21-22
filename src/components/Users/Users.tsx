@@ -13,7 +13,6 @@ import {
 	InputAdornment,
 	List,
 	Stack,
-	Switch,
 	TablePagination,
 	TextField,
 } from '@mui/material';
@@ -26,7 +25,6 @@ import {
 	useMemo,
 	useState,
 	type KeyboardEvent,
-	useReducer,
 } from 'react';
 import { Loader } from '../common/loader/Loader';
 import { User } from '../User/User';
