@@ -2,15 +2,14 @@ import { lazy, Suspense, useEffect, useState } from 'react';
 import './App.css';
 import appStyles from './styles/App.module.less';
 import { useStore } from 'effector-react';
-import { Route, Routes, useNavigate } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import { NAVLINKS } from './constants/routerConstants';
 import { Loader } from './components/common/loader/Loader';
 import { Header } from './components/Header/Header';
 import { NavBar } from './components/NavBar/NavBar';
 import { Home } from './components/Home/Home';
 import { Login } from './components/Login/Login';
-import { $auth, $authLoading, authFx } from './models/auth';
-import { SESSION_STORAGE } from './constants/systemConstants';
+import { $auth, $initialization, initializeFx } from './models/auth';
 
 const Profile = lazy(() =>
 	import('./components/Profile/Profile').then((module) => ({ default: module.Profile })),
@@ -29,26 +28,16 @@ const Users = lazy(() =>
 );
 
 export const App = () => {
-	const navigate = useNavigate();
-
-	const sessionLocation = sessionStorage.getItem(SESSION_STORAGE.LOCATION);
-
 	const { isAuth } = useStore($auth);
-	const isAuthLoading = useStore($authLoading);
+	const initialization = useStore($initialization);
 
 	const [showGreeting, setShowGreeting] = useState(false);
 
 	useEffect(() => {
-		authFx();
-		if (!isAuth) {
-			navigate(NAVLINKS.LOGIN);
-		}
-		if (sessionLocation) {
-			navigate(sessionLocation);
-		}
-	}, []); // eslint-disable-line react-hooks/exhaustive-deps
+		initializeFx();
+	}, [initializeFx]);
 
-	if (isAuthLoading) {
+	if (!initialization.initialize) {
 		return <Loader />;
 	}
 

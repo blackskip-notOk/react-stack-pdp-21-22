@@ -9,11 +9,9 @@ import { Posts } from '../Post/Posts';
 import styles from './Home.module.less';
 import { HomeProps } from './types';
 import { BackgroundUniverse } from '@/components/common/Background/BackgroundUniverse';
-import { useSetSessionLocation } from '@/hooks/useSetSessionLocation';
 
 export const Home: FC<HomeProps> = ({ showGreeting, setShowGreeting }) => {
 	const navigate = useNavigate();
-	useSetSessionLocation();
 
 	const { isAuth } = useStore($auth);
 

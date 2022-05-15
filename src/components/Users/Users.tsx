@@ -32,12 +32,9 @@ import styles from './Users.module.less';
 import SearchIcon from '@mui/icons-material/Search';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import { saveSessionParams } from '@/utils';
-import { useSetSessionLocation } from '@/hooks/useSetSessionLocation';
 import { UsersRequest } from '@/models/users/types';
 
 export const Users: FC = () => {
-	useSetSessionLocation();
-
 	const usersData = useStore($users);
 	const requestParams = useStore($usersRequestParams);
 	const isUsersLoading = useStore($usersLoading);

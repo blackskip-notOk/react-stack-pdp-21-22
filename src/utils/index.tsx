@@ -1,12 +1,41 @@
 import { SyntheticEvent } from 'react';
-import { AuthState, Owner } from '../models/auth/types';
+import { AuthResponse, AuthState, Owner } from '../models/auth/types';
 import { SERVER_MESSAGES, SERVER_MESSAGES_DESCRIPTIONS } from '../constants/serverMessages';
-import { RESULT_CODES, SESSION_STORAGE } from '../constants/systemConstants';
+import { RESPONSE_STATUSES, RESULT_CODES, SESSION_STORAGE } from '../constants/systemConstants';
 import { LoginResponse, TransformLoginResponse } from '../models/login/types';
 import { UsersRequest } from '@/models/users/types';
+import { authFx, initialize, setOwner } from '@/models/auth';
 
 export const preventDefault = (event: SyntheticEvent) => {
 	event.preventDefault();
+};
+
+export const getInitialization = () => {
+	const authorization = authFx();
+
+	Promise.all([authorization])
+		.then(() => {
+			initialize({ initialize: true });
+		})
+		.catch((err) => console.error(SERVER_MESSAGES_DESCRIPTIONS.failedInitialization, err));
+};
+
+export const getAuthResponse = (authResponse: AuthResponse): AuthState => {
+	if (authResponse.status === RESPONSE_STATUSES.success) {
+		const { authInfo } = authResponse;
+		const { success, error } = RESULT_CODES;
+
+		if (authInfo.resultCode === error) {
+			return { isAuth: false, message: authInfo.messages[0] };
+		}
+
+		if (authInfo.resultCode === success) {
+			setOwner({ isOwner: true, ownerId: authInfo.data.id }); // FIXME need to rewrite to sample method
+			return { isAuth: true, message: authInfo.messages[0] };
+		}
+	}
+
+	return { isAuth: false, message: SERVER_MESSAGES_DESCRIPTIONS.someError };
 };
 
 export const transformLoginResponse = (response: LoginResponse): TransformLoginResponse => {

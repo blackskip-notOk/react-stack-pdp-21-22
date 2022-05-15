@@ -6,11 +6,8 @@ import { $owner } from '@/models/auth';
 import { $profile, $profileError, $profileLoading, getProfileFx } from '@/models/profile';
 import styles from './Profile.module.less';
 import { Loader } from '../common/loader/Loader';
-import { useSetSessionLocation } from '@/hooks/useSetSessionLocation';
 
 export const Profile: FC = () => {
-	useSetSessionLocation();
-
 	const { ownerId } = useStore($owner);
 	const profileError = useStore($profileError);
 	const profileData = useStore($profile);
@@ -28,7 +25,7 @@ export const Profile: FC = () => {
 		if (ownerId && !profileData.userId) {
 			getProfileFx(ownerId);
 		}
-	}, []);
+	}, [ownerId, profileData.userId, getProfileFx]);
 
 	const handleErrorClose = () => {
 		setShowError(false);

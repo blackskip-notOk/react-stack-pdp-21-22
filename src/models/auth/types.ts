@@ -24,3 +24,7 @@ export interface Owner {
 	isOwner: boolean;
 	ownerId?: number;
 }
+
+export interface Initialization {
+	initialize: boolean;
+}

@@ -8,6 +8,7 @@ export enum SERVER_MESSAGES {
 	MAX_ATTEMPT = 'Incorrect anti-bot symbols',
 	AUTORIZATION_SUCCESS = 'Autorization success',
 	LOGOUT = 'You have logged out of your account',
+	FAILED_INITIALIZATION = 'Initialization failed with error: ',
 }
 
 export const SERVER_MESSAGES_DESCRIPTIONS = {
@@ -17,4 +18,5 @@ export const SERVER_MESSAGES_DESCRIPTIONS = {
 	someError: 'Непредвиденная ошибка',
 	autorized: 'Вы авторизованны, добро пожаловать',
 	logout: 'Вы вышли из своего аккаунта',
+	failedInitialization: 'При инициализации приложения возникла ошибка: ',
 };
