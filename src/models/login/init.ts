@@ -1,4 +1,4 @@
-import { $owner, unautorize } from '@/models/auth';
+import { unautorize, $auth } from '@/models/auth';
 import { fetchLoginApi, fetchLogoutApi } from '@/api/loginApi';
 import {
 	$captchaUrl,
@@ -12,12 +12,10 @@ import { forward, sample } from 'effector';
 import {
 	getIsAuth,
 	getIsNeedCaptcha,
-	getIsOwner,
 	getLoginResponse,
 	transformLoginResponse,
 	resetIsAuth,
 } from '@/utils/index';
-import { $auth } from '../auth';
 import { fetchCaptchaApi } from '@/api/captchaApi';
 
 $loginResponse.reset(resetLoginResponse);
@@ -53,12 +51,6 @@ sample({
 	clock: $loginResponse,
 	fn: getIsAuth,
 	target: $auth,
-});
-
-sample({
-	clock: $loginResponse,
-	fn: getIsOwner,
-	target: $owner,
 });
 
 logoutFx.use(fetchLogoutApi).watch(() => console.log(`вызван эффект ${logoutFx.shortName}`));

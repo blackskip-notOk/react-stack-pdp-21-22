@@ -8,16 +8,7 @@ import {
 	initializeFx,
 } from './index';
 import { fetchAuthApi } from '@/api/authApi';
-import {
-	$auth,
-	autorize,
-	authFx,
-	unautorize,
-	$owner,
-	deleteOwner,
-	setOwner,
-	$authLoading,
-} from '.';
+import { $auth, autorize, authFx, unautorize, $authLoading } from '.';
 import { sample } from 'effector';
 
 initializeFx
@@ -36,23 +27,18 @@ sample({
 	target: autorize,
 });
 
-$auth.on(autorize, (_, data) => ({ isAuth: data.isAuth, message: data.message })).reset(unautorize);
+$auth
+	.on(autorize, (_, data) => ({
+		isAuth: data.isAuth,
+		message: data.message,
+		ownerId: data.ownerId,
+	}))
+	.reset(unautorize);
 
 $auth.watch((state) =>
 	console.log(
 		`Состояние ${$auth.shortName}: авторизация пройдена - ${state.isAuth},
 		сообщение - ${state.message}`,
-	),
-);
-
-$owner
-	.on(setOwner, (_, data) => ({ isOwner: data.isOwner, ownerId: data.ownerId }))
-	.reset(deleteOwner);
-
-$owner.watch((state) =>
-	console.log(
-		`Состояние ${$owner.shortName}: логин - ${state.isOwner},
-		пользовательский ID - ${state.ownerId}`,
 	),
 );
 

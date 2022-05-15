@@ -1,6 +1,6 @@
 import { AxiosError } from 'axios';
 import { createEffect, createEvent, createStore } from 'effector';
-import { AuthResponse, AuthState, Initialization, Owner } from './types';
+import { AuthResponse, AuthState, Initialization } from './types';
 
 export const initializeFx = createEffect<void, void, void>({
 	name: 'fetch initialization',
@@ -29,16 +29,6 @@ const defaultAuthStore = { isAuth: false, message: '' };
 export const $auth = createStore<AuthState>(defaultAuthStore, {
 	name: 'authStore',
 	serialize: 'ignore',
-});
-
-export const setOwner = createEvent<Owner>();
-
-export const deleteOwner = createEvent<Owner>();
-
-const defaultOwnerStore = { isOwner: false, ownerId: undefined };
-
-export const $owner = createStore<Owner>(defaultOwnerStore, {
-	name: 'owner',
 });
 
 export const setAuthLoading = createEvent<boolean>();

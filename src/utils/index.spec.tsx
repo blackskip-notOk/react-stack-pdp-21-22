@@ -3,7 +3,6 @@ import { RESULT_CODES } from '../constants/systemConstants';
 import {
 	getIsAuth,
 	getIsNeedCaptcha,
-	getIsOwner,
 	getLoginResponse,
 	resetIsAuth,
 	transformLoginResponse,
@@ -108,6 +107,7 @@ describe('app utils', () => {
 		expect(getIsAuth(successLoginResponse)).toEqual({
 			isAuth: true,
 			message: 'Autorization success',
+			ownerId: 1,
 		});
 	});
 
@@ -120,25 +120,6 @@ describe('app utils', () => {
 		expect(getIsAuth(errorMaxAttempLoginResponse)).toEqual({
 			isAuth: false,
 			message: 'You are not authorized',
-		});
-	});
-
-	test(`if get success login response getIsOwner should return success response`, () => {
-		expect(getIsOwner(successLoginResponse)).toEqual({
-			isOwner: true,
-			ownerId: 1,
-		});
-	});
-
-	test(`if get login response with error getIsOwner should return errorn response`, () => {
-		expect(getIsOwner(errorLoginResponse)).toEqual({
-			isOwner: false,
-			ownerId: undefined,
-		});
-
-		expect(getIsOwner(errorMaxAttempLoginResponse)).toEqual({
-			isOwner: false,
-			ownerId: undefined,
 		});
 	});
 

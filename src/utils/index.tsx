@@ -1,10 +1,10 @@
 import { SyntheticEvent } from 'react';
-import { AuthResponse, AuthState, Owner } from '../models/auth/types';
+import { AuthResponse, AuthState } from '../models/auth/types';
 import { SERVER_MESSAGES, SERVER_MESSAGES_DESCRIPTIONS } from '../constants/serverMessages';
 import { RESPONSE_STATUSES, RESULT_CODES, SESSION_STORAGE } from '../constants/systemConstants';
 import { LoginResponse, TransformLoginResponse } from '../models/login/types';
 import { UsersRequest } from '@/models/users/types';
-import { authFx, initialize, setOwner } from '@/models/auth';
+import { authFx, initialize } from '@/models/auth';
 
 export const preventDefault = (event: SyntheticEvent) => {
 	event.preventDefault();
@@ -30,8 +30,7 @@ export const getAuthResponse = (authResponse: AuthResponse): AuthState => {
 		}
 
 		if (authInfo.resultCode === success) {
-			setOwner({ isOwner: true, ownerId: authInfo.data.id }); // FIXME need to rewrite to sample method
-			return { isAuth: true, message: authInfo.messages[0] };
+			return { isAuth: true, message: authInfo.messages[0], ownerId: authInfo.data.id };
 		}
 	}
 
@@ -79,16 +78,13 @@ export const getIsNeedCaptcha = (clockData: TransformLoginResponse): boolean =>
 export const getIsAuth = (clockData: TransformLoginResponse): AuthState => ({
 	isAuth: !!clockData.data,
 	message: clockData.data ? SERVER_MESSAGES.AUTORIZATION_SUCCESS : SERVER_MESSAGES.NOT_AUTHORIZED,
-});
-
-export const getIsOwner = (clockData: TransformLoginResponse): Owner => ({
-	isOwner: !!clockData.data,
 	ownerId: clockData.data ? clockData.data.userId : undefined,
 });
 
 export const resetIsAuth = (): AuthState => ({
 	isAuth: false,
 	message: SERVER_MESSAGES.LOGOUT,
+	ownerId: undefined,
 });
 
 export const saveSessionParams = (params: UsersRequest): void => {

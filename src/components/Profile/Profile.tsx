@@ -2,13 +2,13 @@ import { Alert, Slide, Snackbar } from '@mui/material';
 import { useStore } from 'effector-react';
 import { FC, useEffect, useState } from 'react';
 import { ERROR_MESSAGE_DURATION } from '@/constants/systemConstants';
-import { $owner } from '@/models/auth';
+import { $auth } from '@/models/auth';
 import { $profile, $profileError, $profileLoading, getProfileFx } from '@/models/profile';
 import styles from './Profile.module.less';
 import { Loader } from '../common/loader/Loader';
 
 export const Profile: FC = () => {
-	const { ownerId } = useStore($owner);
+	const { ownerId } = useStore($auth);
 	const profileError = useStore($profileError);
 	const profileData = useStore($profile);
 	const isProfileLoading = useStore($profileLoading);
