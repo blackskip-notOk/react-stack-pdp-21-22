@@ -9,6 +9,8 @@ export enum SERVER_MESSAGES {
 	AUTORIZATION_SUCCESS = 'Autorization success',
 	LOGOUT = 'You have logged out of your account',
 	FAILED_INITIALIZATION = 'Initialization failed with error: ',
+	ALREADY_FOLLOW = 'You are already following this user',
+	ALREADY_UNFOLLOW = 'You are already unfollowed this user',
 }
 
 export const SERVER_MESSAGES_DESCRIPTIONS = {
@@ -19,4 +21,8 @@ export const SERVER_MESSAGES_DESCRIPTIONS = {
 	autorized: 'Вы авторизованны, добро пожаловать',
 	logout: 'Вы вышли из своего аккаунта',
 	failedInitialization: 'При инициализации приложения возникла ошибка: ',
+	alreadyFollow: 'Вы уже подписаны на этого пользователя',
+	alreadyUnFollow: 'Вы уже отписаны от этого пользователя',
+	successFollow: 'Вы успешно подписались на пользователя: ',
+	successUnFollow: 'Вы успешно отписались от пользователя: ',
 };

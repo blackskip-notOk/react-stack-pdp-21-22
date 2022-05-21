@@ -3,8 +3,9 @@ import { AuthResponse, AuthState } from '../models/auth/types';
 import { SERVER_MESSAGES, SERVER_MESSAGES_DESCRIPTIONS } from '../constants/serverMessages';
 import { RESPONSE_STATUSES, RESULT_CODES, SESSION_STORAGE } from '../constants/systemConstants';
 import { LoginResponse, TransformLoginResponse } from '../models/login/types';
-import { UsersRequest } from '@/models/users/types';
+import { FollowResponse, FollowResult, UsersRequest } from '@/models/users/types';
 import { authFx, initialize } from '@/models/auth';
+import { AxiosResponse } from 'axios';
 
 export const preventDefault = (event: SyntheticEvent) => {
 	event.preventDefault();
@@ -90,4 +91,56 @@ export const resetIsAuth = (): AuthState => ({
 export const saveSessionParams = (params: UsersRequest): void => {
 	const savedRequestParams = JSON.stringify({ ...params });
 	sessionStorage.setItem(SESSION_STORAGE.USERS_REQUEST_PARAMS, savedRequestParams);
+};
+
+export const getFollowResult = (
+	response: AxiosResponse<FollowResponse> | undefined,
+	user: string,
+	isFollow: boolean,
+): FollowResult => {
+	if (!response) {
+		return {
+			isSuccess: false,
+			message: SERVER_MESSAGES_DESCRIPTIONS.someError,
+		};
+	}
+
+	const { data, status } = response;
+
+	const successMessage = `${
+		isFollow
+			? SERVER_MESSAGES_DESCRIPTIONS.successFollow
+			: SERVER_MESSAGES_DESCRIPTIONS.successUnFollow
+	} ${user}`;
+
+	const unSuccessMessage = `${
+		isFollow
+			? SERVER_MESSAGES_DESCRIPTIONS.alreadyFollow
+			: SERVER_MESSAGES_DESCRIPTIONS.alreadyUnFollow
+	}`;
+
+	if (status === RESPONSE_STATUSES.success) {
+		if (data.resultCode === RESULT_CODES.success) {
+			return {
+				isSuccess: true,
+				message: successMessage,
+			};
+		}
+		if (data.resultCode === RESULT_CODES.error) {
+			const errorMessage =
+				data.messages.join() ===
+				(SERVER_MESSAGES.ALREADY_UNFOLLOW || SERVER_MESSAGES.ALREADY_FOLLOW)
+					? unSuccessMessage
+					: SERVER_MESSAGES_DESCRIPTIONS.someError;
+
+			return {
+				isSuccess: false,
+				message: errorMessage,
+			};
+		}
+	}
+	return {
+		isSuccess: false,
+		message: SERVER_MESSAGES_DESCRIPTIONS.someError,
+	};
 };

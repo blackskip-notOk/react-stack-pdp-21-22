@@ -33,6 +33,8 @@ import SearchIcon from '@mui/icons-material/Search';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import { saveSessionParams } from '@/utils';
 import { UsersRequest } from '@/models/users/types';
+import { ErrorBoundary } from 'react-error-boundary';
+import { ErrorMessage } from '../common/Error/Error';
 
 export const Users: FC = () => {
 	const usersData = useStore($users);
@@ -120,83 +122,89 @@ export const Users: FC = () => {
 		}
 	};
 
-	const user = usersData.items.map((item) => <User key={item.id} user={item} />);
+	const user = usersData.items.map((item) => (
+		<ErrorBoundary key={item.id} fallbackRender={({ error }) => <ErrorMessage error={error} />}>
+			<User key={item.id} user={item} />
+		</ErrorBoundary>
+	));
 
 	return (
-		<div className={styles.usersContainer}>
-			{isUsersLoading && <Loader />}
-			<Stack spacing={2}>
-				<div className={styles.searchContainer}>
-					<TextField
-						id='search'
-						name='search'
-						label='Найти пользователя'
-						color='secondary'
-						variant='filled'
-						maxRows={1}
-						value={searchText}
-						InputProps={{
-							startAdornment: (
-								<InputAdornment position='start'>
-									<SearchIcon />
-								</InputAdornment>
-							),
-							endAdornment: searchText ? (
-								<InputAdornment position='end' onClick={handleOnClearSearchInput}>
-									<HighlightOffIcon />
-								</InputAdornment>
-							) : null,
-						}}
-						onChange={handleOnChangeSearchInput}
-						onKeyDown={handleKeyDown}
-						placeholder={'Поиск по никнэйму'}
+		<ErrorBoundary fallbackRender={({ error }) => <ErrorMessage error={error} />}>
+			<div className={styles.usersContainer}>
+				{isUsersLoading && <Loader />}
+				<Stack spacing={2}>
+					<div className={styles.searchContainer}>
+						<TextField
+							id='search'
+							name='search'
+							label='Найти пользователя'
+							color='secondary'
+							variant='filled'
+							maxRows={1}
+							value={searchText}
+							InputProps={{
+								startAdornment: (
+									<InputAdornment position='start'>
+										<SearchIcon />
+									</InputAdornment>
+								),
+								endAdornment: searchText ? (
+									<InputAdornment position='end' onClick={handleOnClearSearchInput}>
+										<HighlightOffIcon />
+									</InputAdornment>
+								) : null,
+							}}
+							onChange={handleOnChangeSearchInput}
+							onKeyDown={handleKeyDown}
+							placeholder={'Поиск по никнэйму'}
+						/>
+						<Button color='secondary' variant='contained' size='large' onClick={handleSearch}>
+							{'Поиск'}
+						</Button>
+					</div>
+				</Stack>
+				<Stack spacing={2}>
+					<FormControlLabel
+						value='onlyFriends'
+						control={
+							<Checkbox
+								checked={onlyFriends}
+								onChange={handleFriendsChange}
+								color='secondary'
+								inputProps={{ 'aria-label': 'controlled' }}
+							/>
+						}
+						label='Показать только друзей'
+						labelPlacement='start'
 					/>
-					<Button color='secondary' variant='contained' size='large' onClick={handleSearch}>
-						{'Поиск'}
-					</Button>
-				</div>
-			</Stack>
-			<Stack spacing={2}>
-				<FormControlLabel
-					value='onlyFriends'
-					control={
-						<Checkbox
-							checked={onlyFriends}
-							onChange={handleFriendsChange}
-							color='secondary'
-							inputProps={{ 'aria-label': 'controlled' }}
-						/>
-					}
-					label='Показать только друзей'
-					labelPlacement='start'
-				/>
-				<FormControlLabel
-					value='onlyNotFriends'
-					control={
-						<Checkbox
-							checked={onlyNotFriends}
-							onChange={handleNotFriendsChange}
-							color='secondary'
-							inputProps={{ 'aria-label': 'controlled' }}
-						/>
-					}
-					label='Показать только не друзей'
-					labelPlacement='start'
-				/>
-			</Stack>
-			{!isUsersLoading && <List>{user}</List>}
-			<Stack spacing={2}>
-				<TablePagination
-					component={'div'}
-					count={usersData.totalCount}
-					page={currentParams.page - 1}
-					onPageChange={handlePageChange}
-					rowsPerPage={currentParams.count}
-					onRowsPerPageChange={handleOnRowPerPageChange}
-					showFirstButton
-					showLastButton
-				/>
-			</Stack>
-		</div>
+					<FormControlLabel
+						value='onlyNotFriends'
+						control={
+							<Checkbox
+								checked={onlyNotFriends}
+								onChange={handleNotFriendsChange}
+								color='secondary'
+								inputProps={{ 'aria-label': 'controlled' }}
+							/>
+						}
+						label='Показать только не друзей'
+						labelPlacement='start'
+					/>
+				</Stack>
+				{!isUsersLoading && <List>{user}</List>}
+				<Stack spacing={2}>
+					<TablePagination
+						component={'div'}
+						count={usersData.totalCount}
+						page={currentParams.page - 1}
+						onPageChange={handlePageChange}
+						rowsPerPage={currentParams.count}
+						onRowsPerPageChange={handleOnRowPerPageChange}
+						showFirstButton
+						showLastButton
+					/>
+				</Stack>
+			</div>
+		</ErrorBoundary>
 	);
 };

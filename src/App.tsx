@@ -10,6 +10,8 @@ import { NavBar } from './components/NavBar/NavBar';
 import { Home } from './components/Home/Home';
 import { Login } from './components/Login/Login';
 import { $auth, $initialization, initializeFx } from './models/auth';
+import { ErrorBoundary } from 'react-error-boundary';
+import { ErrorMessage } from './components/common/Error/Error';
 
 const Profile = lazy(() =>
 	import('./components/Profile/Profile').then((module) => ({ default: module.Profile })),
@@ -42,61 +44,63 @@ export const App = () => {
 	}
 
 	return (
-		<Suspense fallback={<Loader />}>
-			<div className={appStyles.appWrapper}>
-				{isAuth && (
-					<header className={appStyles.headerWrapper}>
-						<Header />
-					</header>
-				)}
-				{isAuth && (
-					<nav className={appStyles.navBarWrapper}>
-						<NavBar />
-					</nav>
-				)}
-				<main className={appStyles.contentWrapper}>
-					<Routes>
-						<Route
-							path={NAVLINKS.HOME}
-							element={<Home showGreeting={showGreeting} setShowGreeting={setShowGreeting} />}
-						/>
-						<Route path={NAVLINKS.LOGIN} element={<Login setShowGreeting={setShowGreeting} />} />
-						<Route
-							path={NAVLINKS.PROFILE}
-							element={
-								<Suspense fallback={<Loader />}>
-									<Profile />
-								</Suspense>
-							}
-						/>
-						<Route
-							path={NAVLINKS.MESSAGES}
-							element={
-								<Suspense fallback={<Loader />}>
-									<Messages />
-								</Suspense>
-							}
-						/>
-						<Route
-							path={NAVLINKS.USERS}
-							element={
-								<Suspense fallback={<Loader />}>
-									<Users />
-								</Suspense>
-							}
-						/>
-						<Route
-							path='*'
-							element={
-								<Suspense fallback={<Loader />}>
-									<NotFound />
-								</Suspense>
-							}
-						/>
-					</Routes>
-				</main>
-				{isAuth && <footer className={appStyles.footerWrapper}>Footer</footer>}
-			</div>
-		</Suspense>
+		<ErrorBoundary fallbackRender={({ error }) => <ErrorMessage error={error} />}>
+			<Suspense fallback={<Loader />}>
+				<div className={appStyles.appWrapper}>
+					{isAuth && (
+						<header className={appStyles.headerWrapper}>
+							<Header />
+						</header>
+					)}
+					{isAuth && (
+						<nav className={appStyles.navBarWrapper}>
+							<NavBar />
+						</nav>
+					)}
+					<main className={appStyles.contentWrapper}>
+						<Routes>
+							<Route
+								path={NAVLINKS.HOME}
+								element={<Home showGreeting={showGreeting} setShowGreeting={setShowGreeting} />}
+							/>
+							<Route path={NAVLINKS.LOGIN} element={<Login setShowGreeting={setShowGreeting} />} />
+							<Route
+								path={NAVLINKS.PROFILE}
+								element={
+									<Suspense fallback={<Loader />}>
+										<Profile />
+									</Suspense>
+								}
+							/>
+							<Route
+								path={NAVLINKS.MESSAGES}
+								element={
+									<Suspense fallback={<Loader />}>
+										<Messages />
+									</Suspense>
+								}
+							/>
+							<Route
+								path={NAVLINKS.USERS}
+								element={
+									<Suspense fallback={<Loader />}>
+										<Users />
+									</Suspense>
+								}
+							/>
+							<Route
+								path='*'
+								element={
+									<Suspense fallback={<Loader />}>
+										<NotFound />
+									</Suspense>
+								}
+							/>
+						</Routes>
+					</main>
+					{isAuth && <footer className={appStyles.footerWrapper}>Footer</footer>}
+				</div>
+			</Suspense>
+		</ErrorBoundary>
 	);
 };
