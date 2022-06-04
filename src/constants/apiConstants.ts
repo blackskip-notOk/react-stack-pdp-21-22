@@ -8,6 +8,7 @@ const CAPTCHA = 'get-captcha-url';
 const PROFILE = 'profile';
 const USERS = 'users';
 const FOLLOW = 'follow';
+const PHOTO = 'photo';
 
 export const API = {
 	baseURL: 'https://social-network.samuraijs.com/api/1.0',
@@ -18,4 +19,5 @@ export const API = {
 	profile: `${PROFILE}/{userId}`,
 	users: `${USERS}`,
 	follow: `${FOLLOW}/{userId}`,
+	profilePhoto: `${PROFILE}/${PHOTO}`,
 };

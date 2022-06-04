@@ -1,3 +1,4 @@
+import { BaseResponse } from './../types';
 export type UserId = number;
 
 export interface Contacts {
@@ -18,6 +19,7 @@ export interface Photos {
 
 export interface ProfileResponse {
 	userId?: UserId;
+	aboutMe?: string;
 	lookingForAJob: boolean;
 	lookingForAJobDescription?: string;
 	fullName?: string;
@@ -27,4 +29,10 @@ export interface ProfileResponse {
 
 export interface ProfileState extends ProfileResponse {
 	isOwner: boolean;
+}
+
+type ProfilePhoto = Omit<BaseResponse, 'fieldsErrors'>;
+
+export interface ProfilePhotoResponse extends ProfilePhoto {
+	photos: Photos;
 }

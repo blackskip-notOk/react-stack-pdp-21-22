@@ -1,23 +1,52 @@
-import { setProfileLoading } from '@/models/profile/index';
 import { AxiosError } from 'axios';
-import { setProfileError } from '@/models/profile';
 import { API } from '@/constants/apiConstants';
 import { instance } from '.';
-import { ProfileResponse, UserId } from '@/models/profile/types';
+import { ProfilePhotoResponse, ProfileResponse } from '@/models/profile/types';
+import {
+	useQuery,
+	UseQueryResult,
+	useMutation,
+	RefetchOptions,
+	RefetchQueryFilters,
+	QueryObserverResult,
+} from 'react-query';
 
-export const fetchProfileApi = async (userId: UserId): Promise<ProfileResponse> => {
-	setProfileLoading(true);
+export const fetchProfileApi = async (userId?: string): Promise<ProfileResponse> => {
+	const response = await instance.get(API.profile, { params: { userId: Number(userId) } });
+	return response.data;
+};
 
-	try {
-		const response = await instance.get(API.profile, { params: { userId } });
-		return response.data;
-	} catch (e: unknown) {
-		const error = e as AxiosError;
-		if (error.isAxiosError) {
-			setProfileError(error);
-		}
-		throw error;
-	} finally {
-		setProfileLoading(false);
-	}
+export const useGetProfile = (
+	userId?: string,
+): UseQueryResult<ProfileResponse, AxiosError<ProfileResponse>> => {
+	return useQuery(['profile', userId], () => fetchProfileApi(userId));
+};
+
+export const setProfileAvatarApi = async (photo: File): Promise<ProfilePhotoResponse> => {
+	const formData = new FormData();
+	formData.append('image', photo);
+
+	const response = await instance.post(API.profilePhoto, formData, {
+		headers: {
+			'Content-Type': 'multupart/form-data',
+		},
+	});
+
+	return response.data;
+};
+
+export const useSetProfileAvatar = (
+	refetch: <TPageData>(
+		options?: (RefetchOptions & RefetchQueryFilters<TPageData>) | undefined,
+	) => Promise<QueryObserverResult<ProfileResponse, AxiosError<ProfileResponse>>>,
+) => {
+	return useMutation<ProfilePhotoResponse, AxiosError<ProfilePhotoResponse>, File>(
+		['setAvatar'],
+		setProfileAvatarApi,
+		{
+			onSuccess: () => {
+				refetch();
+			},
+		},
+	);
 };

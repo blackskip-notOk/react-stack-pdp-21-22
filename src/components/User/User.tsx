@@ -9,6 +9,7 @@ import {
 	Switch,
 } from '@mui/material';
 import { ChangeEvent, FC, Suspense, useEffect, useState } from 'react';
+import { NavLink } from 'react-router-dom';
 import { DefaultAvatar } from '../common/avatar/avatar';
 import { Loader } from '../common/loader/Loader';
 import { Message } from '../common/Message/Message';
@@ -27,7 +28,7 @@ export const User: FC<UserProps> = ({ user }) => {
 		isLoading: followLoading,
 		isSuccess: followSuccess,
 		mutate: followMutate,
-	} = useFollow(id);
+	} = useFollow(id); // TODO refactor it - don't need id here
 
 	const {
 		data: unFollowData,
@@ -77,10 +78,12 @@ export const User: FC<UserProps> = ({ user }) => {
 					/>
 				}
 			>
-				<ListItemAvatar>
-					{photos.small ? <Avatar alt='user avatar' src={photos.small} /> : <DefaultAvatar />}
-				</ListItemAvatar>
-				<ListItemText>{name}</ListItemText>
+				<NavLink to={`${id}`}>
+					<ListItemAvatar>
+						{photos.small ? <Avatar alt='user avatar' src={photos.small} /> : <DefaultAvatar />}
+					</ListItemAvatar>
+					<ListItemText>{name}</ListItemText>
+				</NavLink>
 				<ListItemText>{status}</ListItemText>
 			</ListItem>
 			{(followData || unFollowData) && (

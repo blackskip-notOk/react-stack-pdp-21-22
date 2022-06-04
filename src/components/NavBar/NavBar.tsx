@@ -17,7 +17,7 @@ export const NavBar: FC = () => {
 					<NavLink to={NAVLINKS.PROFILE}>Profile</NavLink>
 				</div>
 			)}
-			<NavLink to={`${NAVLINKS.MESSAGES}`}>Messages</NavLink>
+			<NavLink to={`${NAVLINKS.CHATS}`}>Chats</NavLink>
 			<NavLink to={`${NAVLINKS.USERS}`}>Users</NavLink>
 		</>
 	);

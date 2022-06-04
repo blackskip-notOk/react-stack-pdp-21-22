@@ -17,8 +17,12 @@ const Profile = lazy(() =>
 	import('./components/Profile/Profile').then((module) => ({ default: module.Profile })),
 );
 
-const Messages = lazy(() =>
-	import('./components/Messages/Messages').then((module) => ({ default: module.Messages })),
+const Chats = lazy(() =>
+	import('./components/Chats/Chats').then((module) => ({ default: module.Chats })),
+);
+
+const Chat = lazy(() =>
+	import('./components/Chat/Chat').then((module) => ({ default: module.Chat })),
 );
 
 const NotFound = lazy(() =>
@@ -27,6 +31,12 @@ const NotFound = lazy(() =>
 
 const Users = lazy(() =>
 	import('./components/Users/Users').then((module) => ({ default: module.Users })),
+);
+
+const UserProfile = lazy(() =>
+	import('./components/UserProfile/UserProfile').then((module) => ({
+		default: module.UserProfile,
+	})),
 );
 
 export const App = () => {
@@ -73,13 +83,23 @@ export const App = () => {
 								}
 							/>
 							<Route
-								path={NAVLINKS.MESSAGES}
+								path={NAVLINKS.CHATS}
 								element={
 									<Suspense fallback={<Loader />}>
-										<Messages />
+										<Chats />
 									</Suspense>
 								}
-							/>
+							>
+								<Route
+									path=':chatId'
+									element={
+										<Suspense fallback={<Loader />}>
+											<Chat />
+										</Suspense>
+									}
+								/>
+							</Route>
+							<Route path={`${NAVLINKS.USERS}/:userId`} element={<UserProfile />} />
 							<Route
 								path={NAVLINKS.USERS}
 								element={
@@ -87,7 +107,7 @@ export const App = () => {
 										<Users />
 									</Suspense>
 								}
-							/>
+							></Route>
 							<Route
 								path='*'
 								element={
