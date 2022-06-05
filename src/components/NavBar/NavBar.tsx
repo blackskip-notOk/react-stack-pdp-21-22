@@ -1,14 +1,24 @@
+import { useStore } from 'effector-react';
 import { FC } from 'react';
 import { NavLink } from 'react-router-dom';
-import { NAVLINKS } from '../../constants/routerConstants';
+import { $auth } from '@/models/auth';
+import { NAVLINKS } from '@/constants/routerConstants';
 
 export const NavBar: FC = () => {
+	const { isAuth } = useStore($auth);
+
 	return (
 		<>
-			<div>
-				<NavLink to={`${NAVLINKS.PROFILE}`}>Profile</NavLink>
-			</div>
-			<NavLink to={`${NAVLINKS.LOGIN}`}>Login</NavLink>
+			<NavLink to={`${NAVLINKS.HOME}`} end>
+				Home
+			</NavLink>
+			{isAuth && (
+				<div>
+					<NavLink to={NAVLINKS.PROFILE}>Profile</NavLink>
+				</div>
+			)}
+			<NavLink to={`${NAVLINKS.CHATS}`}>Chats</NavLink>
+			<NavLink to={`${NAVLINKS.USERS}`}>Users</NavLink>
 		</>
 	);
 };

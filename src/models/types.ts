@@ -3,3 +3,8 @@ export interface BaseResponse {
 	messages: Array<string>;
 	fieldsErrors: Array<string>;
 }
+
+export interface BaseError {
+	status?: number;
+	message?: string;
+}

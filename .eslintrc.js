@@ -46,7 +46,7 @@ module.exports = {
 		camelcase: [1, { ignoreDestructuring: true, ignoreImports: true, ignoreGlobals: true }],
 		'react-hooks/rules-of-hooks': 2,
 		'react/react-in-jsx-scope': 0,
-		'max-len': [1, { code: 100, ignoreUrls: true }],
+		'max-len': [1, { code: 120, ignoreUrls: true }],
 	},
 	ignorePatterns: ['src/**/*.test.ts'],
 };

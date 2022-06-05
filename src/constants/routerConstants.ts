@@ -1,6 +1,8 @@
 export const NAVLINKS = {
 	HOME: '/',
 	PROFILE: 'profile',
-	MESSAGES: 'messages',
+	CHATS: 'chats',
 	LOGIN: 'login',
+	USERS: 'users',
+	USER: 'user',
 };

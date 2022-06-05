@@ -30,3 +30,7 @@ export interface LoginFormData {
 export interface CaptchaUrlResponse {
 	url: string;
 }
+
+export interface LogoutResponse extends BaseResponse {
+	data: Record<string, string>;
+}

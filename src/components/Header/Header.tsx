@@ -1,22 +1,73 @@
-import React, { FC } from 'react';
-import { NavLink } from 'react-router-dom';
-import { NAVLINKS } from '../../constants/routerConstants';
-import logo from '../../image/React-icon.svg.png';
-import styles from './Header.module.css';
+import LogoutIcon from '@mui/icons-material/Logout';
+import { Button, Dialog, DialogContent, DialogTitle, Typography } from '@mui/material';
+import { FC, type SyntheticEvent, useReducer, type MouseEvent } from 'react';
+import { logoutFx } from '@/models/login';
+import logo from '@/image/React-icon.svg.png';
+import styles from './Header.module.less';
+import { MODAL_SHOW_DURATION } from '@/constants/systemConstants';
+import { ReasonModalClose } from '@/commonTypes';
+import { useNavigate } from 'react-router-dom';
+import { NAVLINKS } from '@/constants/routerConstants';
 
 export const Header: FC = () => {
-	const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+	const navigate = useNavigate();
+
+	const [openModal, setOpenModal] = useReducer((openModal) => !openModal, false);
+
+	const handleClick = (event: MouseEvent<HTMLElement>) => {
 		event.preventDefault();
 		console.info('Breadcrumb click');
 	};
 
+	const handleCloseModal = (event: SyntheticEvent, reason: ReasonModalClose): void => {
+		if (reason === 'escapeKeyDown') {
+			setOpenModal();
+		}
+	};
+
+	const handleLogout = () => {
+		logoutFx();
+		navigate(NAVLINKS.LOGIN);
+	};
+
 	return (
-		<div role='presentation' onClick={handleClick}>
-			<img src={logo} alt='react-logo' className={styles.logo} />
-			<div>
-				<NavLink to={`${NAVLINKS.PROFILE}`}>Profile</NavLink>
-				<NavLink to={`${NAVLINKS.LOGIN}`}>Login</NavLink>
+		<div className={styles.headerContainer}>
+			<div role='presentation' onClick={handleClick}>
+				<img src={logo} alt='react-logo' className={styles.logo} />
 			</div>
+			<div className={styles.logoutContainer}>
+				<Button
+					color='secondary'
+					variant='contained'
+					size='large'
+					endIcon={<LogoutIcon />}
+					onClick={() => setOpenModal()}
+				>
+					Логаут
+				</Button>
+			</div>
+			<Dialog
+				open={openModal}
+				onClose={handleCloseModal}
+				transitionDuration={MODAL_SHOW_DURATION}
+				aria-labelledby='logout'
+				aria-describedby='logout'
+				disableEscapeKeyDown={false}
+			>
+				<DialogTitle id='logout' className={styles.modal}>
+					<Typography align='center' className={styles.modalTitle}>
+						{'Выйти из аккаунта?'}
+					</Typography>
+				</DialogTitle>
+				<DialogContent dividers className={`${styles.modal} ${styles.buttonContainer}`}>
+					<Button color='success' variant='contained' size='large' onClick={handleLogout}>
+						{'Ok'}
+					</Button>
+					<Button color='warning' variant='contained' size='large' onClick={() => setOpenModal()}>
+						{'Отмена'}
+					</Button>
+				</DialogContent>
+			</Dialog>
 		</div>
 	);
 };

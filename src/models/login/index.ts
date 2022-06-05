@@ -1,12 +1,20 @@
 import { AxiosError } from 'axios';
 import { createEffect, createEvent, createStore, restore } from 'effector';
-import { CaptchaUrlResponse, LoginFormData, LoginResponse, TransformLoginResponse } from './types';
+import {
+	CaptchaUrlResponse,
+	LoginFormData,
+	LoginResponse,
+	LogoutResponse,
+	TransformLoginResponse,
+} from './types';
 
 export const loginFx = createEffect<LoginFormData, LoginResponse, AxiosError>({
 	name: 'fetch login',
 });
 
 export const $serverSideError = restore(loginFx.failData, null);
+
+export const resetLoginResponse = createEvent<TransformLoginResponse>();
 
 export const $loginResponse = createStore<TransformLoginResponse>(
 	{},
@@ -25,4 +33,8 @@ export const getCaptchaFx = createEffect<boolean, CaptchaUrlResponse | null, Axi
 
 export const $captchaUrl = createStore<CaptchaUrlResponse | null>(null, {
 	name: 'captcha url',
+});
+
+export const logoutFx = createEffect<void, LogoutResponse, AxiosError>({
+	name: 'fetch logout',
 });
