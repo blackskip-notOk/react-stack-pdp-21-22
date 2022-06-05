@@ -4,7 +4,7 @@
 	"version": "0.0.1",
 	"description": "React based project for pdp-2022",
 	"repository": "https://github.com/blackskip-notOk/react-stack-pdp-21-22",
-	"homepage": "https://https://react-stack-pdp-21-22.vercel.app/",
+	"homepage": "https://pdp-blackskip.vercel.app",
 	"author": "Ilya Babanov <ilbabanov@gmail.com>",
 	"license": "MIT",
 	"scripts": {
