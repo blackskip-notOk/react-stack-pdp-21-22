@@ -1,6 +1,6 @@
 import { createRoot } from 'react-dom/client';
 import { App } from './App';
-import { BrowserRouter } from 'react-router-dom';
+import { HashRouter } from 'react-router-dom';
 import './models/init';
 import { APP_MESSAGES } from './constants/serverMessages';
 import { QueryClient, QueryClientProvider } from 'react-query';
@@ -30,10 +30,10 @@ const queryClient = new QueryClient({
 });
 
 root.render(
-	<BrowserRouter>
+	<HashRouter>
 		<QueryClientProvider client={queryClient}>
 			<App />
 			<ReactQueryDevtools initialIsOpen={false}></ReactQueryDevtools>
 		</QueryClientProvider>
-	</BrowserRouter>,
+	</HashRouter>,
 );
