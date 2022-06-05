@@ -38,7 +38,7 @@ export const Profile: FC = () => {
 
 	return (
 		<div className={styles.profileContainer}>
-			{(isFetching || isLoading || isRefetching || isLoadingAvatar) && <Loader />}
+			{(isLoading || isLoadingAvatar) && <Loader />}
 			{isSuccess && (
 				<>
 					{isLoadingAvatar ? (
