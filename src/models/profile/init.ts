@@ -13,15 +13,15 @@ $profileError
 	})
 	.reset(unSetProfileError);
 
-getProfileFx
-	.use(fetchProfileApi)
-	.watch(() => console.log(`вызван эффект ${getProfileFx.shortName}`));
+// getProfileFx
+// 	.use(fetchProfileApi)
+// 	.watch(() => console.log(`вызван эффект ${getProfileFx.shortName}`));
 
-const profileData = getProfileFx.doneData.map((response) => response);
+// const profileData = getProfileFx.doneData.map((response) => response);
 
-sample({
-	clock: profileData,
-	target: $profile,
-});
+// sample({
+// 	clock: profileData,
+// 	target: $profile,
+// });
 
-$profileLoading.on(setProfileLoading, (_, data) => data).reset(unSetProfileLoading);
+// $profileLoading.on(setProfileLoading, (_, data) => data).reset(unSetProfileLoading);
