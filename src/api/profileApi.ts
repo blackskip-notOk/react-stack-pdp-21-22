@@ -1,7 +1,11 @@
 import { AxiosError } from 'axios';
 import { API } from '@/constants/apiConstants';
 import { instance } from '.';
-import { ProfilePhotoResponse, ProfileResponse } from '@/models/profile/types';
+import {
+	ProfilePhotoResponse,
+	ProfileResponse,
+	ProfileStatusResponse,
+} from '@/models/profile/types';
 import {
 	useQuery,
 	UseQueryResult,
@@ -43,6 +47,40 @@ export const useSetProfileAvatar = (
 	return useMutation<ProfilePhotoResponse, AxiosError<ProfilePhotoResponse>, File>(
 		['setAvatar'],
 		setProfileAvatarApi,
+		{
+			onSuccess: () => {
+				refetch();
+			},
+		},
+	);
+};
+
+export const getProfileStatusApi = async (userId?: number): Promise<string> => {
+	const response = await instance.get(API.getProfileStatus, { params: { userId: userId } });
+
+	return response.data;
+};
+
+export const useGetProfileStatus = (
+	userId?: number,
+): UseQueryResult<string, AxiosError<string>> => {
+	return useQuery(['getStatus', userId], () => getProfileStatusApi(userId));
+};
+
+export const setProfileStatusApi = async (status?: string): Promise<ProfileStatusResponse> => {
+	const response = await instance.put(API.setProfileStatus, { status });
+
+	return response.data;
+};
+
+export const useSetProfileStatus = (
+	refetch: <TPageData>(
+		options?: (RefetchOptions & RefetchQueryFilters<TPageData>) | undefined,
+	) => Promise<QueryObserverResult<string, AxiosError<string>>>,
+) => {
+	return useMutation<ProfileStatusResponse, AxiosError<ProfileStatusResponse>, string | undefined>(
+		['setStatus'],
+		setProfileStatusApi,
 		{
 			onSuccess: () => {
 				refetch();

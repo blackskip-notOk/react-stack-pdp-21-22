@@ -9,6 +9,7 @@ const PROFILE = 'profile';
 const USERS = 'users';
 const FOLLOW = 'follow';
 const PHOTO = 'photo';
+const STATUS = 'status';
 
 export const API = {
 	baseURL: 'https://social-network.samuraijs.com/api/1.0',
@@ -20,4 +21,6 @@ export const API = {
 	users: `${USERS}`,
 	follow: `${FOLLOW}/{userId}`,
 	profilePhoto: `${PROFILE}/${PHOTO}`,
+	getProfileStatus: `${PROFILE}/${STATUS}/{userId}`,
+	setProfileStatus: `${PROFILE}/${STATUS}`,
 };

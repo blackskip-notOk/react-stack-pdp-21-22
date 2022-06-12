@@ -36,3 +36,13 @@ type ProfilePhoto = Omit<BaseResponse, 'fieldsErrors'>;
 export interface ProfilePhotoResponse extends ProfilePhoto {
 	photos: Photos;
 }
+
+export interface ProfileStatusFormData {
+	status?: string;
+}
+
+type ProfileStatus = Omit<BaseResponse, 'fieldsErrors'>;
+
+export interface ProfileStatusResponse extends ProfileStatus {
+	data: Record<string, string>;
+}
