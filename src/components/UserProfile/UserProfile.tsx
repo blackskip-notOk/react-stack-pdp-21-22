@@ -2,7 +2,7 @@ import { FC, Suspense } from 'react';
 import { useParams } from 'react-router-dom';
 import { Avatar } from '@mui/material';
 import { DefaultAvatar } from '../common/avatar/avatar';
-import { useGetProfile } from '@/api/profileApi';
+import { useGetProfile, useGetProfileStatus } from '@/api/profileApi';
 import { ErrorBoundary } from 'react-error-boundary';
 import { ErrorMessage } from '../common/Error/Error';
 import { Loader } from '../common/loader/Loader';
@@ -13,6 +13,8 @@ export const UserProfile: FC = () => {
 	const { data, error, isError, isFetching, isLoading, isRefetching, isSuccess } = useGetProfile(
 		params.userId,
 	);
+
+	const { data: userStatus } = useGetProfileStatus(Number(params.userId));
 
 	if (isLoading || isFetching || isRefetching) {
 		return <Loader />;
@@ -33,6 +35,7 @@ export const UserProfile: FC = () => {
 							<DefaultAvatar />
 						)}
 						<div>{data.fullName}</div>
+						<div>{userStatus}</div>
 						<div>{data.aboutMe}</div>
 						<div>{data.lookingForAJobDescription}</div>
 						<div>{data.contacts.facebook}</div>
