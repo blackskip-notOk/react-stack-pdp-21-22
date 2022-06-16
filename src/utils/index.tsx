@@ -222,3 +222,8 @@ export const getFriendParam = (param: string): boolean | undefined => {
 
 	return param === 'friends';
 };
+
+export function* idGenerator() {
+	let id = 0;
+	while (true) yield id++;
+}
