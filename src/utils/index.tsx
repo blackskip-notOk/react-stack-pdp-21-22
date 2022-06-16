@@ -144,3 +144,8 @@ export const getFollowResult = (
 		message: SERVER_MESSAGES_DESCRIPTIONS.someError,
 	};
 };
+
+export function* idGenerator() {
+	let id = 0;
+	while (true) yield id++;
+}
