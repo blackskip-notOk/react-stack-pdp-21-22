@@ -1,4 +1,3 @@
-import { SESSION_STORAGE } from '@/constants/systemConstants';
 import {
 	$users,
 	$usersLoading,
@@ -8,10 +7,13 @@ import {
 } from '@/models/users';
 import {
 	Button,
-	Checkbox,
-	FormControlLabel,
+	FormControl,
 	InputAdornment,
+	InputLabel,
 	List,
+	MenuItem,
+	Select,
+	SelectChangeEvent,
 	Stack,
 	TablePagination,
 	TextField,
@@ -22,7 +24,6 @@ import {
 	useEffect,
 	type MouseEvent,
 	type ChangeEvent,
-	useMemo,
 	useState,
 	type KeyboardEvent,
 } from 'react';
@@ -31,95 +32,102 @@ import { User } from '../User/User';
 import styles from './Users.module.less';
 import SearchIcon from '@mui/icons-material/Search';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
-import { saveSessionParams } from '@/utils';
-import { UsersRequest } from '@/models/users/types';
+import { getFriendParam, getSearchParamsFromUrl, searchParamsSerializer } from '@/utils';
 import { ErrorBoundary } from 'react-error-boundary';
 import { ErrorMessage } from '../common/Error/Error';
+import { useSearchParams } from 'react-router-dom';
+import { equals } from 'ramda';
 
 export const Users: FC = () => {
 	const usersData = useStore($users);
-	const requestParams = useStore($usersRequestParams);
+	const storeSearchParams = useStore($usersRequestParams);
 	const isUsersLoading = useStore($usersLoading);
 
 	const [searchText, setSearchText] = useState('');
-	const [onlyFriends, setOnlyFriends] = useState(false);
-	const [onlyNotFriends, setOnlyNotFriends] = useState(false);
+	const [friend, setFriend] = useState('');
 
-	const savedRequestParams = sessionStorage.getItem(SESSION_STORAGE.USERS_REQUEST_PARAMS);
-
-	const currentParams: UsersRequest = useMemo(
-		() => (savedRequestParams ? JSON.parse(savedRequestParams) : { ...requestParams }),
-		[savedRequestParams, requestParams],
-	);
+	const [urlSearchParams, setUrlSearchParams] = useSearchParams();
 
 	useEffect(() => {
-		getUsersFx(currentParams);
+		const searchParamsFromUrl = getSearchParamsFromUrl(Object.fromEntries([...urlSearchParams]));
+		let newStoreSearchParams = { ...storeSearchParams };
 
-		if (currentParams.friend) {
-			setOnlyFriends(true);
-		} else if (currentParams.friend === false) {
-			setOnlyNotFriends(true);
+		if (searchParamsFromUrl) {
+			if (!equals(storeSearchParams, searchParamsFromUrl)) {
+				const { page, count, term, friend } = searchParamsFromUrl;
+
+				newStoreSearchParams = {
+					page: page ?? storeSearchParams.page,
+					count: count ?? storeSearchParams.count,
+					term: term ?? storeSearchParams.term,
+					friend: friend !== undefined ? friend : storeSearchParams.friend,
+				};
+
+				setSearchText(newStoreSearchParams.term ? newStoreSearchParams.term : '');
+
+				if (newStoreSearchParams.friend) {
+					setFriend('friends');
+				} else if (newStoreSearchParams.friend === false) {
+					setFriend('notFriends');
+				}
+			}
 		}
-	}, [currentParams]);
+		setUsersRequestParams(newStoreSearchParams);
+	}, []);
 
-	const handlePageChange = (event: MouseEvent<HTMLButtonElement> | null, page: number) => {
-		const newRequestParams = { ...requestParams, page: page + 1 };
-		saveSessionParams(newRequestParams);
+	useEffect(() => {
+		const newUrlSearchParams = searchParamsSerializer(storeSearchParams);
+
+		newUrlSearchParams ? setUrlSearchParams(newUrlSearchParams) : setUrlSearchParams({});
+
+		getUsersFx(storeSearchParams); // Todo first query with default params
+	}, [storeSearchParams]);
+
+	const handlePageChange = (event: MouseEvent<HTMLButtonElement> | null, page: number): void => {
+		const newRequestParams = { ...storeSearchParams, page: page + 1 };
 		setUsersRequestParams(newRequestParams);
 	};
 
-	const handleOnRowPerPageChange = (event: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
-		const newRequestParams = { ...requestParams, count: Number(event.target.value) };
-		saveSessionParams(newRequestParams);
+	const handleOnRowPerPageChange = (
+		event: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>,
+	): void => {
+		const newRequestParams = { ...storeSearchParams, count: Number(event.target.value) };
 		setUsersRequestParams(newRequestParams);
 	};
 
 	const handleOnChangeSearchInput = (
 		event: ChangeEvent<HTMLTextAreaElement | HTMLInputElement> | undefined,
-	) => {
+	): void => {
 		if (event) {
 			const text = event.currentTarget.value;
 			setSearchText(text);
 		}
 	};
 
-	const handleOnClearSearchInput = () => {
-		const newParams = { ...requestParams, page: 1, term: '' };
-		saveSessionParams(newParams);
+	const handleOnClearSearchInput = (): void => {
+		const newParams = { ...storeSearchParams, page: 1, term: '' };
 		setUsersRequestParams(newParams);
 		setSearchText('');
 	};
 
-	const handleSearch = () => {
-		const newParams = { ...requestParams, page: 1, term: searchText };
-		saveSessionParams(newParams);
+	const handleSearch = (): void => {
+		const newParams = {
+			...storeSearchParams,
+			page: 1,
+			term: searchText ? searchText : undefined,
+			friend: getFriendParam(friend),
+		};
 		setUsersRequestParams(newParams);
 	};
 
-	const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
+	const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>): void => {
 		if (event.code === 'Enter') {
 			handleSearch();
 		}
 	};
 
-	const handleFriendsChange = () => {
-		setOnlyFriends(!onlyFriends);
-		const newParams = { ...requestParams, friend: onlyFriends ? undefined : true };
-		saveSessionParams(newParams);
-		setUsersRequestParams(newParams);
-		if (onlyNotFriends) {
-			setOnlyNotFriends(false);
-		}
-	};
-
-	const handleNotFriendsChange = () => {
-		setOnlyNotFriends(!onlyNotFriends);
-		const newParams = { ...requestParams, friend: onlyNotFriends ? undefined : false };
-		saveSessionParams(newParams);
-		setUsersRequestParams(newParams);
-		if (onlyFriends) {
-			setOnlyFriends(false);
-		}
+	const handleChangeFriends = (event: SelectChangeEvent): void => {
+		setFriend(event.target.value);
 	};
 
 	const user = usersData.items.map((item) => (
@@ -164,41 +172,30 @@ export const Users: FC = () => {
 					</div>
 				</Stack>
 				<Stack spacing={2}>
-					<FormControlLabel
-						value='onlyFriends'
-						control={
-							<Checkbox
-								checked={onlyFriends}
-								onChange={handleFriendsChange}
-								color='secondary'
-								inputProps={{ 'aria-label': 'controlled' }}
-							/>
-						}
-						label='Показать только друзей'
-						labelPlacement='start'
-					/>
-					<FormControlLabel
-						value='onlyNotFriends'
-						control={
-							<Checkbox
-								checked={onlyNotFriends}
-								onChange={handleNotFriendsChange}
-								color='secondary'
-								inputProps={{ 'aria-label': 'controlled' }}
-							/>
-						}
-						label='Показать только не друзей'
-						labelPlacement='start'
-					/>
+					<FormControl sx={{ minWidth: 80 }}>
+						<InputLabel id='friendsSelectorLabel'>Select</InputLabel>
+						<Select
+							labelId='friendsSelectorLabel'
+							id='friendsSelector'
+							value={friend}
+							onChange={handleChangeFriends}
+							label='Select'
+							autoWidth
+						>
+							<MenuItem value='all'>All</MenuItem>
+							<MenuItem value='friends'>Friends</MenuItem>
+							<MenuItem value='notFriends'>Not Friends</MenuItem>
+						</Select>
+					</FormControl>
 				</Stack>
 				{!isUsersLoading && <List>{user}</List>}
 				<Stack spacing={2}>
 					<TablePagination
 						component={'div'}
 						count={usersData.totalCount}
-						page={currentParams.page - 1}
+						page={storeSearchParams.page - 1}
 						onPageChange={handlePageChange}
-						rowsPerPage={currentParams.count}
+						rowsPerPage={storeSearchParams.count}
 						onRowsPerPageChange={handleOnRowPerPageChange}
 						showFirstButton
 						showLastButton
