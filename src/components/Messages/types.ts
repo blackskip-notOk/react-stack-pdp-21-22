@@ -1,7 +1,7 @@
 export interface MessagesProps {
-	channel: WebSocket;
+	webSocket: WebSocket | null;
 }
 
 export interface AddMessageFormProps {
-	channel: WebSocket;
+	webSocket: WebSocket | null;
 }

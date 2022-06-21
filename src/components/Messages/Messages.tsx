@@ -7,18 +7,28 @@ import { Message } from '../Message/Message';
 import styles from './Messages.module.less';
 import { MessagesProps } from './types';
 
-export const Messages: FC<MessagesProps> = ({ channel }) => {
+export const Messages: FC<MessagesProps> = ({ webSocket }) => {
 	// const messages = useStore($messages);
 
 	const [messages, setMessages] = useState<MessagesType>([]);
 
+	// TODO make connection status flow
+
 	useEffect(() => {
-		channel.addEventListener('message', (event: MessageEvent) => {
+		const handleReceiveMessages = (event: MessageEvent) => {
 			const { data } = event;
 			const newMessages = JSON.parse(data);
 			setMessages((prevMessages) => [...prevMessages, ...newMessages]);
-		});
-	}, [channel, messages]);
+		};
+
+		if (webSocket) {
+			webSocket.addEventListener('message', handleReceiveMessages);
+		}
+
+		return () => {
+			webSocket?.removeEventListener('close', handleReceiveMessages);
+		};
+	}, [webSocket, messages]);
 
 	const it = idGenerator();
 
