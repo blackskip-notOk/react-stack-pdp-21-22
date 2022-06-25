@@ -1,51 +1,24 @@
-import { API } from '@/constants/apiConstants';
-import { $messages, setMessages } from '@/models/messages';
-import { useStore } from 'effector-react';
-import { FC, useEffect, useState } from 'react';
+import { startListeningMessages, stopListeningMessages } from '@/features/chat/chatSlice';
+import { useAppDispatch } from '@/hooks/storeHooks';
+import { FC, useEffect } from 'react';
 import { AddMessageForm } from '../Messages/AddMessageForm';
 import { Messages } from '../Messages/Messages';
 
 export const Chat: FC = () => {
-	const [webSocket, setWebSocket] = useState<WebSocket | null>(null);
+	const dispatch = useAppDispatch();
 
 	useEffect(() => {
-		let ws: WebSocket;
-
-		const handleCloseConnection = () => {
-			console.info('WebSocket connection is closed');
-			createWebSocket();
-		};
-
-		function createWebSocket() {
-			if (ws) {
-				ws.removeEventListener('close', handleCloseConnection);
-			}
-
-			ws = new WebSocket(API.baseWebSocketUrl);
-			ws.addEventListener('close', handleCloseConnection);
-			setWebSocket(ws);
-		}
-
-		createWebSocket();
+		dispatch(startListeningMessages());
 
 		return () => {
-			ws.removeEventListener('close', handleCloseConnection);
-			ws.close();
+			dispatch(stopListeningMessages());
 		};
-	}, []);
-
-	useEffect(() => {
-		if (webSocket) {
-			webSocket.addEventListener('close', () => {
-				console.info('WebSocket connection is closed');
-			});
-		}
-	}, [webSocket]);
+	}, [dispatch]);
 
 	return (
 		<div>
-			<Messages webSocket={webSocket} />
-			<AddMessageForm webSocket={webSocket} />
+			<Messages />
+			<AddMessageForm />
 		</div>
 	);
 };

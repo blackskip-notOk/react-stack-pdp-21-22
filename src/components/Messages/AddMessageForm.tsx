@@ -1,32 +1,12 @@
+import { sendMessage } from '@/features/chat/chatSlice';
+import { useAppDispatch } from '@/hooks/storeHooks';
 import { Button, TextareaAutosize } from '@mui/material';
-import {
-	FC,
-	MouseEventHandler,
-	SyntheticEvent,
-	ChangeEventHandler,
-	useState,
-	useEffect,
-} from 'react';
-import { AddMessageFormProps } from './types';
+import { FC, SyntheticEvent, useState } from 'react';
 
-export const AddMessageForm: FC<AddMessageFormProps> = ({ webSocket }) => {
+export const AddMessageForm: FC = () => {
+	const dispatch = useAppDispatch();
+
 	const [message, setMessage] = useState('');
-	const [webSocketStatus, setWebSocketStatus] = useState<'pending' | 'ready'>('pending');
-
-	useEffect(() => {
-		const handleOpenConnection = () => {
-			console.info('WebSocket connection is opened');
-			setWebSocketStatus('ready');
-		};
-
-		if (webSocket) {
-			webSocket.addEventListener('open', handleOpenConnection);
-		}
-
-		return () => {
-			webSocket?.removeEventListener('close', handleOpenConnection);
-		};
-	}, [webSocket]);
 
 	const handleChangeMessage = (event: SyntheticEvent<HTMLTextAreaElement>) => {
 		const newMessage = event.currentTarget.value;
@@ -37,19 +17,14 @@ export const AddMessageForm: FC<AddMessageFormProps> = ({ webSocket }) => {
 		if (!message) {
 			return;
 		}
-
-		if (webSocket) {
-			webSocket?.send(message);
-			setMessage('');
-		}
+		dispatch(sendMessage(message));
+		setMessage('');
 	};
 
 	return (
 		<div>
 			<TextareaAutosize value={message} onChange={handleChangeMessage} />
-			<Button disabled={!webSocket || webSocketStatus !== 'ready'} onClick={handleSendMessage}>
-				Send new Message
-			</Button>
+			<Button onClick={handleSendMessage}>Send new Message</Button>
 		</div>
 	);
 };

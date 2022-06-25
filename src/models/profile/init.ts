@@ -1,8 +1,4 @@
-import { setProfileLoading, unSetProfileLoading } from './index';
-import { fetchProfileApi } from '@/api/profileApi';
-import { getProfileFx, $profile, $profileLoading } from '.';
 import { $profileError, setProfileError, unSetProfileError } from '.';
-import { sample } from 'effector';
 
 $profileError
 	.on(setProfileError, (_, data) => {

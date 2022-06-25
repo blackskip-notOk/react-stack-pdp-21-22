@@ -1,34 +1,51 @@
 import { API } from '@/constants/apiConstants';
 import { MessagesType } from '@/models/messages/types';
-import { useEffect } from 'react';
-import { useQueryClient } from 'react-query';
+export type Subscriber = (messages: MessagesType) => void;
 
-export const useWebSocketSubscription = () => {
-	const queryClient = useQueryClient();
+let subscribers = [] as Array<Subscriber>;
+let ws: WebSocket | null = null;
 
-	useEffect(() => {
-		const webSocket = new WebSocket(API.baseWebSocketUrl);
-
-		webSocket.onopen = () => {
-			console.log('connected');
-		};
-
-		webSocket.onmessage = (event: MessageEvent) => {
-			const data = JSON.parse(event.data) as MessagesType;
-
-			const queryKey = [...data];
-
-			queryClient.invalidateQueries(queryKey);
-		};
-
-		return () => {
-			webSocket.close();
-		};
-	}, []);
+const handleCloseConnection = () => {
+	console.info('WebSocket connection is closed');
+	createWebSocket();
 };
 
-export let webSocket: WebSocket;
+const handleReceiveMessages = (event: MessageEvent) => {
+	const { data } = event;
+	const newMessages = JSON.parse(data);
+	subscribers.forEach((s) => s(newMessages));
+};
 
-export const createWebSocket = () => {
-	webSocket = new WebSocket(API.baseWebSocketUrl);
+function createWebSocket() {
+	if (ws) {
+		ws.removeEventListener('close', handleCloseConnection);
+	}
+
+	ws = new WebSocket(API.baseWebSocketUrl);
+	ws.addEventListener('close', handleCloseConnection);
+	ws.addEventListener('message', handleReceiveMessages);
+}
+
+export const chatApi = {
+	createChannel() {
+		createWebSocket();
+	},
+	killChanel() {
+		subscribers = [];
+		ws?.removeEventListener('close', handleCloseConnection);
+		ws?.removeEventListener('message', handleReceiveMessages);
+		ws?.close();
+	},
+	subscribe(callback: Subscriber) {
+		subscribers.push(callback);
+		return () => {
+			subscribers = subscribers.filter((s) => s !== callback);
+		};
+	},
+	unsubscibe(callback: Subscriber) {
+		subscribers = subscribers.filter((s) => s !== callback);
+	},
+	sendMessage(message: string) {
+		ws?.send(message);
+	},
 };

@@ -1,7 +1,5 @@
-import { AxiosError } from 'axios';
-import { createEffect, createEvent, createStore } from 'effector';
-import { BaseError } from '../types';
-import { MessagesType, UsersRequest, UsersResponse } from './types';
+import { createEvent, createStore } from 'effector';
+import { MessagesType } from './types';
 
 export interface Message {
 	message: string;
