@@ -1,10 +1,12 @@
 import { Avatar } from '@mui/material';
-import { FC } from 'react';
+import { FC, memo } from 'react';
 import { DefaultAvatar } from '../common/avatar/avatar';
 import { MessageProps } from './types';
 
-export const Message: FC<MessageProps> = ({ item }) => {
+export const Message: FC<MessageProps> = memo(({ item }) => {
 	const { message, photo, userName } = item;
+
+	console.log('render');
 
 	return (
 		<div>
@@ -13,4 +15,4 @@ export const Message: FC<MessageProps> = ({ item }) => {
 			{message}
 		</div>
 	);
-};
+});
