@@ -13,6 +13,7 @@ const STATUS = 'status';
 
 export const API = {
 	baseURL: 'https://social-network.samuraijs.com/api/1.0',
+	baseWebSocketUrl: 'wss://social-network.samuraijs.com/handlers/ChatHandler.ashx',
 	authMe: `${AUTH}/${ME}`,
 	login: `${AUTH}/${LOGIN}`,
 	logout: `${AUTH}/${LOGOUT}`,

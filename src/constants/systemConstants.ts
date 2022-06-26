@@ -18,3 +18,14 @@ export const SESSION_STORAGE = {
 export const SUCCESS_MESSAGE_DURATION = 5000;
 export const ERROR_MESSAGE_DURATION = 5000;
 export const MODAL_SHOW_DURATION = 500;
+
+export enum CONNECTION_STATUS {
+	pending = 'pending',
+	ready = 'ready',
+	error = 'error',
+}
+
+export enum EVENT {
+	message = 'messages-received',
+	status = 'status-changed',
+}
