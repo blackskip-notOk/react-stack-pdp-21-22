@@ -6,8 +6,6 @@ import { MessageProps } from './types';
 export const Message: FC<MessageProps> = memo(({ item }) => {
 	const { message, photo, userName } = item;
 
-	console.log('render');
-
 	return (
 		<div>
 			{photo ? <Avatar alt='user avatar' src={photo} /> : <DefaultAvatar />}

@@ -11,6 +11,10 @@ const subscribers = {
 
 let ws: WebSocket | null = null;
 
+const statusNotification = (status: ConnectionStatus) => {
+	subscribers['status-changed'].forEach((s) => s(status));
+};
+
 const handleOpenConnection = () => {
 	console.info('WebSocket connection is opened');
 	statusNotification(CONNECTION_STATUS.ready);
@@ -38,10 +42,6 @@ const cleanUp = () => {
 	ws?.removeEventListener('message', handleReceiveMessages);
 	ws?.removeEventListener('open', handleOpenConnection);
 	ws?.removeEventListener('error', handleErrorConnection);
-};
-
-const statusNotification = (status: ConnectionStatus) => {
-	subscribers['status-changed'].forEach((s) => s(status));
 };
 
 function createWebSocket() {
