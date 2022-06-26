@@ -1,7 +1,6 @@
 module.exports = {
 	parser: '@typescript-eslint/parser',
 	parserOptions: {
-		// project: ['./tsconfig.json'],
 		ecmaFeatures: {
 			jsx: true,
 		},
@@ -12,12 +11,6 @@ module.exports = {
 		react: {
 			version: 'detect',
 		},
-		// 'import/resolver': {
-		// 	node: {
-		// 	  paths: ['src'],
-		// 	  extensions: ['.js', '.jsx', '.ts', '.tsx'],
-		// 	},
-		//   },
 	},
 	env: {
 		browser: true,
@@ -47,6 +40,8 @@ module.exports = {
 		'react-hooks/rules-of-hooks': 2,
 		'react/react-in-jsx-scope': 0,
 		'max-len': [1, { code: 120, ignoreUrls: true }],
+		'react/prop-types': 0,
+		'react/display-name': 0,
 	},
 	ignorePatterns: ['src/**/*.test.ts'],
 };

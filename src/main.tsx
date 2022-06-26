@@ -5,6 +5,8 @@ import './models/init';
 import { APP_MESSAGES } from './constants/serverMessages';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
+import { store } from './store/store';
+import { Provider } from 'react-redux';
 
 const container = document.getElementById('root');
 
@@ -31,9 +33,11 @@ const queryClient = new QueryClient({
 
 root.render(
 	<HashRouter>
-		<QueryClientProvider client={queryClient}>
-			<App />
-			<ReactQueryDevtools initialIsOpen={false}></ReactQueryDevtools>
-		</QueryClientProvider>
+		<Provider store={store}>
+			<QueryClientProvider client={queryClient}>
+				<App />
+				<ReactQueryDevtools initialIsOpen={false}></ReactQueryDevtools>
+			</QueryClientProvider>
+		</Provider>
 	</HashRouter>,
 );

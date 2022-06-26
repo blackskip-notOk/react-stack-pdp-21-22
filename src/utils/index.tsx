@@ -119,7 +119,7 @@ export const getFollowResult = (
 		isFollow
 			? SERVER_MESSAGES_DESCRIPTIONS.alreadyFollow
 			: SERVER_MESSAGES_DESCRIPTIONS.alreadyUnFollow
-	}`;
+	}`;.
 
 	if (status === RESPONSE_STATUSES.success) {
 		if (data.resultCode === RESULT_CODES.success) {
@@ -146,6 +146,11 @@ export const getFollowResult = (
 		message: SERVER_MESSAGES_DESCRIPTIONS.someError,
 	};
 };
+
+export function* idGenerator() {
+	let id = 0;
+	while (true) yield id++;
+}
 
 export const clearObject: ClearObject = (obj) => {
 	const result = {} as Record<string, string>;

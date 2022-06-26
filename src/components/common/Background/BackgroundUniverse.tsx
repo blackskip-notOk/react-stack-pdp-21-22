@@ -41,7 +41,6 @@ export const BackgroundUniverse: FC = () => {
 		);
 	}
 
-	const elem = document.querySelector('.pulse');
 	// const animation = elem?.animate(
 	//     {
 	//         opacity: [0.5, 1],
