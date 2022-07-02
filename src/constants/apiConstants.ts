@@ -1,11 +1,13 @@
 export const ApiName = {
 	auth: 'authApi',
+	login: 'loginApi',
+	captcha: 'captcha',
 } as const;
 
 const AUTH = 'auth';
 const ME = 'me';
 const LOGIN = 'login';
-const LOGOUT = 'logout';
+const logout = 'logout';
 const SECURITY = 'security';
 const CAPTCHA = 'get-captcha-url';
 const PROFILE = 'profile';
@@ -20,7 +22,7 @@ export const API = {
 	baseWebSocketUrl: 'wss://social-network.samuraijs.com/handlers/ChatHandler.ashx',
 	authMe: `${AUTH}/${ME}`,
 	login: `${AUTH}/${LOGIN}`,
-	logout: `${AUTH}/${LOGOUT}`,
+	logout: `${AUTH}/${logout}`,
 	captchaUrl: `${SECURITY}/${CAPTCHA}`,
 	profile: `${PROFILE}/{userId}`,
 	users: `${USERS}`,

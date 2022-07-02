@@ -1,7 +1,6 @@
 import { SyntheticEvent } from 'react';
-import { SERVER_MESSAGES, SERVER_MESSAGES_DESCRIPTIONS } from '../constants/serverMessages';
-import { RESPONSE_STATUSES, RESULT_CODES, SESSION_STORAGE } from '../constants/systemConstants';
-import { LoginResponse, TransformLoginResponse } from '../models/login/types';
+import { ServerMessage, Description } from '../constants/serverMessages';
+import { ResponseStatus, ReultCode, SESSION_STORAGE } from '../constants/systemConstants';
 import { FollowResponse, FollowResult, UsersRequest } from '@/models/users/types';
 import { AxiosResponse } from 'axios';
 import { isEmpty } from 'ramda';
@@ -10,44 +9,6 @@ import { ClearObject } from './types';
 export const preventDefault = (event: SyntheticEvent) => {
 	event.preventDefault();
 };
-
-export const transformLoginResponse = (response: LoginResponse): TransformLoginResponse => {
-	const { resultCode, data, messages } = response;
-	const [message] = messages;
-
-	const { error, secure } = RESULT_CODES;
-
-	if (resultCode === error) {
-		return {
-			error: SERVER_MESSAGES_DESCRIPTIONS.wrongLogin,
-			isNeedCaptcha: false,
-		};
-	}
-	if (resultCode === secure) {
-		const errorMessage =
-			message === SERVER_MESSAGES.MAX_ATTEMPT
-				? SERVER_MESSAGES_DESCRIPTIONS.maxAttempt
-				: message === SERVER_MESSAGES.WRONG_LOGIN
-				? SERVER_MESSAGES_DESCRIPTIONS.wrongLogin
-				: SERVER_MESSAGES_DESCRIPTIONS.someError;
-
-		return {
-			error: errorMessage,
-			isNeedCaptcha: true,
-		};
-	}
-
-	return { data };
-};
-
-export const getLoginResponse = (clockData: TransformLoginResponse): TransformLoginResponse => ({
-	data: clockData.data,
-	error: clockData.error,
-	isNeedCaptcha: clockData.isNeedCaptcha,
-});
-
-export const getIsNeedCaptcha = (clockData: TransformLoginResponse): boolean =>
-	!!clockData.isNeedCaptcha;
 
 export const saveSessionParams = (params: UsersRequest): void => {
 	const savedRequestParams = JSON.stringify({ ...params });
@@ -62,37 +23,30 @@ export const getFollowResult = (
 	if (!response) {
 		return {
 			isSuccess: false,
-			message: SERVER_MESSAGES_DESCRIPTIONS.someError,
+			message: Description.someError,
 		};
 	}
 
 	const { data, status } = response;
 
 	const successMessage = `${
-		isFollow
-			? SERVER_MESSAGES_DESCRIPTIONS.successFollow
-			: SERVER_MESSAGES_DESCRIPTIONS.successUnFollow
+		isFollow ? Description.successFollow : Description.successUnFollow
 	} ${user}`;
 
-	const unSuccessMessage = `${
-		isFollow
-			? SERVER_MESSAGES_DESCRIPTIONS.alreadyFollow
-			: SERVER_MESSAGES_DESCRIPTIONS.alreadyUnFollow
-	}`;
+	const unSuccessMessage = `${isFollow ? Description.alreadyFollow : Description.alreadyUnFollow}`;
 
-	if (status === RESPONSE_STATUSES.success) {
-		if (data.resultCode === RESULT_CODES.success) {
+	if (status === ResponseStatus.success) {
+		if (data.resultCode === ReultCode.success) {
 			return {
 				isSuccess: true,
 				message: successMessage,
 			};
 		}
-		if (data.resultCode === RESULT_CODES.error) {
+		if (data.resultCode === ReultCode.error) {
 			const errorMessage =
-				data.messages.join() ===
-				(SERVER_MESSAGES.ALREADY_UNFOLLOW || SERVER_MESSAGES.ALREADY_FOLLOW)
+				data.messages.join() === (ServerMessage.alreadyUnfollow || ServerMessage.alreadyFollow)
 					? unSuccessMessage
-					: SERVER_MESSAGES_DESCRIPTIONS.someError;
+					: Description.someError;
 
 			return {
 				isSuccess: false,
@@ -102,7 +56,7 @@ export const getFollowResult = (
 	}
 	return {
 		isSuccess: false,
-		message: SERVER_MESSAGES_DESCRIPTIONS.someError,
+		message: Description.someError,
 	};
 };
 

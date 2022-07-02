@@ -1,14 +1,9 @@
-export const RESPONSE_STATUSES = {
-	success: 200,
-	clientError: 404,
-	serverError: 500,
-};
-
-export const RESULT_CODES = {
-	success: 0,
-	error: 1,
-	secure: 10,
-};
+export const Method = {
+	get: 'GET',
+	post: 'POST',
+	put: 'PUT',
+	delete: 'DELETE',
+} as const;
 
 export const SESSION_STORAGE = {
 	LOCATION: 'session_location',
@@ -33,6 +28,7 @@ export enum EVENT {
 export const Slice = {
 	auth: 'auth',
 	initialize: 'initialize',
+	login: 'login',
 	chat: 'chat',
 } as const;
 
