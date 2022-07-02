@@ -1,4 +1,7 @@
-export const SINGUP = 'https://social-network.samuraijs.com/signUp';
+export const ApiName = {
+	auth: 'authApi',
+} as const;
+
 const AUTH = 'auth';
 const ME = 'me';
 const LOGIN = 'login';
@@ -13,6 +16,7 @@ const STATUS = 'status';
 
 export const API = {
 	baseURL: 'https://social-network.samuraijs.com/api/1.0',
+	singUp: 'https://social-network.samuraijs.com/signUp',
 	baseWebSocketUrl: 'wss://social-network.samuraijs.com/handlers/ChatHandler.ashx',
 	authMe: `${AUTH}/${ME}`,
 	login: `${AUTH}/${LOGIN}`,
@@ -24,4 +28,4 @@ export const API = {
 	profilePhoto: `${PROFILE}/${PHOTO}`,
 	getProfileStatus: `${PROFILE}/${STATUS}/{userId}`,
 	setProfileStatus: `${PROFILE}/${STATUS}`,
-};
+} as const;

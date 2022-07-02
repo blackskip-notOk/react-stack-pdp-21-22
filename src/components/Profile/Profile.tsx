@@ -1,8 +1,6 @@
 import { Alert, Avatar, Box, Slide, Snackbar, TextField } from '@mui/material';
-import { useStore } from 'effector-react';
 import { ChangeEvent, FC, useState } from 'react';
 import { ERROR_MESSAGE_DURATION } from '@/constants/systemConstants';
-import { $auth } from '@/models/auth';
 import styles from './Profile.module.less';
 import { Loader } from '../common/loader/Loader';
 import {
@@ -19,20 +17,22 @@ import { ProfileStatusFormData } from '@/models/profile/types';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { profileStatusSchema } from './utils/profileSchema';
 import inputStyles from '@/styles/Input.module.less';
+import { useAppSelector } from '@/hooks/storeHooks';
+import { getOwnerId } from '@/store/selectors/authSelectors';
 
 export const Profile: FC = () => {
-	const { ownerId } = useStore($auth);
+	const ownerId = useAppSelector(getOwnerId);
 
 	const { data, error, isError, isFetching, isLoading, isRefetching, isSuccess, refetch } =
 		useGetProfile(String(ownerId));
 
-	const { data: profileStatus, refetch: refetchStatus } = useGetProfileStatus(ownerId);
+	// const { data: profileStatus, refetch: refetchStatus } = useGetProfileStatus(ownerId);
 
 	const [showErrow, setShowError] = useState(isError);
 
 	const { isLoading: isLoadingAvatar, mutate } = useSetProfileAvatar(refetch);
 
-	const { mutate: setStatus } = useSetProfileStatus(refetchStatus);
+	// const { mutate: setStatus } = useSetProfileStatus(refetchStatus);
 
 	const handleErrorClose = () => {
 		setShowError(false);
@@ -43,13 +43,13 @@ export const Profile: FC = () => {
 		handleSubmit,
 		formState: { errors },
 	} = useForm<ProfileStatusFormData>({
-		defaultValues: {
-			status: profileStatus,
-		},
+		// defaultValues: {
+		// 	status: profileStatus,
+		// },
 		resolver: yupResolver(profileStatusSchema),
 	});
 
-	const onSubmit: SubmitHandler<ProfileStatusFormData> = (data) => setStatus(data.status);
+	// const onSubmit: SubmitHandler<ProfileStatusFormData> = (data) => setStatus(data.status);
 
 	const handleChangeAvatar = (event: ChangeEvent<HTMLInputElement>) => {
 		if (event.currentTarget.files && event.currentTarget.files.length) {
@@ -83,7 +83,7 @@ export const Profile: FC = () => {
 						</div>
 					)}
 					<div>{data.fullName}</div>
-					<form onSubmit={handleSubmit(onSubmit)}>
+					{/* <form onSubmit={handleSubmit(onSubmit)}>
 						<Controller
 							name='status'
 							control={control}
@@ -105,7 +105,7 @@ export const Profile: FC = () => {
 								</Box>
 							)}
 						/>
-					</form>
+					</form> */}
 
 					<div>{data.aboutMe}</div>
 					<div>{data.lookingForAJobDescription}</div>

@@ -1,43 +1,14 @@
 import { SyntheticEvent } from 'react';
-import { AuthResponse, AuthState } from '../models/auth/types';
 import { SERVER_MESSAGES, SERVER_MESSAGES_DESCRIPTIONS } from '../constants/serverMessages';
 import { RESPONSE_STATUSES, RESULT_CODES, SESSION_STORAGE } from '../constants/systemConstants';
 import { LoginResponse, TransformLoginResponse } from '../models/login/types';
 import { FollowResponse, FollowResult, UsersRequest } from '@/models/users/types';
-import { authFx, initialize } from '@/models/auth';
 import { AxiosResponse } from 'axios';
 import { isEmpty } from 'ramda';
 import { ClearObject } from './types';
 
 export const preventDefault = (event: SyntheticEvent) => {
 	event.preventDefault();
-};
-
-export const getInitialization = () => {
-	const authorization = authFx();
-
-	Promise.all([authorization])
-		.then(() => {
-			initialize({ initialize: true });
-		})
-		.catch((err) => console.error(SERVER_MESSAGES_DESCRIPTIONS.failedInitialization, err));
-};
-
-export const getAuthResponse = (authResponse: AuthResponse): AuthState => {
-	if (authResponse.status === RESPONSE_STATUSES.success) {
-		const { authInfo } = authResponse;
-		const { success, error } = RESULT_CODES;
-
-		if (authInfo.resultCode === error) {
-			return { isAuth: false, message: authInfo.messages[0] };
-		}
-
-		if (authInfo.resultCode === success) {
-			return { isAuth: true, message: authInfo.messages[0], ownerId: authInfo.data.id };
-		}
-	}
-
-	return { isAuth: false, message: SERVER_MESSAGES_DESCRIPTIONS.someError };
 };
 
 export const transformLoginResponse = (response: LoginResponse): TransformLoginResponse => {
@@ -78,18 +49,6 @@ export const getLoginResponse = (clockData: TransformLoginResponse): TransformLo
 export const getIsNeedCaptcha = (clockData: TransformLoginResponse): boolean =>
 	!!clockData.isNeedCaptcha;
 
-export const getIsAuth = (clockData: TransformLoginResponse): AuthState => ({
-	isAuth: !!clockData.data,
-	message: clockData.data ? SERVER_MESSAGES.AUTORIZATION_SUCCESS : SERVER_MESSAGES.NOT_AUTHORIZED,
-	ownerId: clockData.data ? clockData.data.userId : undefined,
-});
-
-export const resetIsAuth = (): AuthState => ({
-	isAuth: false,
-	message: SERVER_MESSAGES.LOGOUT,
-	ownerId: undefined,
-});
-
 export const saveSessionParams = (params: UsersRequest): void => {
 	const savedRequestParams = JSON.stringify({ ...params });
 	sessionStorage.setItem(SESSION_STORAGE.USERS_REQUEST_PARAMS, savedRequestParams);
@@ -119,7 +78,7 @@ export const getFollowResult = (
 		isFollow
 			? SERVER_MESSAGES_DESCRIPTIONS.alreadyFollow
 			: SERVER_MESSAGES_DESCRIPTIONS.alreadyUnFollow
-	}`;.
+	}`;
 
 	if (status === RESPONSE_STATUSES.success) {
 		if (data.resultCode === RESULT_CODES.success) {

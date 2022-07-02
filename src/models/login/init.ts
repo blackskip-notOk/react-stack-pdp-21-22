@@ -1,4 +1,3 @@
-import { unautorize, $auth } from '@/models/auth';
 import { fetchLoginApi, fetchLogoutApi } from '@/api/loginApi';
 import {
 	$captchaUrl,
@@ -9,13 +8,7 @@ import {
 } from './index';
 import { $loginResponse, loginFx } from '.';
 import { forward, sample } from 'effector';
-import {
-	getIsAuth,
-	getIsNeedCaptcha,
-	getLoginResponse,
-	transformLoginResponse,
-	resetIsAuth,
-} from '@/utils/index';
+import { getIsNeedCaptcha, getLoginResponse, transformLoginResponse } from '@/utils/index';
 import { fetchCaptchaApi } from '@/api/captchaApi';
 
 $loginResponse.reset(resetLoginResponse);
@@ -47,21 +40,9 @@ getCaptchaFx
 
 $captchaUrl.on(getCaptchaFx.doneData, (_, captchaUrl) => captchaUrl);
 
-sample({
-	clock: $loginResponse,
-	fn: getIsAuth,
-	target: $auth,
-});
-
 logoutFx.use(fetchLogoutApi).watch(() => console.log(`вызван эффект ${logoutFx.shortName}`));
 
 forward({
 	from: logoutFx.doneData,
 	to: resetLoginResponse,
-});
-
-sample({
-	clock: logoutFx.doneData,
-	fn: resetIsAuth,
-	target: unautorize,
 });

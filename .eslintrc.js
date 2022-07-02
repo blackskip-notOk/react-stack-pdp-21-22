@@ -30,7 +30,6 @@ module.exports = {
 	rules: {
 		'linebreak-style': 0,
 		'no-plusplus': 0,
-		'no-param-reassign': 2,
 		'react/require-default-props': 0,
 		'react-hooks/exhaustive-deps': 0,
 		'prettier/prettier': 0,
@@ -42,6 +41,7 @@ module.exports = {
 		'max-len': [1, { code: 120, ignoreUrls: true }],
 		'react/prop-types': 0,
 		'react/display-name': 0,
+		'no-param-reassign': [0, { "props": true, "ignorePropertyModificationsFor": ['state'] }]
 	},
 	ignorePatterns: ['src/**/*.test.ts'],
 };

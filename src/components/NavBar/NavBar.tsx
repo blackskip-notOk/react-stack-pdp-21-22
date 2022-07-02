@@ -1,11 +1,11 @@
-import { useStore } from 'effector-react';
 import { FC } from 'react';
 import { NavLink } from 'react-router-dom';
-import { $auth } from '@/models/auth';
 import { NAVLINKS } from '@/constants/routerConstants';
+import { useAppSelector } from '@/hooks/storeHooks';
+import { getIsAuth } from '@/store/selectors/authSelectors';
 
 export const NavBar: FC = () => {
-	const { isAuth } = useStore($auth);
+	const isAuth = useAppSelector(getIsAuth);
 
 	return (
 		<>

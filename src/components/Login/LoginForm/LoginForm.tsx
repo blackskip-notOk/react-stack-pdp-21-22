@@ -31,10 +31,11 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { loginSchema } from '../utils/loginSchema';
 import { Box } from '@mui/system';
 import { isEmpty } from 'ramda';
-import { $auth } from '@/models/auth';
 import { NAVLINKS } from '@/constants/routerConstants';
 import { LoginFormData } from '@/models/login/types';
 import { LoginProps } from '../types';
+import { useAppSelector } from '@/hooks/storeHooks';
+import { getIsAuth } from '@/store/selectors/authSelectors';
 
 export const LoginForm: FC<LoginProps> = ({ setShowGreeting }) => {
 	const navigate = useNavigate();
@@ -43,7 +44,7 @@ export const LoginForm: FC<LoginProps> = ({ setShowGreeting }) => {
 	const fetchingCaptchaUrl = useStore(getCaptchaFx.pending);
 	const serverSideError = useStore($serverSideError);
 	const captchaUrl = useStore($captchaUrl);
-	const { isAuth } = useStore($auth);
+	const isAuth = useAppSelector(getIsAuth);
 	const { error: loginError, isNeedCaptcha } = useStore($loginResponse);
 
 	useEffect(() => {

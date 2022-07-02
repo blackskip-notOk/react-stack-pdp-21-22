@@ -1,12 +1,6 @@
 import { SERVER_MESSAGES, SERVER_MESSAGES_DESCRIPTIONS } from '../constants/serverMessages';
 import { RESULT_CODES } from '../constants/systemConstants';
-import {
-	getIsAuth,
-	getIsNeedCaptcha,
-	getLoginResponse,
-	resetIsAuth,
-	transformLoginResponse,
-} from '.';
+import { getIsNeedCaptcha, getLoginResponse, transformLoginResponse } from '.';
 
 describe('app utils', () => {
 	const successLoginResponse = { data: { userId: 1 } };
@@ -103,30 +97,30 @@ describe('app utils', () => {
 		expect(getIsNeedCaptcha(errorMaxAttempLoginResponse)).toBeTruthy();
 	});
 
-	test(`if get success login response getIsAuth should return success response`, () => {
-		expect(getIsAuth(successLoginResponse)).toEqual({
-			isAuth: true,
-			message: 'Autorization success',
-			ownerId: 1,
-		});
-	});
+	// 	test(`if get success login response getIsAuth should return success response`, () => {
+	// 		expect(getIsAuth(successLoginResponse)).toEqual({
+	// 			isAuth: true,
+	// 			message: 'Autorization success',
+	// 			ownerId: 1,
+	// 		});
+	// 	});
 
-	test(`if get login response with error getIsAuth should return errorn response`, () => {
-		expect(getIsAuth(errorLoginResponse)).toEqual({
-			isAuth: false,
-			message: 'You are not authorized',
-		});
+	// 	test(`if get login response with error getIsAuth should return errorn response`, () => {
+	// 		expect(getIsAuth(errorLoginResponse)).toEqual({
+	// 			isAuth: false,
+	// 			message: 'You are not authorized',
+	// 		});
 
-		expect(getIsAuth(errorMaxAttempLoginResponse)).toEqual({
-			isAuth: false,
-			message: 'You are not authorized',
-		});
-	});
+	// 		expect(getIsAuth(errorMaxAttempLoginResponse)).toEqual({
+	// 			isAuth: false,
+	// 			message: 'You are not authorized',
+	// 		});
+	// 	});
 
-	test(`if resetIsAuth called, it should return default auth state`, () => {
-		expect(resetIsAuth()).toEqual({
-			isAuth: false,
-			message: 'You have logged out of your account',
-		});
-	});
+	// 	test(`if resetIsAuth called, it should return default auth state`, () => {
+	// 		expect(resetIsAuth()).toEqual({
+	// 			isAuth: false,
+	// 			message: 'You have logged out of your account',
+	// 		});
+	// 	});
 });

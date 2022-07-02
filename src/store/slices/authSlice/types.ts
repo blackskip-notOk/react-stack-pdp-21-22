@@ -1,13 +1,9 @@
 import { BaseResponse } from '../types';
 
-export interface Initialization {
-	initialize: boolean;
-}
-
-interface AuthData {
-	id: number;
-	email: string;
-	login: string;
+export interface AuthData {
+	id: number | null;
+	email: string | null;
+	login: string | null;
 }
 
 export interface Auth extends BaseResponse {
@@ -21,6 +17,6 @@ export interface AuthResponse {
 
 export interface AuthState {
 	isAuth: boolean;
-	message: string;
-	ownerId?: number;
+	authMessage: string | undefined;
+	data: AuthData;
 }

@@ -1,7 +1,6 @@
 import { lazy, Suspense, useEffect, useState } from 'react';
 import './App.css';
 import appStyles from './styles/App.module.less';
-import { useStore } from 'effector-react';
 import { Route, Routes } from 'react-router-dom';
 import { NAVLINKS } from './constants/routerConstants';
 import { Loader } from './components/common/loader/Loader';
@@ -9,9 +8,12 @@ import { Header } from './components/Header/Header';
 import { NavBar } from './components/NavBar/NavBar';
 import { Home } from './components/Home/Home';
 import { Login } from './components/Login/Login';
-import { $auth, $initialization, initializeFx } from './models/auth';
 import { ErrorBoundary } from 'react-error-boundary';
 import { ErrorMessage } from './components/common/Error/Error';
+import { useAppDispatch, useAppSelector } from './hooks/storeHooks';
+import { fetchAuth } from './services/authService';
+import { getIsAuth } from './store/selectors/authSelectors';
+import { getIsInitialize } from './store/selectors/initializeSelector';
 
 const Profile = lazy(() =>
 	import('./components/Profile/Profile').then((module) => ({ default: module.Profile })),
@@ -40,16 +42,17 @@ const UserProfile = lazy(() =>
 );
 
 export const App = () => {
-	const { isAuth } = useStore($auth);
-	const initialization = useStore($initialization);
+	const dispatch = useAppDispatch();
+	const isAuth = useAppSelector(getIsAuth);
+	const isInitialize = useAppSelector(getIsInitialize);
 
 	const [showGreeting, setShowGreeting] = useState(false);
 
 	useEffect(() => {
-		initializeFx();
-	}, [initializeFx]);
+		dispatch(fetchAuth());
+	}, [dispatch, fetchAuth]);
 
-	if (!initialization.initialize) {
+	if (!isInitialize) {
 		return <Loader />;
 	}
 
