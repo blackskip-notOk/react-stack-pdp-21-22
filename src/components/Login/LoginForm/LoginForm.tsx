@@ -24,7 +24,6 @@ import { loginSchema } from '../utils/loginSchema';
 import { Box } from '@mui/system';
 import { isEmpty } from 'ramda';
 import { NAVLINKS } from '@/constants/routerConstants';
-import { LoginFormData } from '@/models/login/types';
 import { LoginProps } from '../types';
 import { useAppDispatch, useAppSelector } from '@/hooks/storeHooks';
 import { getIsAuth } from '@/store/selectors/authSelectors';
@@ -32,6 +31,7 @@ import { getLoginState } from '@/store/selectors/loginSelector';
 import { setLoginData, setLoginResponse } from '@/store/slices/loginSlice';
 import { fetchCaptcha, loginApi } from '@/services/loginService';
 import { getLoginResponse } from '@/services/helpers';
+import { LoginFormData } from '@/store/slices/loginSlice/types';
 
 export const LoginForm: FC<LoginProps> = ({ setShowGreeting }) => {
 	const navigate = useNavigate();
@@ -207,9 +207,7 @@ export const LoginForm: FC<LoginProps> = ({ setShowGreeting }) => {
 						)}
 					/>
 				)}
-				{loginServerError && (
-					<Box className={styles.autorizationError}>{loginServerError.message}</Box>
-				)}
+				{loginServerError && <Box className={styles.autorizationError}>{loginServerError}</Box>}
 				{loginError && <Box className={styles.autorizationError}>{loginError}</Box>}
 				<Box className={buttonStyles.buttonContainer}>
 					<LoadingButton
