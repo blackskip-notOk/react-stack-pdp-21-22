@@ -1,4 +1,5 @@
 export const ApiName = {
+	appApi: 'appApi',
 	auth: 'authApi',
 	login: 'loginApi',
 	captcha: 'captcha',
@@ -20,6 +21,9 @@ export const API = {
 	baseURL: 'https://social-network.samuraijs.com/api/1.0',
 	singUp: 'https://social-network.samuraijs.com/signUp',
 	baseWebSocketUrl: 'wss://social-network.samuraijs.com/handlers/ChatHandler.ashx',
+	withCredentials: 'withCredentials',
+	apiKey: 'API-KEY',
+	apiToken: '2e033ec1-c683-45a9-bc19-12d1729d43cd',
 	authMe: `${AUTH}/${ME}`,
 	login: `${AUTH}/${LOGIN}`,
 	logout: `${AUTH}/${logout}`,

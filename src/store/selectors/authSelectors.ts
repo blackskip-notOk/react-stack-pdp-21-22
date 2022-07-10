@@ -1,5 +1,6 @@
-import { RootState } from '../store';
+import { createSelector } from '@reduxjs/toolkit';
+import { storeSelector } from '.';
 
-export const getAuthState = (state: RootState) => state.auth;
-export const getIsAuth = (state: RootState) => state.auth.isAuth;
-export const getOwnerId = (state: RootState) => state.auth.data.id;
+export const authStateSelector = createSelector(storeSelector, (state) => state.auth);
+export const isAuthSelector = createSelector(authStateSelector, (state) => state.isAuth);
+export const isOwnerIdSelector = createSelector(authStateSelector, (state) => state.data.id);

@@ -26,65 +26,72 @@ import { isEmpty } from 'ramda';
 import { NAVLINKS } from '@/constants/routerConstants';
 import { LoginProps } from '../types';
 import { useAppDispatch, useAppSelector } from '@/hooks/storeHooks';
-import { getIsAuth } from '@/store/selectors/authSelectors';
-import { getLoginState } from '@/store/selectors/loginSelector';
-import { setLoginData, setLoginResponse } from '@/store/slices/loginSlice';
-import { fetchCaptcha, loginApi } from '@/services/loginService';
-import { getLoginResponse } from '@/services/helpers';
-import { LoginFormData } from '@/store/slices/loginSlice/types';
+import { isAuthSelector } from '@/store/selectors/authSelectors';
+import {
+	captchaStateSelector,
+	loginRequestStateSelector,
+	loginResponseStateSelector,
+} from '@/store/selectors/loginSelector';
+import { LoginRequestState } from '@/store/slices/loginRequestSlice/types';
+import { initialState, setLoginRequestData } from '@/store/slices/loginRequestSlice';
+import { useFetchCaptchaQuery, useLoginMutation } from '@/store/slices/apiSlice';
+import { setLoginResponseData } from '@/store/slices/loginResponseSlice';
+import { setCaptchaData } from '@/store/slices/captchaSlice';
 
 export const LoginForm: FC<LoginProps> = ({ setShowGreeting }) => {
 	const navigate = useNavigate();
 
 	const dispatch = useAppDispatch();
-	const isAuth = useAppSelector(getIsAuth);
-	const {
-		data: { email, password, captcha, rememberMe },
-		error: loginError,
-		isNeedCaptcha,
-		captchaUrl,
-	} = useAppSelector(getLoginState);
+	const isAuth = useAppSelector(isAuthSelector);
 
-	const [showPassword, toggleShowPassword] = useReducer((showPassword) => !showPassword, false);
+	const { email, password, captcha, rememberMe } = useAppSelector(loginRequestStateSelector);
+	const { error: loginError, isNeedCaptcha } = useAppSelector(loginResponseStateSelector);
+	const { captchaUrl } = useAppSelector(captchaStateSelector);
 
-	const [login, { isLoading: loginLoading, data: loginData, error: loginServerError }] =
-		loginApi.useLoginMutation();
+	const [login, { isLoading: loginLoading }] = useLoginMutation();
+	const { data: captchaData, refetch } = useFetchCaptchaQuery(null, {
+		skip: !isNeedCaptcha,
+	});
+
+	const [showPassword, toggleShowPassword] = useReducer(
+		(showPassword: boolean) => !showPassword,
+		false,
+	);
 
 	useEffect(() => {
 		if (isAuth) {
 			setShowGreeting(true);
+			dispatch(setLoginRequestData(initialState));
 			navigate(NAVLINKS.HOME);
 		}
 	}, [isAuth]);
 
 	useEffect(() => {
-		if (loginData) {
-			const loginResponse = getLoginResponse(loginData);
-
-			dispatch(setLoginResponse(loginResponse));
-
-			if (loginResponse.isNeedCaptcha) {
-				dispatch(fetchCaptcha());
-			}
+		if (captchaData) {
+			dispatch(setCaptchaData(captchaData));
 		}
-	}, [loginData]);
+	}, [captchaData]);
 
 	const {
 		control,
 		handleSubmit,
 		formState: { errors: formErrors },
-	} = useForm<LoginFormData>({
+	} = useForm<LoginRequestState>({
 		defaultValues: { email, password, rememberMe, captcha },
 		resolver: yupResolver(loginSchema),
 	});
 
-	const onSubmit: SubmitHandler<LoginFormData> = async (data) => {
-		dispatch(setLoginData(data));
-		await login(data);
+	const onSubmit: SubmitHandler<LoginRequestState> = async (data) => {
+		dispatch(setLoginRequestData(data));
+		const loginResponse = await login(data).unwrap();
+
+		if (loginResponse) {
+			dispatch(setLoginResponseData(loginResponse));
+		}
 	};
 
 	const handleGetCaptcha = () => {
-		dispatch(fetchCaptcha());
+		refetch();
 	};
 
 	return (
@@ -207,7 +214,6 @@ export const LoginForm: FC<LoginProps> = ({ setShowGreeting }) => {
 						)}
 					/>
 				)}
-				{loginServerError && <Box className={styles.autorizationError}>{loginServerError}</Box>}
 				{loginError && <Box className={styles.autorizationError}>{loginError}</Box>}
 				<Box className={buttonStyles.buttonContainer}>
 					<LoadingButton

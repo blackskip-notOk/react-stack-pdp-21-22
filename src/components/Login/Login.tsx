@@ -5,10 +5,10 @@ import styles from './Login.module.less';
 import { API } from '@/constants/apiConstants';
 import { LoginProps } from './types';
 import { useAppSelector } from '@/hooks/storeHooks';
-import { getAuthState } from '@/store/selectors/authSelectors';
+import { authStateSelector } from '@/store/selectors/authSelectors';
 
 export const Login: FC<LoginProps> = ({ setShowGreeting }) => {
-	const { isAuth, authMessage } = useAppSelector(getAuthState);
+	const { isAuth, authMessage } = useAppSelector(authStateSelector);
 
 	const localMessage = useMemo(() => {
 		return authMessage === ServerMessage.notAutorized

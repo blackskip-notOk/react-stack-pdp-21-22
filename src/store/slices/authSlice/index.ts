@@ -1,6 +1,5 @@
 import { Slice } from '@/constants/systemConstants';
-import { fetchAuth } from '@/services/authService';
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction, SerializedError } from '@reduxjs/toolkit';
 import { AuthState } from './types';
 
 const initialState: AuthState = {
@@ -16,15 +15,16 @@ const initialState: AuthState = {
 export const authSlice = createSlice({
 	name: Slice.auth,
 	initialState,
-	reducers: {},
-	extraReducers: {
-		[fetchAuth.fulfilled.type]: (_, action: PayloadAction<AuthState>) => {
+	reducers: {
+		setAuthData: (_, action: PayloadAction<AuthState>) => {
 			return action.payload;
 		},
-		[fetchAuth.rejected.type]: (state, action: PayloadAction<string>) => {
-			state.authMessage = action.payload;
+		setAuthError: (state, action: PayloadAction<SerializedError>) => {
+			state.authMessage = action.payload.message;
 		},
 	},
 });
+
+export const { setAuthData, setAuthError } = authSlice.actions;
 
 export default authSlice.reducer;

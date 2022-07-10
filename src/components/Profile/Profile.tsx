@@ -18,10 +18,10 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { profileStatusSchema } from './utils/profileSchema';
 import inputStyles from '@/styles/Input.module.less';
 import { useAppSelector } from '@/hooks/storeHooks';
-import { getOwnerId } from '@/store/selectors/authSelectors';
+import { isOwnerIdSelector } from '@/store/selectors/authSelectors';
 
 export const Profile: FC = () => {
-	const ownerId = useAppSelector(getOwnerId);
+	const ownerId = useAppSelector(isOwnerIdSelector);
 
 	const { data, error, isError, isFetching, isLoading, isRefetching, isSuccess, refetch } =
 		useGetProfile(String(ownerId));

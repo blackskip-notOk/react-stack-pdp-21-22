@@ -1,20 +1,27 @@
-import { loginApi } from '@/services/loginService';
 import { configureStore } from '@reduxjs/toolkit';
+import { setupListeners } from '@reduxjs/toolkit/dist/query';
 import chatReducer from '../features/chat/chatSlice';
+import { appApi } from './slices/apiSlice';
 import authReducer from './slices/authSlice';
 import initializeReducer from './slices/initializeSlice';
-import loginReducer from './slices/loginSlice';
+import loginRequestReducer from './slices/loginRequestSlice';
+import loginResponseReducer from './slices/loginResponseSlice';
+import captchaReducer from './slices/captchaSlice';
 
 export const store = configureStore({
 	reducer: {
+		[appApi.reducerPath]: appApi.reducer,
 		auth: authReducer,
 		initialize: initializeReducer,
-		login: loginReducer,
-		[loginApi.reducerPath]: loginApi.reducer,
+		loginRequest: loginRequestReducer,
+		loginResponse: loginResponseReducer,
+		captcha: captchaReducer,
 		chat: chatReducer,
 	},
-	middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(loginApi.middleware),
+	middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(appApi.middleware),
 });
+
+setupListeners(store.dispatch);
 
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;

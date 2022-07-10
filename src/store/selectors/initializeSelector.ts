@@ -1,4 +1,8 @@
-import { RootState } from '../store';
+import { createSelector } from '@reduxjs/toolkit';
+import { storeSelector } from '.';
 
-export const getInitializeState = (state: RootState) => state.initialize;
-export const getIsInitialize = (state: RootState) => state.initialize.initialize;
+export const initializeStateSelector = createSelector(storeSelector, (state) => state.initialize);
+export const isInitializeSelector = createSelector(
+	initializeStateSelector,
+	(state) => state.initialize,
+);

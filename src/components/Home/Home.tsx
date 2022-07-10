@@ -8,11 +8,11 @@ import styles from './Home.module.less';
 import { HomeProps } from './types';
 import { BackgroundUniverse } from '@/components/common/Background/BackgroundUniverse';
 import { useAppSelector } from '@/hooks/storeHooks';
-import { getIsAuth } from '@/store/selectors/authSelectors';
+import { isAuthSelector } from '@/store/selectors/authSelectors';
 
 export const Home: FC<HomeProps> = ({ showGreeting, setShowGreeting }) => {
 	const navigate = useNavigate();
-	const isAuth = useAppSelector(getIsAuth);
+	const isAuth = useAppSelector(isAuthSelector);
 
 	useEffect(() => {
 		if (!isAuth) {

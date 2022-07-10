@@ -28,8 +28,15 @@ export enum EVENT {
 export const Slice = {
 	auth: 'auth',
 	initialize: 'initialize',
-	login: 'login',
+	loginRequest: 'loginRequest',
+	loginResponse: 'loginResponse',
+	captcha: 'captcha',
 	chat: 'chat',
+} as const;
+
+export const Tag = {
+	auth: 'fetchAuth',
+	captcha: 'fetchCaptcha',
 } as const;
 
 export const ResponseStatus = {

@@ -11,9 +11,12 @@ import { Login } from './components/Login/Login';
 import { ErrorBoundary } from 'react-error-boundary';
 import { ErrorMessage } from './components/common/Error/Error';
 import { useAppDispatch, useAppSelector } from './hooks/storeHooks';
-import { fetchAuth } from './services/authService';
-import { getIsAuth } from './store/selectors/authSelectors';
-import { getIsInitialize } from './store/selectors/initializeSelector';
+import { isAuthSelector } from './store/selectors/authSelectors';
+import { isInitializeSelector } from './store/selectors/initializeSelector';
+import { useFetchAuthQuery } from './store/slices/apiSlice';
+import { setAuthData, setAuthError } from './store/slices/authSlice';
+import { inizialization } from './store/slices/initializeSlice';
+import { miniSerializeError } from '@reduxjs/toolkit';
 
 const Profile = lazy(() =>
 	import('./components/Profile/Profile').then((module) => ({ default: module.Profile })),
@@ -43,16 +46,29 @@ const UserProfile = lazy(() =>
 
 export const App = () => {
 	const dispatch = useAppDispatch();
-	const isAuth = useAppSelector(getIsAuth);
-	const isInitialize = useAppSelector(getIsInitialize);
+	const isAuth = useAppSelector(isAuthSelector);
+	const isInitialize = useAppSelector(isInitializeSelector);
+
+	const { isError, isFetching, isLoading, isSuccess, data, error } = useFetchAuthQuery(null);
 
 	const [showGreeting, setShowGreeting] = useState(false);
 
 	useEffect(() => {
-		dispatch(fetchAuth());
-	}, [dispatch, fetchAuth]);
+		if (isSuccess && data) {
+			dispatch(setAuthData(data));
+			dispatch(inizialization(true));
+		}
+	}, [dispatch, isSuccess, data]);
 
-	if (!isInitialize) {
+	useEffect(() => {
+		if (isError && error) {
+			const serializeError = miniSerializeError(error);
+			dispatch(setAuthError(serializeError));
+			dispatch(inizialization(true));
+		}
+	}, [dispatch, isSuccess, data]);
+
+	if (!isInitialize || isFetching || isLoading) {
 		return <Loader />;
 	}
 
