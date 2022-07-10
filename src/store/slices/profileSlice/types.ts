@@ -1,5 +1,6 @@
 import { BaseResponse } from './../types';
 export type UserId = number;
+export type Status = string;
 
 export interface Contacts {
 	github?: string;
@@ -17,7 +18,7 @@ export interface Photos {
 	large: string | null;
 }
 
-export interface ProfileResponse {
+export interface ProfileState {
 	userId?: UserId;
 	aboutMe?: string;
 	lookingForAJob: boolean;
@@ -27,10 +28,6 @@ export interface ProfileResponse {
 	photos: Photos;
 }
 
-export interface ProfileState extends ProfileResponse {
-	isOwner: boolean;
-}
-
 type ProfilePhoto = Omit<BaseResponse, 'fieldsErrors'>;
 
 export interface ProfilePhotoResponse extends ProfilePhoto {
@@ -38,7 +35,11 @@ export interface ProfilePhotoResponse extends ProfilePhoto {
 }
 
 export interface ProfileStatusFormData {
-	status?: string;
+	status?: Status;
+}
+
+export interface ProfileStatusState {
+	status: Status;
 }
 
 type ProfileStatus = Omit<BaseResponse, 'fieldsErrors'>;

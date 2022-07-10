@@ -31,12 +31,16 @@ export const Slice = {
 	loginRequest: 'loginRequest',
 	loginResponse: 'loginResponse',
 	captcha: 'captcha',
+	profile: 'profile',
+	status: 'status',
 	chat: 'chat',
 } as const;
 
 export const Tag = {
 	auth: 'fetchAuth',
 	captcha: 'fetchCaptcha',
+	profile: 'fetchProfile',
+	status: 'fechStatus',
 } as const;
 
 export const ResponseStatus = {

@@ -1,3 +1,10 @@
+import {
+	ProfileState,
+	ProfileStatusResponse,
+	ProfileStatusState,
+	Status,
+	UserId,
+} from '@/store/slices/profileSlice/types';
 import { ApiName, API } from '@/constants/apiConstants';
 import { Method, Tag } from '@/constants/systemConstants';
 import { getAuthResponse, getLoginResponse } from '@/helpers';
@@ -19,7 +26,7 @@ export const appApi = createApi({
 		credentials: 'include',
 	}),
 	refetchOnReconnect: true,
-	tagTypes: [Tag.auth, Tag.captcha],
+	tagTypes: [Tag.auth, Tag.captcha, Tag.profile, Tag.status],
 	endpoints: (builder) => ({
 		fetchAuth: builder.query<AuthState, null>({
 			query: () => API.authMe,
@@ -63,8 +70,38 @@ export const appApi = createApi({
 			providesTags: [Tag.captcha],
 			transformResponse: (response: CaptchaUrlResponse) => ({ captchaUrl: response.url }),
 		}),
+		fetchProfile: builder.query<ProfileState, UserId | null>({
+			query: (userId) => ({
+				url: API.profile,
+				params: { userId },
+			}),
+			providesTags: [Tag.profile],
+		}),
+		fetchProfileStatus: builder.query<ProfileStatusState, UserId | null>({
+			query: (userId) => ({
+				url: API.getProfileStatus,
+				params: { userId },
+			}),
+			providesTags: [Tag.status],
+			transformResponse: (response: Status) => ({ status: response }),
+		}),
+		setProfileStatus: builder.mutation<ProfileStatusResponse, Status>({
+			query: (status) => ({
+				url: API.setProfileStatus,
+				method: Method.put,
+				body: { status },
+			}),
+			invalidatesTags: [Tag.status],
+		}),
 	}),
 });
 
-export const { useFetchAuthQuery, useLoginMutation, useLogoutMutation, useFetchCaptchaQuery } =
-	appApi;
+export const {
+	useFetchAuthQuery,
+	useLoginMutation,
+	useLogoutMutation,
+	useFetchCaptchaQuery,
+	useFetchProfileQuery,
+	useFetchProfileStatusQuery,
+	useSetProfileStatusMutation,
+} = appApi;
