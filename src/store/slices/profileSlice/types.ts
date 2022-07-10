@@ -28,16 +28,6 @@ export interface ProfileState {
 	photos: Photos;
 }
 
-type ProfilePhoto = Omit<BaseResponse, 'fieldsErrors'>;
-
-export interface ProfilePhotoResponse extends ProfilePhoto {
-	photos: Photos;
-}
-
-export interface ProfileStatusFormData {
-	status?: Status;
-}
-
 export interface ProfileStatusState {
 	status: Status;
 }
@@ -46,4 +36,12 @@ type ProfileStatus = Omit<BaseResponse, 'fieldsErrors'>;
 
 export interface ProfileStatusResponse extends ProfileStatus {
 	data: Record<string, string>;
+}
+
+export interface PhotosData {
+	photos: Photos;
+}
+
+export interface ProfilePhotoResponse extends BaseResponse {
+	data: PhotosData;
 }

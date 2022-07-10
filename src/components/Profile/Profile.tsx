@@ -15,29 +15,34 @@ import { isAuthSelector, isOwnerIdSelector } from '@/store/selectors/authSelecto
 import {
 	useFetchProfileQuery,
 	useFetchProfileStatusQuery,
+	useSetProfileAvatarMutation,
 	useSetProfileStatusMutation,
 } from '@/store/slices/apiSlice';
-import { setProfileData } from '@/store/slices/profileSlice';
-import { profileSelector, profileStatusSelector } from '@/store/selectors/profileSelector';
+import { setProfileAvatar, setProfileData } from '@/store/slices/profileSlice';
+import {
+	profileAvatarSelector,
+	profileSelector,
+	profileStatusSelector,
+} from '@/store/selectors/profileSelector';
 import { ProfileStatusState } from '@/store/slices/profileSlice/types';
 import { setProfileStatus } from '@/store/slices/profileSlice/status';
 import { miniSerializeError } from '@reduxjs/toolkit';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { NAVLINKS } from '@/constants/routerConstants';
 
 export const Profile: FC = () => {
 	const navigate = useNavigate();
-	const location = useLocation();
 
 	const dispatch = useAppDispatch();
 
 	const isAuth = useAppSelector(isAuthSelector);
 
 	const ownerId = useAppSelector(isOwnerIdSelector);
-	const { contacts, photos, aboutMe, fullName, lookingForAJobDescription } =
+	const { contacts, aboutMe, fullName, lookingForAJobDescription } =
 		useAppSelector(profileSelector);
 
 	const { status } = useAppSelector(profileStatusSelector);
+	const { large } = useAppSelector(profileAvatarSelector);
 
 	const {
 		isFetching: profileFetching,
@@ -55,6 +60,9 @@ export const Profile: FC = () => {
 	});
 
 	const [setStatus] = useSetProfileStatusMutation();
+
+	const [setAvatar, { isLoading: loaadingAvatar, data: avatarData }] =
+		useSetProfileAvatarMutation();
 
 	const [showErrow, setShowError] = useState(isProfileError);
 
@@ -76,7 +84,11 @@ export const Profile: FC = () => {
 		}
 	}, [profileStatus]);
 
-	// const { isLoading: isLoadingAvatar, mutate } = useSetProfileAvatar(refetch);
+	useEffect(() => {
+		if (avatarData) {
+			dispatch(setProfileAvatar(avatarData));
+		}
+	}, [avatarData]);
 
 	const handleErrorClose = () => {
 		setShowError(false);
@@ -97,27 +109,33 @@ export const Profile: FC = () => {
 		resetField('status');
 	};
 
-	// const handleChangeAvatar = (event: ChangeEvent<HTMLInputElement>) => {
-	// 	if (event.currentTarget.files && event.currentTarget.files.length) {
-	// 		const [photo] = event.currentTarget.files;
-	// 		mutate(photo);
-	// 	}
-	// };
+	const handleChangeAvatar = (event: ChangeEvent<HTMLInputElement>) => {
+		if (!event.currentTarget.files) {
+			return;
+		}
+
+		if (event.currentTarget.files && event.currentTarget.files.length) {
+			const [photo] = event.currentTarget.files;
+
+			const formData = new FormData();
+			formData.append('image', photo);
+			setAvatar(formData);
+		}
+	};
 
 	return (
 		<div className={styles.profileContainer}>
-			{/* {(isLoading || isLoadingAvatar) && <Loader />} */}
-			{(profileFetching || profileLoading) && <Loader />}
+			{(profileFetching || profileLoading || loaadingAvatar) && <Loader />}
 			{profileSuccess && (
 				<>
-					{/* {isLoadingAvatar ? (
+					{loaadingAvatar ? (
 						<Loader />
 					) : (
 						<div className={styles.avatarContainer}>
-							{data.photos.large ? (
+							{large ? (
 								<Avatar
-									alt={`${data.fullName}`}
-									src={data.photos.large}
+									alt={`${fullName}`}
+									src={large}
 									sx={{ width: 250, height: 250, bgcolor: deepPurple[800] }}
 								/>
 							) : (
@@ -125,10 +143,10 @@ export const Profile: FC = () => {
 							)}
 							<UploadAvatar
 								onChange={handleChangeAvatar}
-								disable={isFetching || isLoading || isRefetching}
+								disable={profileFetching || profileLoading || loaadingAvatar}
 							/>
 						</div>
-					)} */}
+					)}
 					<div>{fullName}</div>
 					<form onSubmit={handleSubmit(onSubmit)}>
 						<Controller

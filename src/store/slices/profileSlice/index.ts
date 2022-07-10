@@ -1,6 +1,6 @@
 import { Slice } from '@/constants/systemConstants';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { ProfileState } from './types';
+import { Photos, ProfileState } from './types';
 
 const initialState: ProfileState = {
 	userId: undefined,
@@ -27,9 +27,12 @@ export const profileSlice = createSlice({
 		setProfileData: (_, action: PayloadAction<ProfileState>) => {
 			return action.payload;
 		},
+		setProfileAvatar: (state, action: PayloadAction<Photos>) => {
+			state.photos = action.payload;
+		},
 	},
 });
 
-export const { setProfileData } = profileSlice.actions;
+export const { setProfileData, setProfileAvatar } = profileSlice.actions;
 
 export default profileSlice.reducer;

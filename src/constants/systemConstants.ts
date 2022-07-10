@@ -33,6 +33,7 @@ export const Slice = {
 	captcha: 'captcha',
 	profile: 'profile',
 	status: 'status',
+	avatar: 'avatar',
 	chat: 'chat',
 } as const;
 

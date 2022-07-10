@@ -1,4 +1,6 @@
 import {
+	Photos,
+	ProfilePhotoResponse,
 	ProfileState,
 	ProfileStatusResponse,
 	ProfileStatusState,
@@ -93,6 +95,17 @@ export const appApi = createApi({
 			}),
 			invalidatesTags: [Tag.status],
 		}),
+		setProfileAvatar: builder.mutation<Photos, FormData>({
+			query: (photo) => ({
+				url: API.profilePhoto,
+				method: Method.put,
+				body: photo,
+			}),
+			transformResponse: ({ data }: ProfilePhotoResponse) => ({
+				large: data.photos.large,
+				small: data.photos.small,
+			}),
+		}),
 	}),
 });
 
@@ -104,4 +117,5 @@ export const {
 	useFetchProfileQuery,
 	useFetchProfileStatusQuery,
 	useSetProfileStatusMutation,
+	useSetProfileAvatarMutation,
 } = appApi;
