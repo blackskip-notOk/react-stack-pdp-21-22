@@ -16,6 +16,7 @@ import { CaptchaState, CaptchaUrlResponse } from '../captchaSlice/types';
 import { LoginRequestState } from '../loginRequestSlice/types';
 import { LoginResponse, LoginResponseState, LogoutResponse } from '../loginResponseSlice/types';
 import { TagValues } from '../types';
+import { UsersRequestState, UsersState } from '../usersSlice/types';
 
 export const appApi = createApi({
 	reducerPath: ApiName.appApi,
@@ -106,6 +107,12 @@ export const appApi = createApi({
 				small: data.photos.small,
 			}),
 		}),
+		fetchUsers: builder.query<UsersState, UsersRequestState>({
+			query: (requestParams) => ({
+				url: API.users,
+				params: { ...requestParams },
+			}),
+		}),
 	}),
 });
 
@@ -118,4 +125,5 @@ export const {
 	useFetchProfileStatusQuery,
 	useSetProfileStatusMutation,
 	useSetProfileAvatarMutation,
+	useFetchUsersQuery,
 } = appApi;

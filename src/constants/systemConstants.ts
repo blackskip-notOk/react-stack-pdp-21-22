@@ -34,6 +34,8 @@ export const Slice = {
 	profile: 'profile',
 	status: 'status',
 	avatar: 'avatar',
+	users: 'users',
+	usersRequest: 'usersRequest',
 	chat: 'chat',
 } as const;
 

@@ -9,6 +9,8 @@ import loginResponseReducer from './slices/loginResponseSlice';
 import captchaReducer from './slices/captchaSlice';
 import profileReducer from './slices/profileSlice';
 import profileStatusReducer from './slices/profileSlice/status';
+import usersReducer from './slices/usersSlice';
+import usersRequestReducer from './slices/usersSlice/request';
 
 export const store = configureStore({
 	reducer: {
@@ -20,6 +22,8 @@ export const store = configureStore({
 		captcha: captchaReducer,
 		profile: profileReducer,
 		status: profileStatusReducer,
+		users: usersReducer,
+		usersRequest: usersRequestReducer,
 		chat: chatReducer,
 	},
 	middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(appApi.middleware),
