@@ -1,6 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { setupListeners } from '@reduxjs/toolkit/dist/query';
-import chatReducer from '../features/chat/chatSlice';
+import chatReducer from './slices/chatSlice';
 import { appApi } from './slices/apiSlice';
 import authReducer from './slices/authSlice';
 import initializeReducer from './slices/initializeSlice';

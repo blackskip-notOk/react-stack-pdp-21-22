@@ -1,4 +1,4 @@
-import { ConnectionStatus } from '@/features/chat/types';
+import { ConnectionStatus } from '../chatSlice/types';
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import { CONNECTION_STATUS, EVENT } from '@/constants/systemConstants';
 import { MessagesReceivedSubscribers, StatusChangedSubscribers, SubscriberCallBack } from './types';

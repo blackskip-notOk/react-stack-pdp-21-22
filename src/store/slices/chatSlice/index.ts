@@ -1,6 +1,6 @@
 import { CONNECTION_STATUS, EVENT } from '@/constants/systemConstants';
 import { AppDispatch } from '@/store/store';
-import { chatApi } from '@/api/chatApi';
+import { chatApi } from './chatApi';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { ChatMessage, ChatMessages, ChatSlice, ConnectionStatus } from './types';
 import { idGenerator } from '@/utils';
