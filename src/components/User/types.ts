@@ -1,4 +1,4 @@
-import { User } from '@/models/users/types';
+import { User } from '@/store/slices/usersSlice/types';
 
 export interface UserProps {
 	user: User;

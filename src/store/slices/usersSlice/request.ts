@@ -14,9 +14,27 @@ export const usersRequestSlice = createSlice({
 		setUsersRequest: (_, action: PayloadAction<UsersRequestState>) => {
 			return action.payload;
 		},
+		setRequestPage: (state, action: PayloadAction<number>) => {
+			state.page = action.payload;
+		},
+		setRequestCount: (state, action: PayloadAction<number>) => {
+			state.count = action.payload;
+		},
+		setRequestTerm: (state, action: PayloadAction<string>) => {
+			state.term = action.payload;
+		},
+		setRequestFriend: (state, action: PayloadAction<boolean>) => {
+			state.friend = action.payload;
+		},
 	},
 });
 
-export const { setUsersRequest } = usersRequestSlice.actions;
+export const {
+	setUsersRequest,
+	setRequestPage,
+	setRequestCount,
+	setRequestTerm,
+	setRequestFriend,
+} = usersRequestSlice.actions;
 
 export default usersRequestSlice.reducer;

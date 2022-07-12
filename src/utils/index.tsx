@@ -1,8 +1,7 @@
 import { SyntheticEvent } from 'react';
 import { ServerMessage, Description } from '../constants/serverMessages';
-import { ResponseStatus, ReultCode, SESSION_STORAGE } from '../constants/systemConstants';
-import { FollowResponse, FollowResult, UsersRequest } from '@/models/users/types';
-import { AxiosResponse } from 'axios';
+import { ReultCode } from '../constants/systemConstants';
+import { FollowResponse, FollowResult, UsersRequestState } from '@/store/slices/usersSlice/types';
 import { isEmpty } from 'ramda';
 import { ClearObject } from './types';
 
@@ -10,13 +9,8 @@ export const preventDefault = (event: SyntheticEvent) => {
 	event.preventDefault();
 };
 
-export const saveSessionParams = (params: UsersRequest): void => {
-	const savedRequestParams = JSON.stringify({ ...params });
-	sessionStorage.setItem(SESSION_STORAGE.USERS_REQUEST_PARAMS, savedRequestParams);
-};
-
 export const getFollowResult = (
-	response: AxiosResponse<FollowResponse> | undefined,
+	response: FollowResponse | undefined,
 	user: string,
 	isFollow: boolean,
 ): FollowResult => {
@@ -27,7 +21,7 @@ export const getFollowResult = (
 		};
 	}
 
-	const { data, status } = response;
+	const { messages, resultCode } = response;
 
 	const successMessage = `${
 		isFollow ? Description.successFollow : Description.successUnFollow
@@ -35,24 +29,22 @@ export const getFollowResult = (
 
 	const unSuccessMessage = `${isFollow ? Description.alreadyFollow : Description.alreadyUnFollow}`;
 
-	if (status === ResponseStatus.success) {
-		if (data.resultCode === ReultCode.success) {
-			return {
-				isSuccess: true,
-				message: successMessage,
-			};
-		}
-		if (data.resultCode === ReultCode.error) {
-			const errorMessage =
-				data.messages.join() === (ServerMessage.alreadyUnfollow || ServerMessage.alreadyFollow)
-					? unSuccessMessage
-					: Description.someError;
+	if (resultCode === ReultCode.success) {
+		return {
+			isSuccess: true,
+			message: successMessage,
+		};
+	}
+	if (resultCode === ReultCode.error) {
+		const errorMessage =
+			messages.join() === (ServerMessage.alreadyUnfollow || ServerMessage.alreadyFollow)
+				? unSuccessMessage
+				: Description.someError;
 
-			return {
-				isSuccess: false,
-				message: errorMessage,
-			};
-		}
+		return {
+			isSuccess: false,
+			message: errorMessage,
+		};
 	}
 	return {
 		isSuccess: false,
@@ -88,7 +80,9 @@ const getBooleanParam = (param: boolean | undefined): string | null => {
 	return param === undefined ? null : '0';
 };
 
-export const searchParamsSerializer = (params: UsersRequest): Record<string, string> | null => {
+export const searchParamsSerializer = (
+	params: UsersRequestState,
+): Record<string, string> | null => {
 	const { page, count, term, friend } = params;
 
 	const urlParams = {
@@ -103,7 +97,7 @@ export const searchParamsSerializer = (params: UsersRequest): Record<string, str
 
 export const getSearchParamsFromUrl = (
 	params: Record<string, string>,
-): Partial<UsersRequest> | null => {
+): Partial<UsersRequestState> | null => {
 	if (isEmpty(params)) {
 		return null;
 	}

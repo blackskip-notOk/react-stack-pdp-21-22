@@ -1,11 +1,4 @@
 import {
-	$users,
-	$usersLoading,
-	$usersRequestParams,
-	getUsersFx,
-	setUsersRequestParams,
-} from '@/models/users';
-import {
 	Button,
 	FormControl,
 	InputAdornment,
@@ -18,7 +11,6 @@ import {
 	TablePagination,
 	TextField,
 } from '@mui/material';
-import { useStore } from 'effector-react';
 import {
 	FC,
 	useEffect,
@@ -41,7 +33,11 @@ import { useAppDispatch, useAppSelector } from '@/hooks/storeHooks';
 import { usersSelector, usersRequestSelector } from '@/store/selectors/usersSelector';
 import { useFetchUsersQuery } from '@/store/slices/apiSlice';
 import { setUsersData } from '@/store/slices/usersSlice';
-import { setUsersRequest } from '@/store/slices/usersSlice/request';
+import {
+	setUsersRequest,
+	setRequestPage,
+	setRequestCount,
+} from '@/store/slices/usersSlice/request';
 
 export const Users: FC = () => {
 	const dispatch = useAppDispatch();
@@ -92,15 +88,13 @@ export const Users: FC = () => {
 	}, []);
 
 	const handlePageChange = (event: MouseEvent<HTMLButtonElement> | null, page: number): void => {
-		const newRequestParams = { ...storeSearchParams, page: page + 1 };
-		dispatch(setUsersRequest(newRequestParams));
+		dispatch(setRequestPage(page + 1));
 	};
 
 	const handleOnRowPerPageChange = (
 		event: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>,
 	): void => {
-		const newRequestParams = { ...storeSearchParams, count: Number(event.target.value) };
-		dispatch(setUsersRequest(newRequestParams));
+		dispatch(setRequestCount(Number(event.target.value)));
 	};
 
 	const handleOnChangeSearchInput = (

@@ -16,7 +16,7 @@ import { CaptchaState, CaptchaUrlResponse } from '../captchaSlice/types';
 import { LoginRequestState } from '../loginRequestSlice/types';
 import { LoginResponse, LoginResponseState, LogoutResponse } from '../loginResponseSlice/types';
 import { TagValues } from '../types';
-import { UsersRequestState, UsersState } from '../usersSlice/types';
+import { FollowResponse, UsersRequestState, UsersState } from '../usersSlice/types';
 
 export const appApi = createApi({
 	reducerPath: ApiName.appApi,
@@ -113,6 +113,20 @@ export const appApi = createApi({
 				params: { ...requestParams },
 			}),
 		}),
+		followUser: builder.mutation<FollowResponse, UserId>({
+			query: (userId) => ({
+				url: API.follow,
+				method: Method.post,
+				params: { userId },
+			}),
+		}),
+		unFollowUser: builder.mutation<FollowResponse, UserId>({
+			query: (userId) => ({
+				url: API.follow,
+				method: Method.delete,
+				params: { userId },
+			}),
+		}),
 	}),
 });
 
@@ -126,4 +140,6 @@ export const {
 	useSetProfileStatusMutation,
 	useSetProfileAvatarMutation,
 	useFetchUsersQuery,
+	useFollowUserMutation,
+	useUnFollowUserMutation,
 } = appApi;
