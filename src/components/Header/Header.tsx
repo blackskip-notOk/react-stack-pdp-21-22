@@ -1,18 +1,27 @@
 import LogoutIcon from '@mui/icons-material/Logout';
 import { Button, Dialog, DialogContent, DialogTitle, Typography } from '@mui/material';
-import { FC, type SyntheticEvent, useReducer, type MouseEvent } from 'react';
-import { logoutFx } from '@/models/login';
+import { FC, type SyntheticEvent, useReducer, type MouseEvent, useEffect } from 'react';
 import logo from '@/image/React-icon.svg.png';
 import styles from './Header.module.less';
 import { MODAL_SHOW_DURATION } from '@/constants/systemConstants';
 import { ReasonModalClose } from '@/commonTypes';
 import { useNavigate } from 'react-router-dom';
 import { NAVLINKS } from '@/constants/routerConstants';
+import { LoadingButton } from '@mui/lab';
+import { useLogoutMutation } from '@/store/slices/apiSlice';
 
 export const Header: FC = () => {
 	const navigate = useNavigate();
 
-	const [openModal, setOpenModal] = useReducer((openModal) => !openModal, false);
+	const [logout, { isLoading: loadingLogout, isSuccess: successLogout }] = useLogoutMutation();
+
+	const [openModal, setOpenModal] = useReducer((openModal: boolean) => !openModal, false);
+
+	useEffect(() => {
+		if (successLogout) {
+			navigate(NAVLINKS.LOGIN);
+		}
+	}, [successLogout]);
 
 	const handleClick = (event: MouseEvent<HTMLElement>) => {
 		event.preventDefault();
@@ -25,9 +34,8 @@ export const Header: FC = () => {
 		}
 	};
 
-	const handleLogout = () => {
-		logoutFx();
-		navigate(NAVLINKS.LOGIN);
+	const handleLogout = async () => {
+		await logout(null);
 	};
 
 	return (
@@ -60,9 +68,16 @@ export const Header: FC = () => {
 					</Typography>
 				</DialogTitle>
 				<DialogContent dividers className={`${styles.modal} ${styles.buttonContainer}`}>
-					<Button color='success' variant='contained' size='large' onClick={handleLogout}>
+					<LoadingButton
+						color='success'
+						variant='contained'
+						size='large'
+						onClick={handleLogout}
+						disabled={loadingLogout}
+						loading={loadingLogout}
+					>
 						{'Ok'}
-					</Button>
+					</LoadingButton>
 					<Button color='warning' variant='contained' size='large' onClick={() => setOpenModal()}>
 						{'Отмена'}
 					</Button>
