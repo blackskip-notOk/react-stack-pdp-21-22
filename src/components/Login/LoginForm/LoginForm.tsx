@@ -5,14 +5,6 @@ import { preventDefault } from '@/utils';
 import { useNavigate } from 'react-router-dom';
 import styles from '../Login.module.less';
 import {
-	$captchaUrl,
-	$loginResponse,
-	$serverSideError,
-	getCaptchaFx,
-	loginFx,
-} from '@/models/login/index';
-import { useStore } from 'effector-react';
-import {
 	Checkbox,
 	FormControl,
 	FormControlLabel,
@@ -31,48 +23,75 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { loginSchema } from '../utils/loginSchema';
 import { Box } from '@mui/system';
 import { isEmpty } from 'ramda';
-import { $auth } from '@/models/auth';
 import { NAVLINKS } from '@/constants/routerConstants';
-import { LoginFormData } from '@/models/login/types';
 import { LoginProps } from '../types';
+import { useAppDispatch, useAppSelector } from '@/hooks/storeHooks';
+import { isAuthSelector } from '@/store/selectors/authSelectors';
+import {
+	captchaStateSelector,
+	loginRequestStateSelector,
+	loginResponseStateSelector,
+} from '@/store/selectors/loginSelector';
+import { LoginRequestState } from '@/store/slices/loginRequestSlice/types';
+import { initialState, setLoginRequestData } from '@/store/slices/loginRequestSlice';
+import { useFetchCaptchaQuery, useLoginMutation } from '@/store/slices/apiSlice';
+import { setLoginResponseData } from '@/store/slices/loginResponseSlice';
+import { setCaptchaData } from '@/store/slices/captchaSlice';
 
 export const LoginForm: FC<LoginProps> = ({ setShowGreeting }) => {
 	const navigate = useNavigate();
 
-	const fetchingLoginData = useStore(loginFx.pending);
-	const fetchingCaptchaUrl = useStore(getCaptchaFx.pending);
-	const serverSideError = useStore($serverSideError);
-	const captchaUrl = useStore($captchaUrl);
-	const { isAuth } = useStore($auth);
-	const { error: loginError, isNeedCaptcha } = useStore($loginResponse);
+	const dispatch = useAppDispatch();
+	const isAuth = useAppSelector(isAuthSelector);
+
+	const { email, password, captcha, rememberMe } = useAppSelector(loginRequestStateSelector);
+	const { error: loginError, isNeedCaptcha } = useAppSelector(loginResponseStateSelector);
+	const { captchaUrl } = useAppSelector(captchaStateSelector);
+
+	const [login, { isLoading: loginLoading }] = useLoginMutation();
+	const { data: captchaData, refetch } = useFetchCaptchaQuery(null, {
+		skip: !isNeedCaptcha,
+	});
+
+	const [showPassword, toggleShowPassword] = useReducer(
+		(showPassword: boolean) => !showPassword,
+		false,
+	);
 
 	useEffect(() => {
 		if (isAuth) {
 			setShowGreeting(true);
+			dispatch(setLoginRequestData(initialState));
 			navigate(NAVLINKS.HOME);
 		}
 	}, [isAuth]);
 
+	useEffect(() => {
+		if (captchaData) {
+			dispatch(setCaptchaData(captchaData));
+		}
+	}, [captchaData]);
+
 	const {
 		control,
 		handleSubmit,
-		formState: { errors },
-	} = useForm<LoginFormData>({
-		defaultValues: {
-			email: '',
-			password: '',
-			rememberMe: true,
-			captcha: '',
-		},
+		formState: { errors: formErrors },
+	} = useForm<LoginRequestState>({
+		defaultValues: { email, password, rememberMe, captcha },
 		resolver: yupResolver(loginSchema),
 	});
 
-	const [showPassword, toggleShowPassword] = useReducer((showPassword) => !showPassword, false);
+	const onSubmit: SubmitHandler<LoginRequestState> = async (data) => {
+		dispatch(setLoginRequestData(data));
+		const loginResponse = await login(data).unwrap();
 
-	const onSubmit: SubmitHandler<LoginFormData> = (data) => loginFx(data);
+		if (loginResponse) {
+			dispatch(setLoginResponseData(loginResponse));
+		}
+	};
 
 	const handleGetCaptcha = () => {
-		getCaptchaFx(true);
+		refetch();
 	};
 
 	return (
@@ -88,8 +107,8 @@ export const LoginForm: FC<LoginProps> = ({ setShowGreeting }) => {
 								id='email'
 								label='Email'
 								variant='outlined'
-								helperText={errors.email?.message ?? ' '}
-								error={!!errors.email || !!loginError}
+								helperText={formErrors.email?.message ?? ' '}
+								error={!!formErrors.email || !!loginError}
 								fullWidth
 								color='success'
 								margin='normal'
@@ -113,7 +132,7 @@ export const LoginForm: FC<LoginProps> = ({ setShowGreeting }) => {
 							<InputLabel
 								htmlFor='password'
 								color='success'
-								error={!!errors.password || !!loginError}
+								error={!!formErrors.password || !!loginError}
 							>
 								Password
 							</InputLabel>
@@ -123,7 +142,7 @@ export const LoginForm: FC<LoginProps> = ({ setShowGreeting }) => {
 								label='Password'
 								type={showPassword ? 'text' : 'password'}
 								margin='dense'
-								error={!!errors.password || !!loginError}
+								error={!!formErrors.password || !!loginError}
 								placeholder='enter your password'
 								endAdornment={
 									<InputAdornment position='end'>
@@ -142,8 +161,8 @@ export const LoginForm: FC<LoginProps> = ({ setShowGreeting }) => {
 									</InputAdornment>
 								}
 							/>
-							<FormHelperText id='passwordError' error={!!errors.password}>
-								{errors.password?.message ?? ' '}
+							<FormHelperText id='passwordError' error={!!formErrors.password}>
+								{formErrors.password?.message ?? ' '}
 							</FormHelperText>
 						</FormControl>
 					)}
@@ -183,8 +202,8 @@ export const LoginForm: FC<LoginProps> = ({ setShowGreeting }) => {
 									label='Captcha'
 									variant='outlined'
 									required
-									helperText={errors.captcha?.message ?? ' '}
-									error={!!errors.captcha}
+									helperText={formErrors.captcha?.message ?? ' '}
+									error={!!formErrors.captcha}
 									fullWidth
 									color='success'
 									margin='normal'
@@ -195,17 +214,14 @@ export const LoginForm: FC<LoginProps> = ({ setShowGreeting }) => {
 						)}
 					/>
 				)}
-				{serverSideError && (
-					<Box className={styles.autorizationError}>{serverSideError.message}</Box>
-				)}
 				{loginError && <Box className={styles.autorizationError}>{loginError}</Box>}
 				<Box className={buttonStyles.buttonContainer}>
 					<LoadingButton
 						size='large'
 						endIcon={<SendIcon />}
 						type='submit'
-						loading={fetchingLoginData}
-						disabled={fetchingLoginData || !isEmpty(errors)}
+						loading={loginLoading}
+						disabled={loginLoading || !isEmpty(formErrors)}
 						loadingPosition='end'
 						variant='contained'
 						color='success'
@@ -220,15 +236,15 @@ export const LoginForm: FC<LoginProps> = ({ setShowGreeting }) => {
 						onClick={handleGetCaptcha}
 						size='large'
 						endIcon={<SendIcon />}
-						loading={fetchingCaptchaUrl}
-						disabled={fetchingCaptchaUrl}
+						loading={loginLoading}
+						disabled={loginLoading || !isEmpty(formErrors)}
 						loadingPosition='end'
 						variant='contained'
 						color='success'
 					>
 						Другая картинка
 					</LoadingButton>
-					{captchaUrl && <img src={captchaUrl.url} alt='captcha' className={styles.img} />}
+					{captchaUrl && <img src={captchaUrl} alt='captcha' className={styles.img} />}
 				</div>
 			)}
 		</>

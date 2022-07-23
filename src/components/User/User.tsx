@@ -1,4 +1,4 @@
-import { useFollow, useUnFollow } from '@/api/usersApi';
+import { useFollowUserMutation, useUnFollowUserMutation } from '@/store/slices/apiSlice';
 import { getFollowResult } from '@/utils';
 import {
 	Avatar,
@@ -19,27 +19,18 @@ import { UserProps } from './types';
 export const User: FC<UserProps> = ({ user }) => {
 	const { id, name, photos, status, followed } = user;
 
+	const [follow, { data: followData, isLoading: followLoading, isSuccess: followSuccess }] =
+		useFollowUserMutation();
+	const [unFollow, { data: unFollowData, isLoading: unFollowLoading, isSuccess: unFollowSuccess }] =
+		useUnFollowUserMutation();
+
 	const [checked, setChecked] = useState(false);
 	const [isShowMessage, setIsShowMessage] = useState(false);
 	const [result, setResult] = useState({ message: '', variant: Variant.success });
 
-	const {
-		data: followData,
-		isLoading: followLoading,
-		isSuccess: followSuccess,
-		mutate: followMutate,
-	} = useFollow(id); // TODO refactor it - don't need id here
-
-	const {
-		data: unFollowData,
-		isLoading: unFollowLoading,
-		isSuccess: unFollowSuccess,
-		mutate: unFollowMutate,
-	} = useUnFollow(id);
-
 	const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
 		setChecked(event.currentTarget.checked);
-		event.currentTarget.checked ? followMutate(id) : unFollowMutate(id);
+		event.currentTarget.checked ? follow(id) : unFollow(id);
 	};
 
 	useEffect(() => {

@@ -1,11 +1,7 @@
 import { SyntheticEvent } from 'react';
-import { AuthResponse, AuthState } from '../models/auth/types';
-import { SERVER_MESSAGES, SERVER_MESSAGES_DESCRIPTIONS } from '../constants/serverMessages';
-import { RESPONSE_STATUSES, RESULT_CODES, SESSION_STORAGE } from '../constants/systemConstants';
-import { LoginResponse, TransformLoginResponse } from '../models/login/types';
-import { FollowResponse, FollowResult, UsersRequest } from '@/models/users/types';
-import { authFx, initialize } from '@/models/auth';
-import { AxiosResponse } from 'axios';
+import { ServerMessage, Description } from '../constants/serverMessages';
+import { ReultCode } from '../constants/systemConstants';
+import { FollowResponse, FollowResult, UsersRequestState } from '@/store/slices/usersSlice/types';
 import { isEmpty } from 'ramda';
 import { ClearObject } from './types';
 
@@ -13,137 +9,46 @@ export const preventDefault = (event: SyntheticEvent) => {
 	event.preventDefault();
 };
 
-export const getInitialization = () => {
-	const authorization = authFx();
-
-	Promise.all([authorization])
-		.then(() => {
-			initialize({ initialize: true });
-		})
-		.catch((err) => console.error(SERVER_MESSAGES_DESCRIPTIONS.failedInitialization, err));
-};
-
-export const getAuthResponse = (authResponse: AuthResponse): AuthState => {
-	if (authResponse.status === RESPONSE_STATUSES.success) {
-		const { authInfo } = authResponse;
-		const { success, error } = RESULT_CODES;
-
-		if (authInfo.resultCode === error) {
-			return { isAuth: false, message: authInfo.messages[0] };
-		}
-
-		if (authInfo.resultCode === success) {
-			return { isAuth: true, message: authInfo.messages[0], ownerId: authInfo.data.id };
-		}
-	}
-
-	return { isAuth: false, message: SERVER_MESSAGES_DESCRIPTIONS.someError };
-};
-
-export const transformLoginResponse = (response: LoginResponse): TransformLoginResponse => {
-	const { resultCode, data, messages } = response;
-	const [message] = messages;
-
-	const { error, secure } = RESULT_CODES;
-
-	if (resultCode === error) {
-		return {
-			error: SERVER_MESSAGES_DESCRIPTIONS.wrongLogin,
-			isNeedCaptcha: false,
-		};
-	}
-	if (resultCode === secure) {
-		const errorMessage =
-			message === SERVER_MESSAGES.MAX_ATTEMPT
-				? SERVER_MESSAGES_DESCRIPTIONS.maxAttempt
-				: message === SERVER_MESSAGES.WRONG_LOGIN
-				? SERVER_MESSAGES_DESCRIPTIONS.wrongLogin
-				: SERVER_MESSAGES_DESCRIPTIONS.someError;
-
-		return {
-			error: errorMessage,
-			isNeedCaptcha: true,
-		};
-	}
-
-	return { data };
-};
-
-export const getLoginResponse = (clockData: TransformLoginResponse): TransformLoginResponse => ({
-	data: clockData.data,
-	error: clockData.error,
-	isNeedCaptcha: clockData.isNeedCaptcha,
-});
-
-export const getIsNeedCaptcha = (clockData: TransformLoginResponse): boolean =>
-	!!clockData.isNeedCaptcha;
-
-export const getIsAuth = (clockData: TransformLoginResponse): AuthState => ({
-	isAuth: !!clockData.data,
-	message: clockData.data ? SERVER_MESSAGES.AUTORIZATION_SUCCESS : SERVER_MESSAGES.NOT_AUTHORIZED,
-	ownerId: clockData.data ? clockData.data.userId : undefined,
-});
-
-export const resetIsAuth = (): AuthState => ({
-	isAuth: false,
-	message: SERVER_MESSAGES.LOGOUT,
-	ownerId: undefined,
-});
-
-export const saveSessionParams = (params: UsersRequest): void => {
-	const savedRequestParams = JSON.stringify({ ...params });
-	sessionStorage.setItem(SESSION_STORAGE.USERS_REQUEST_PARAMS, savedRequestParams);
-};
-
 export const getFollowResult = (
-	response: AxiosResponse<FollowResponse> | undefined,
+	response: FollowResponse | undefined,
 	user: string,
 	isFollow: boolean,
 ): FollowResult => {
 	if (!response) {
 		return {
 			isSuccess: false,
-			message: SERVER_MESSAGES_DESCRIPTIONS.someError,
+			message: Description.someError,
 		};
 	}
 
-	const { data, status } = response;
+	const { messages, resultCode } = response;
 
 	const successMessage = `${
-		isFollow
-			? SERVER_MESSAGES_DESCRIPTIONS.successFollow
-			: SERVER_MESSAGES_DESCRIPTIONS.successUnFollow
+		isFollow ? Description.successFollow : Description.successUnFollow
 	} ${user}`;
 
-	const unSuccessMessage = `${
-		isFollow
-			? SERVER_MESSAGES_DESCRIPTIONS.alreadyFollow
-			: SERVER_MESSAGES_DESCRIPTIONS.alreadyUnFollow
-	}`;.
+	const unSuccessMessage = `${isFollow ? Description.alreadyFollow : Description.alreadyUnFollow}`;
 
-	if (status === RESPONSE_STATUSES.success) {
-		if (data.resultCode === RESULT_CODES.success) {
-			return {
-				isSuccess: true,
-				message: successMessage,
-			};
-		}
-		if (data.resultCode === RESULT_CODES.error) {
-			const errorMessage =
-				data.messages.join() ===
-				(SERVER_MESSAGES.ALREADY_UNFOLLOW || SERVER_MESSAGES.ALREADY_FOLLOW)
-					? unSuccessMessage
-					: SERVER_MESSAGES_DESCRIPTIONS.someError;
+	if (resultCode === ReultCode.success) {
+		return {
+			isSuccess: true,
+			message: successMessage,
+		};
+	}
+	if (resultCode === ReultCode.error) {
+		const errorMessage =
+			messages.join() === (ServerMessage.alreadyUnfollow || ServerMessage.alreadyFollow)
+				? unSuccessMessage
+				: Description.someError;
 
-			return {
-				isSuccess: false,
-				message: errorMessage,
-			};
-		}
+		return {
+			isSuccess: false,
+			message: errorMessage,
+		};
 	}
 	return {
 		isSuccess: false,
-		message: SERVER_MESSAGES_DESCRIPTIONS.someError,
+		message: Description.someError,
 	};
 };
 
@@ -175,7 +80,9 @@ const getBooleanParam = (param: boolean | undefined): string | null => {
 	return param === undefined ? null : '0';
 };
 
-export const searchParamsSerializer = (params: UsersRequest): Record<string, string> | null => {
+export const searchParamsSerializer = (
+	params: UsersRequestState,
+): Record<string, string> | null => {
 	const { page, count, term, friend } = params;
 
 	const urlParams = {
@@ -190,7 +97,7 @@ export const searchParamsSerializer = (params: UsersRequest): Record<string, str
 
 export const getSearchParamsFromUrl = (
 	params: Record<string, string>,
-): Partial<UsersRequest> | null => {
+): Partial<UsersRequestState> | null => {
 	if (isEmpty(params)) {
 		return null;
 	}
