@@ -1,5 +1,5 @@
 import { CONNECTION_STATUS, SUCCESS_MESSAGE_DURATION } from '@/constants/systemConstants';
-import { startListeningMessages, stopListeningMessages } from '@/features/chat/chatSlice';
+import { startListeningMessages, stopListeningMessages } from '@/store/slices/chatSlice';
 import { useAppDispatch, useAppSelector } from '@/hooks/storeHooks';
 import { Alert, AlertTitle, Slide, Snackbar } from '@mui/material';
 import { FC, useEffect, useState } from 'react';

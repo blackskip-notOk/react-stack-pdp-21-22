@@ -1,11 +1,4 @@
 import {
-	$users,
-	$usersLoading,
-	$usersRequestParams,
-	getUsersFx,
-	setUsersRequestParams,
-} from '@/models/users';
-import {
 	Button,
 	FormControl,
 	InputAdornment,
@@ -18,7 +11,6 @@ import {
 	TablePagination,
 	TextField,
 } from '@mui/material';
-import { useStore } from 'effector-react';
 import {
 	FC,
 	useEffect,
@@ -37,16 +29,36 @@ import { ErrorBoundary } from 'react-error-boundary';
 import { ErrorMessage } from '../common/Error/Error';
 import { useSearchParams } from 'react-router-dom';
 import { equals } from 'ramda';
+import { useAppDispatch, useAppSelector } from '@/hooks/storeHooks';
+import { usersSelector, usersRequestSelector } from '@/store/selectors/usersSelector';
+import { useFetchUsersQuery } from '@/store/slices/apiSlice';
+import { setUsersData } from '@/store/slices/usersSlice';
+import {
+	setUsersRequest,
+	setRequestPage,
+	setRequestCount,
+} from '@/store/slices/usersSlice/request';
 
 export const Users: FC = () => {
-	const usersData = useStore($users);
-	const storeSearchParams = useStore($usersRequestParams);
-	const isUsersLoading = useStore($usersLoading);
+	const dispatch = useAppDispatch();
+
+	const { items: users, totalCount } = useAppSelector(usersSelector);
+	const storeSearchParams = useAppSelector(usersRequestSelector);
+
+	const { isFetching, isLoading, isSuccess, data } = useFetchUsersQuery(storeSearchParams);
+
+	const [urlSearchParams, setUrlSearchParams] = useSearchParams();
 
 	const [searchText, setSearchText] = useState('');
 	const [friend, setFriend] = useState('');
 
-	const [urlSearchParams, setUrlSearchParams] = useSearchParams();
+	useEffect(() => {
+		if (isSuccess && data) {
+			dispatch(setUsersData(data));
+		}
+		const newUrlSearchParams = searchParamsSerializer(storeSearchParams);
+		newUrlSearchParams ? setUrlSearchParams(newUrlSearchParams) : setUrlSearchParams({});
+	}, [isSuccess, data]);
 
 	useEffect(() => {
 		const searchParamsFromUrl = getSearchParamsFromUrl(Object.fromEntries([...urlSearchParams]));
@@ -72,27 +84,17 @@ export const Users: FC = () => {
 				}
 			}
 		}
-		setUsersRequestParams(newStoreSearchParams);
+		dispatch(setUsersRequest(newStoreSearchParams));
 	}, []);
 
-	useEffect(() => {
-		const newUrlSearchParams = searchParamsSerializer(storeSearchParams);
-
-		newUrlSearchParams ? setUrlSearchParams(newUrlSearchParams) : setUrlSearchParams({});
-
-		getUsersFx(storeSearchParams); // Todo first query with default params
-	}, [storeSearchParams]);
-
 	const handlePageChange = (event: MouseEvent<HTMLButtonElement> | null, page: number): void => {
-		const newRequestParams = { ...storeSearchParams, page: page + 1 };
-		setUsersRequestParams(newRequestParams);
+		dispatch(setRequestPage(page + 1));
 	};
 
 	const handleOnRowPerPageChange = (
 		event: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>,
 	): void => {
-		const newRequestParams = { ...storeSearchParams, count: Number(event.target.value) };
-		setUsersRequestParams(newRequestParams);
+		dispatch(setRequestCount(Number(event.target.value)));
 	};
 
 	const handleOnChangeSearchInput = (
@@ -105,19 +107,19 @@ export const Users: FC = () => {
 	};
 
 	const handleOnClearSearchInput = (): void => {
-		const newParams = { ...storeSearchParams, page: 1, term: '' };
-		setUsersRequestParams(newParams);
+		const newRequestParams = { ...storeSearchParams, page: 1, term: '' };
+		dispatch(setUsersRequest(newRequestParams));
 		setSearchText('');
 	};
 
 	const handleSearch = (): void => {
-		const newParams = {
+		const newRequestParams = {
 			...storeSearchParams,
 			page: 1,
 			term: searchText ? searchText : undefined,
 			friend: getFriendParam(friend),
 		};
-		setUsersRequestParams(newParams);
+		dispatch(setUsersRequest(newRequestParams));
 	};
 
 	const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>): void => {
@@ -130,7 +132,7 @@ export const Users: FC = () => {
 		setFriend(event.target.value);
 	};
 
-	const user = usersData.items.map((item) => (
+	const user = users.map((item) => (
 		<ErrorBoundary key={item.id} fallbackRender={({ error }) => <ErrorMessage error={error} />}>
 			<User key={item.id} user={item} />
 		</ErrorBoundary>
@@ -139,7 +141,7 @@ export const Users: FC = () => {
 	return (
 		<ErrorBoundary fallbackRender={({ error }) => <ErrorMessage error={error} />}>
 			<div className={styles.usersContainer}>
-				{isUsersLoading && <Loader />}
+				{(isFetching || isLoading) && <Loader />}
 				<Stack spacing={2}>
 					<div className={styles.searchContainer}>
 						<TextField
@@ -188,11 +190,11 @@ export const Users: FC = () => {
 						</Select>
 					</FormControl>
 				</Stack>
-				{!isUsersLoading && <List>{user}</List>}
+				{isSuccess && <List>{user}</List>}
 				<Stack spacing={2}>
 					<TablePagination
 						component={'div'}
-						count={usersData.totalCount}
+						count={totalCount}
 						page={storeSearchParams.page - 1}
 						onPageChange={handlePageChange}
 						rowsPerPage={storeSearchParams.count}

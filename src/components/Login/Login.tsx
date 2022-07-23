@@ -1,29 +1,45 @@
-import { useStore } from 'effector-react';
-import { FC } from 'react';
-import { SERVER_MESSAGES, SERVER_MESSAGES_DESCRIPTIONS } from '@/constants/serverMessages';
+import { FC, useMemo } from 'react';
+import { Description, ServerMessage } from '@/constants/serverMessages';
 import { LoginForm } from './LoginForm/LoginForm';
 import styles from './Login.module.less';
-import { $auth } from '@/models/auth/index';
-import { SINGUP } from '@/constants/apiConstants';
+import { API } from '@/constants/apiConstants';
 import { LoginProps } from './types';
+import { useAppSelector } from '@/hooks/storeHooks';
+import { authStateSelector } from '@/store/selectors/authSelectors';
+import { Button } from '@mui/material';
+import { useLoginMutation } from '@/store/slices/apiSlice';
 
 export const Login: FC<LoginProps> = ({ setShowGreeting }) => {
-	const { message, isAuth } = useStore($auth);
+	const { isAuth, authMessage } = useAppSelector(authStateSelector);
 
-	const localMessage =
-		message === SERVER_MESSAGES.NOT_AUTHORIZED
-			? SERVER_MESSAGES_DESCRIPTIONS.notAutorized
-			: message;
+	const [login, { isLoading: loginLoading }] = useLoginMutation();
+
+	const localMessage = useMemo(() => {
+		return authMessage === ServerMessage.notAutorized
+			? Description.notAutorized
+			: Description.someError;
+	}, [authMessage]);
+
+	const hendleSendTestAccount = () => {
+		login({ email: API.testLogin, password: API.testPassword });
+	};
 
 	return (
 		<div className={styles.loginContainer}>
 			{!isAuth && <div className={styles.autorizationError}>{localMessage}</div>}
 			<LoginForm setShowGreeting={setShowGreeting} />
 			<div className={styles.singupLinkContainer}>
-				<a href={SINGUP} rel='noreferrer' target='blanc' className={styles.singupLink}>
+				<a href={API.singUp} rel='noreferrer' target='blanc' className={styles.singupLink}>
 					Зарегистироваться
 				</a>
 			</div>
+			<Button
+				className={styles.singupLinkContainer}
+				onClick={hendleSendTestAccount}
+				disabled={loginLoading}
+			>
+				Исполльзовать тестовый аккаунт
+			</Button>
 		</div>
 	);
 };

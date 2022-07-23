@@ -1,7 +1,6 @@
 import { lazy, Suspense, useEffect, useState } from 'react';
 import './App.css';
 import appStyles from './styles/App.module.less';
-import { useStore } from 'effector-react';
 import { Route, Routes } from 'react-router-dom';
 import { NAVLINKS } from './constants/routerConstants';
 import { Loader } from './components/common/loader/Loader';
@@ -9,9 +8,15 @@ import { Header } from './components/Header/Header';
 import { NavBar } from './components/NavBar/NavBar';
 import { Home } from './components/Home/Home';
 import { Login } from './components/Login/Login';
-import { $auth, $initialization, initializeFx } from './models/auth';
 import { ErrorBoundary } from 'react-error-boundary';
 import { ErrorMessage } from './components/common/Error/Error';
+import { useAppDispatch, useAppSelector } from './hooks/storeHooks';
+import { isAuthSelector } from './store/selectors/authSelectors';
+import { isInitializeSelector } from './store/selectors/initializeSelector';
+import { useFetchAuthQuery } from './store/slices/apiSlice';
+import { setAuthData, setAuthError } from './store/slices/authSlice';
+import { inizialization } from './store/slices/initializeSlice';
+import { miniSerializeError } from '@reduxjs/toolkit';
 
 const Profile = lazy(() =>
 	import('./components/Profile/Profile').then((module) => ({ default: module.Profile })),
@@ -40,16 +45,30 @@ const UserProfile = lazy(() =>
 );
 
 export const App = () => {
-	const { isAuth } = useStore($auth);
-	const initialization = useStore($initialization);
+	const dispatch = useAppDispatch();
+	const isAuth = useAppSelector(isAuthSelector);
+	const isInitialize = useAppSelector(isInitializeSelector);
+
+	const { isError, isFetching, isLoading, isSuccess, data, error } = useFetchAuthQuery(null);
 
 	const [showGreeting, setShowGreeting] = useState(false);
 
 	useEffect(() => {
-		initializeFx();
-	}, [initializeFx]);
+		if (isSuccess && data) {
+			dispatch(setAuthData(data));
+			dispatch(inizialization(true));
+		}
+	}, [dispatch, isSuccess, data]);
 
-	if (!initialization.initialize) {
+	useEffect(() => {
+		if (isError && error) {
+			const serializeError = miniSerializeError(error);
+			dispatch(setAuthError(serializeError));
+			dispatch(inizialization(true));
+		}
+	}, [dispatch, isSuccess, data]);
+
+	if (!isInitialize || isFetching || isLoading) {
 		return <Loader />;
 	}
 

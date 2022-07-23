@@ -1,38 +1,94 @@
 import { Alert, Avatar, Box, Slide, Snackbar, TextField } from '@mui/material';
-import { useStore } from 'effector-react';
-import { ChangeEvent, FC, useState } from 'react';
+import { ChangeEvent, FC, useEffect, useState } from 'react';
 import { ERROR_MESSAGE_DURATION } from '@/constants/systemConstants';
-import { $auth } from '@/models/auth';
 import styles from './Profile.module.less';
 import { Loader } from '../common/loader/Loader';
-import {
-	useGetProfile,
-	useGetProfileStatus,
-	useSetProfileAvatar,
-	useSetProfileStatus,
-} from '@/api/profileApi';
 import { DefaultAvatar } from '../common/avatar/avatar';
 import { deepPurple } from '@mui/material/colors';
 import { UploadAvatar } from '../common/avatar/uploadAvatar';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
-import { ProfileStatusFormData } from '@/models/profile/types';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { profileStatusSchema } from './utils/profileSchema';
 import inputStyles from '@/styles/Input.module.less';
+import { useAppDispatch, useAppSelector } from '@/hooks/storeHooks';
+import { isAuthSelector, isOwnerIdSelector } from '@/store/selectors/authSelectors';
+import {
+	useFetchProfileQuery,
+	useFetchProfileStatusQuery,
+	useSetProfileAvatarMutation,
+	useSetProfileStatusMutation,
+} from '@/store/slices/apiSlice';
+import { setProfileAvatar, setProfileData } from '@/store/slices/profileSlice';
+import {
+	profileAvatarSelector,
+	profileSelector,
+	profileStatusSelector,
+} from '@/store/selectors/profileSelector';
+import { ProfileStatusState } from '@/store/slices/profileSlice/types';
+import { setProfileStatus } from '@/store/slices/profileSlice/status';
+import { miniSerializeError } from '@reduxjs/toolkit';
+import { useNavigate } from 'react-router-dom';
+import { NAVLINKS } from '@/constants/routerConstants';
 
 export const Profile: FC = () => {
-	const { ownerId } = useStore($auth);
+	const navigate = useNavigate();
 
-	const { data, error, isError, isFetching, isLoading, isRefetching, isSuccess, refetch } =
-		useGetProfile(String(ownerId));
+	const dispatch = useAppDispatch();
 
-	const { data: profileStatus, refetch: refetchStatus } = useGetProfileStatus(ownerId);
+	const isAuth = useAppSelector(isAuthSelector);
 
-	const [showErrow, setShowError] = useState(isError);
+	const ownerId = useAppSelector(isOwnerIdSelector);
+	const { contacts, aboutMe, fullName, lookingForAJobDescription } =
+		useAppSelector(profileSelector);
 
-	const { isLoading: isLoadingAvatar, mutate } = useSetProfileAvatar(refetch);
+	const { status } = useAppSelector(profileStatusSelector);
+	const { large } = useAppSelector(profileAvatarSelector);
 
-	const { mutate: setStatus } = useSetProfileStatus(refetchStatus);
+	const {
+		isFetching: profileFetching,
+		isLoading: profileLoading,
+		isSuccess: profileSuccess,
+		isError: isProfileError,
+		data: profileData,
+		error: profileError,
+	} = useFetchProfileQuery(ownerId, {
+		skip: !ownerId,
+	});
+
+	const { data: profileStatus } = useFetchProfileStatusQuery(ownerId, {
+		skip: !ownerId,
+	});
+
+	const [setStatus] = useSetProfileStatusMutation();
+
+	const [setAvatar, { isLoading: loaadingAvatar, data: avatarData }] =
+		useSetProfileAvatarMutation();
+
+	const [showErrow, setShowError] = useState(isProfileError);
+
+	useEffect(() => {
+		if (!isAuth) {
+			navigate(`${NAVLINKS.HOME}${NAVLINKS.LOGIN}`, { replace: true });
+		}
+	}, [isAuth]);
+
+	useEffect(() => {
+		if (profileData) {
+			dispatch(setProfileData(profileData));
+		}
+	}, [profileData]);
+
+	useEffect(() => {
+		if (profileStatus) {
+			dispatch(setProfileStatus(profileStatus));
+		}
+	}, [profileStatus]);
+
+	useEffect(() => {
+		if (avatarData) {
+			dispatch(setProfileAvatar(avatarData));
+		}
+	}, [avatarData]);
 
 	const handleErrorClose = () => {
 		setShowError(false);
@@ -42,35 +98,44 @@ export const Profile: FC = () => {
 		control,
 		handleSubmit,
 		formState: { errors },
-	} = useForm<ProfileStatusFormData>({
-		defaultValues: {
-			status: profileStatus,
-		},
+		resetField,
+	} = useForm<ProfileStatusState>({
+		defaultValues: { status },
 		resolver: yupResolver(profileStatusSchema),
 	});
 
-	const onSubmit: SubmitHandler<ProfileStatusFormData> = (data) => setStatus(data.status);
+	const onSubmit: SubmitHandler<ProfileStatusState> = async (data) => {
+		await setStatus(data.status).unwrap();
+		resetField('status');
+	};
 
 	const handleChangeAvatar = (event: ChangeEvent<HTMLInputElement>) => {
+		if (!event.currentTarget.files) {
+			return;
+		}
+
 		if (event.currentTarget.files && event.currentTarget.files.length) {
 			const [photo] = event.currentTarget.files;
-			mutate(photo);
+
+			const formData = new FormData();
+			formData.append('image', photo);
+			setAvatar(formData);
 		}
 	};
 
 	return (
 		<div className={styles.profileContainer}>
-			{(isLoading || isLoadingAvatar) && <Loader />}
-			{isSuccess && (
+			{(profileFetching || profileLoading || loaadingAvatar) && <Loader />}
+			{profileSuccess && (
 				<>
-					{isLoadingAvatar ? (
+					{loaadingAvatar ? (
 						<Loader />
 					) : (
 						<div className={styles.avatarContainer}>
-							{data.photos.large ? (
+							{large ? (
 								<Avatar
-									alt={`${data.fullName}`}
-									src={data.photos.large}
+									alt={`${fullName}`}
+									src={large}
 									sx={{ width: 250, height: 250, bgcolor: deepPurple[800] }}
 								/>
 							) : (
@@ -78,11 +143,11 @@ export const Profile: FC = () => {
 							)}
 							<UploadAvatar
 								onChange={handleChangeAvatar}
-								disable={isFetching || isLoading || isRefetching}
+								disable={profileFetching || profileLoading || loaadingAvatar}
 							/>
 						</div>
 					)}
-					<div>{data.fullName}</div>
+					<div>{fullName}</div>
 					<form onSubmit={handleSubmit(onSubmit)}>
 						<Controller
 							name='status'
@@ -107,16 +172,17 @@ export const Profile: FC = () => {
 						/>
 					</form>
 
-					<div>{data.aboutMe}</div>
-					<div>{data.lookingForAJobDescription}</div>
-					<div>{data.contacts.facebook}</div>
-					<div>{data.contacts.website}</div>
-					<div>{data.contacts.vk}</div>
-					<div>{data.contacts.twitter}</div>
-					<div>{data.contacts.instagram}</div>
-					<div>{data.contacts.youtube}</div>
-					<div>{data.contacts.github}</div>
-					<div>{data.contacts.mainLink}</div>
+					<div>{status}</div>
+					<div>{aboutMe}</div>
+					<div>{lookingForAJobDescription}</div>
+					<div>{contacts.facebook}</div>
+					<div>{contacts.website}</div>
+					<div>{contacts.vk}</div>
+					<div>{contacts.twitter}</div>
+					<div>{contacts.instagram}</div>
+					<div>{contacts.youtube}</div>
+					<div>{contacts.github}</div>
+					<div>{contacts.mainLink}</div>
 				</>
 			)}
 			<Snackbar
@@ -127,7 +193,7 @@ export const Profile: FC = () => {
 				onClose={handleErrorClose}
 			>
 				<Alert onClose={handleErrorClose} color='error' severity='error'>
-					<span className={styles.profileError}>{error?.message}</span>
+					<span className={styles.profileError}>{miniSerializeError(profileError)?.message}</span>
 				</Alert>
 			</Snackbar>
 		</div>
