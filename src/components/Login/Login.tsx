@@ -6,15 +6,23 @@ import { API } from '@/constants/apiConstants';
 import { LoginProps } from './types';
 import { useAppSelector } from '@/hooks/storeHooks';
 import { authStateSelector } from '@/store/selectors/authSelectors';
+import { Button } from '@mui/material';
+import { useLoginMutation } from '@/store/slices/apiSlice';
 
 export const Login: FC<LoginProps> = ({ setShowGreeting }) => {
 	const { isAuth, authMessage } = useAppSelector(authStateSelector);
+
+	const [login, { isLoading: loginLoading }] = useLoginMutation();
 
 	const localMessage = useMemo(() => {
 		return authMessage === ServerMessage.notAutorized
 			? Description.notAutorized
 			: Description.someError;
 	}, [authMessage]);
+
+	const hendleSendTestAccount = () => {
+		login({ email: API.testLogin, password: API.testPassword });
+	};
 
 	return (
 		<div className={styles.loginContainer}>
@@ -25,6 +33,13 @@ export const Login: FC<LoginProps> = ({ setShowGreeting }) => {
 					Зарегистироваться
 				</a>
 			</div>
+			<Button
+				className={styles.singupLinkContainer}
+				onClick={hendleSendTestAccount}
+				disabled={loginLoading}
+			>
+				Исполльзовать тестовый аккаунт
+			</Button>
 		</div>
 	);
 };

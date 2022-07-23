@@ -24,6 +24,8 @@ export const API = {
 	withCredentials: 'withCredentials',
 	apiKey: 'API-KEY',
 	apiToken: '2e033ec1-c683-45a9-bc19-12d1729d43cd',
+	testLogin: 'free@samuraijs.com',
+	testPassword: 'free',
 	authMe: `${AUTH}/${ME}`,
 	login: `${AUTH}/${LOGIN}`,
 	logout: `${AUTH}/${logout}`,
