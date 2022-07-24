@@ -1,7 +1,7 @@
 import { Description, ServerMessage } from '@/constants/serverMessages';
 import { ReultCode } from '@/constants/systemConstants';
 import { Auth, AuthState } from '@/store/slices/authSlice/types';
-import { LoginResponse, LoginResponseState } from '@/store/slices/loginResponseSlice/types';
+import { ErrorCode, LoginResponse, LoginResponseState } from '@/store/slices/loginResponseSlice/types';
 
 export const getAuthResponse = (authResponse: Auth): AuthState => {
 	const { data, messages, resultCode } = authResponse;
@@ -31,17 +31,17 @@ export const getAuthResponse = (authResponse: Auth): AuthState => {
 	return authResponses[resultCode] || authResponses.default;
 };
 
-const getLoginError = (error: string | undefined): string => {
+const getLoginError = (error: string | undefined): ErrorCode => {
 	if (!error) {
-		return Description.someError;
+		return ErrorCode.unknown;
 	}
 
 	const errors = {
-		[`${ServerMessage.maxAttemp}`]: Description.maxAttempt,
-		[`${ServerMessage.wrongLogin}`]: Description.wrongLogin,
+		[`${ServerMessage.maxAttemp}`]: ErrorCode.maxAttempt,
+		[`${ServerMessage.wrongLogin}`]: ErrorCode.wrongLogin,
 	};
 
-	return errors[error] || Description.someError;
+	return errors[error] || ErrorCode.unknown;
 };
 
 export const getLoginResponse = (response: LoginResponse): LoginResponseState => {
@@ -51,7 +51,7 @@ export const getLoginResponse = (response: LoginResponse): LoginResponseState =>
 
 	const responses = {
 		[error]: {
-			error: Description.wrongLogin,
+			error: ErrorCode.wrongLogin,
 			isNeedCaptcha: false,
 		},
 		[secure]: {
@@ -60,7 +60,6 @@ export const getLoginResponse = (response: LoginResponse): LoginResponseState =>
 		},
 		[success]: {
 			userId: data.userId,
-			error: '',
 			isNeedCaptcha: false,
 		},
 	};

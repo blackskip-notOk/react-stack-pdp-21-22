@@ -5,12 +5,12 @@
         "notAutorized": "You are not logged in, please login or register"
     },
     "errors": {
-        "someError": "Unexpected error",
         "invalidEmail": "Enter valid email",
         "requiredEmail": "Email is required",
         "requiredPassword": "Password is required",
-        "wrongLogin": "wrong login or password",
-	    "maxAttempt": "Retries exceeded"
+        "wrongLogin": "Wrong login or password",
+        "maxAttempt": "Retries exceeded",
+        "unknown": "Unexpected error"
     },
 	"loginForm": {
         "email": "Email",

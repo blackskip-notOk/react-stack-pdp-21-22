@@ -10,8 +10,15 @@ export interface LoginResponse extends Login {
 	data: LoginData;
 }
 
+export enum ErrorCode {
+	wrongLogin = 'wrongLogin',
+	maxAttempt = 'maxAttempt',
+	unknown = 'unknown',
+};
+
+type Code = keyof typeof ErrorCode;
 export interface LoginResponseState {
-	error: string;
+	error?: Code;
 	isNeedCaptcha: boolean;
 	userId?: number;
 }

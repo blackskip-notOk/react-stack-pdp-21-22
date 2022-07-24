@@ -218,7 +218,9 @@ export const LoginForm: FC<LoginProps> = ({ setShowGreeting }) => {
 						)}
 					/>
 				)}
-				{loginError && <Box className={styles.autorizationError}>{loginError}</Box>}
+				{loginError && <Box className={styles.autorizationError}>
+					{t(`errors.${loginError}`)}
+					</Box>}
 				<Box className={buttonStyles.buttonContainer}>
 					<LoadingButton
 						size='large'
