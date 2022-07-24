@@ -1,5 +1,3 @@
-import { Message } from '@/models/messages';
-
 export interface MessageProps {
-	item: Message;
+	item: { message: string; photo: string; userName: string };
 }

@@ -9,8 +9,11 @@ import { useNavigate } from 'react-router-dom';
 import { NAVLINKS } from '@/constants/routerConstants';
 import { LoadingButton } from '@mui/lab';
 import { useLogoutMutation } from '@/store/slices/apiSlice';
+import { useTranslation } from 'react-i18next';
+import { Language, languages } from '@/i18n/types';
 
 export const Header: FC = () => {
+	const { i18n } = useTranslation();
 	const navigate = useNavigate();
 
 	const [logout, { isLoading: loadingLogout, isSuccess: successLogout }] = useLogoutMutation();
@@ -83,6 +86,18 @@ export const Header: FC = () => {
 					</Button>
 				</DialogContent>
 			</Dialog>
+			<div>
+				{Object.keys(languages).map((lng: Language) => (
+					<Button
+						key={lng}
+						style={{ fontWeight: i18n.resolvedLanguage === lng ? 'bold' : 'normal' }}
+						type='submit'
+						onClick={() => i18n.changeLanguage(lng)}
+					>
+						{languages[lng].nativeName}
+					</Button>
+				))}
+			</div>
 		</div>
 	);
 };

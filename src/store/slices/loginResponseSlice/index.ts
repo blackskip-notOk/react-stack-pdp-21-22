@@ -3,7 +3,6 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { LoginResponseState } from './types';
 
 const initialState: LoginResponseState = {
-	error: '',
 	isNeedCaptcha: false,
 };
 
