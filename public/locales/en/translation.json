@@ -1,0 +1,41 @@
+{
+    "auth": {
+        "failedInitialization": "An error occurred while initializing the application: ",
+	    "autorized": "You are logged in, welcome",
+        "notAutorized": "You are not logged in, please login or register"
+    },
+    "errors": {
+        "someError": "Unexpected error",
+        "invalidEmail": "Enter valid email",
+        "requiredEmail": "Email is required",
+        "requiredPassword": "Password is required",
+        "wrongLogin": "wrong login or password",
+	    "maxAttempt": "Retries exceeded"
+    },
+	"loginForm": {
+        "email": "Email",
+		"emailPlaceholder": "enter your email",
+        "password": "Password",
+        "passwordPlaceholder": "enter your password",
+        "rememberMe": "Remember me?",
+        "captcha": "Captcha",
+        "captchaPlaceholder": "enter text from picture",
+        "login": "Login",
+        "otherPicture": "show another picture",
+        "logout": "You are logged out of your account",
+        "register": "Register",
+        "testAccount": "Use test account"
+	},
+    "users": {
+        "alreadyFollow": "You are already following this user",
+	    "alreadyUnFollow": "You are already unfollowed by this user",
+	    "successFollow": "You have successfully subscribed to a user: ",
+	    "successUnFollow": "You have successfully unsubscribed from the user: "
+    },
+	"footer": {
+		"date": "Todayn is {{date, DATE_HUGE}}",
+		"date_morning": "Good morning! Today is {{date, DATE_HUGE}} | Have a nice day!",
+		"date_afternoon": "Good afternoon! It\"s {{date, DATE_HUGE}}",
+        "date_evening": "Good evening! Today was the {{date, DATE_HUGE}}"
+	}
+}

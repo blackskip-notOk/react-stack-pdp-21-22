@@ -1,4 +1,4 @@
-import { FC, useEffect, useReducer, useTransition } from 'react';
+import { FC, useEffect, useReducer } from 'react';
 import buttonStyles from '@/styles/Button.module.less';
 import inputStyles from '@/styles/Input.module.less';
 import { preventDefault } from '@/utils';
@@ -20,7 +20,7 @@ import SendIcon from '@mui/icons-material/Send';
 import { LoadingButton } from '@mui/lab';
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { loginSchema } from '../utils/loginSchema';
+import { useLoginSchema } from '../utils/loginSchema';
 import { Box } from '@mui/system';
 import { isEmpty } from 'ramda';
 import { NAVLINKS } from '@/constants/routerConstants';
@@ -59,6 +59,8 @@ export const LoginForm: FC<LoginProps> = ({ setShowGreeting }) => {
 		(showPassword: boolean) => !showPassword,
 		false,
 	);
+
+	const loginSchema = useLoginSchema();
 
 	useEffect(() => {
 		if (isAuth) {
@@ -107,7 +109,7 @@ export const LoginForm: FC<LoginProps> = ({ setShowGreeting }) => {
 							<TextField
 								{...field}
 								id='email'
-								label='Email'
+								label={t('loginForm.email')}
 								variant='outlined'
 								helperText={formErrors.email?.message ?? ' '}
 								error={!!formErrors.email || !!loginError}
@@ -136,7 +138,7 @@ export const LoginForm: FC<LoginProps> = ({ setShowGreeting }) => {
 								color='success'
 								error={!!formErrors.password || !!loginError}
 							>
-								Password
+								{t('loginForm.password')}
 							</InputLabel>
 							<OutlinedInput
 								{...field}
@@ -145,7 +147,7 @@ export const LoginForm: FC<LoginProps> = ({ setShowGreeting }) => {
 								type={showPassword ? 'text' : 'password'}
 								margin='dense'
 								error={!!formErrors.password || !!loginError}
-								placeholder='enter your password'
+								placeholder={t('loginForm.passwordPlaceholder')}
 								endAdornment={
 									<InputAdornment position='end'>
 										<IconButton
@@ -187,11 +189,11 @@ export const LoginForm: FC<LoginProps> = ({ setShowGreeting }) => {
 									}}
 								/>
 							}
-							label='Remember me?'
+							label={t('loginForm.rememberMe')}
 							labelPlacement='start'
 						/>
 					)}
-				/>{' '}
+				/>
 				{isNeedCaptcha && (
 					<Controller
 						name='captcha'
@@ -201,7 +203,7 @@ export const LoginForm: FC<LoginProps> = ({ setShowGreeting }) => {
 								<TextField
 									{...field}
 									id='captcha'
-									label='Captcha'
+									label={t('loginForm.captcha')}
 									variant='outlined'
 									required
 									helperText={formErrors.captcha?.message ?? ' '}
@@ -210,7 +212,7 @@ export const LoginForm: FC<LoginProps> = ({ setShowGreeting }) => {
 									color='success'
 									margin='normal'
 									focused
-									placeholder='enter text from picture'
+									placeholder={t('loginForm.captchaPlaceholder')}
 								/>
 							</Box>
 						)}
@@ -228,7 +230,7 @@ export const LoginForm: FC<LoginProps> = ({ setShowGreeting }) => {
 						variant='contained'
 						color='success'
 					>
-						Логин
+						{t('loginForm.login')}
 					</LoadingButton>
 				</Box>
 			</form>
@@ -244,7 +246,7 @@ export const LoginForm: FC<LoginProps> = ({ setShowGreeting }) => {
 						variant='contained'
 						color='success'
 					>
-						Другая картинка
+						{t('loginForm.otherPicture')}
 					</LoadingButton>
 					{captchaUrl && <img src={captchaUrl} alt='captcha' className={styles.img} />}
 				</div>

@@ -10,10 +10,10 @@ import { NAVLINKS } from '@/constants/routerConstants';
 import { LoadingButton } from '@mui/lab';
 import { useLogoutMutation } from '@/store/slices/apiSlice';
 import { useTranslation } from 'react-i18next';
-import { Language, languages } from '@/i18n/i18n';
+import { Language, languages } from '@/i18n/types';
 
 export const Header: FC = () => {
-	const { t, i18n } = useTranslation();
+	const { i18n } = useTranslation();
 	const navigate = useNavigate();
 
 	const [logout, { isLoading: loadingLogout, isSuccess: successLogout }] = useLogoutMutation();

@@ -17,6 +17,7 @@ import { useFetchAuthQuery } from './store/slices/apiSlice';
 import { setAuthData, setAuthError } from './store/slices/authSlice';
 import { inizialization } from './store/slices/initializeSlice';
 import { miniSerializeError } from '@reduxjs/toolkit';
+import { Footer } from './components/Footer/Footer';
 
 const Profile = lazy(() =>
 	import('./components/Profile/Profile').then((module) => ({ default: module.Profile })),
@@ -76,11 +77,9 @@ export const App = () => {
 		<ErrorBoundary fallbackRender={({ error }) => <ErrorMessage error={error} />}>
 			<Suspense fallback={<Loader />}>
 				<div className={appStyles.appWrapper}>
-					{/* {isAuth && ( */}
 					<header className={appStyles.headerWrapper}>
 						<Header />
 					</header>
-					{/* )} */}
 					{isAuth && (
 						<nav className={appStyles.navBarWrapper}>
 							<NavBar />
@@ -137,7 +136,7 @@ export const App = () => {
 							/>
 						</Routes>
 					</main>
-					{isAuth && <footer className={appStyles.footerWrapper}>Footer</footer>}
+						<footer className={appStyles.footerWrapper}><Footer /></footer>
 				</div>
 			</Suspense>
 		</ErrorBoundary>

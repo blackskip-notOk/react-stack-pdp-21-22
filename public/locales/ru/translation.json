@@ -1,0 +1,41 @@
+{
+	"auth": {
+        "failedInitialization": "При инициализации приложения возникла ошибка: ",
+	    "autorized": "Вы авторизованны, добро пожаловать",
+        "notAutorized": "Вы не авторизованны, залогиньтесь или зарегистрируйтесь"
+    },
+    "errors": {
+        "someError": "Непредвиденная ошибка",
+        "invalidEmail": "Введите корректный емайл",
+        "requiredEmail": "Емайл обязательное поле",
+        "requiredPassword": "Пароль обязательное поле",
+        "wrongLogin": "Неверный логин или пароль",
+	    "maxAttempt": "Превышено количество попыток"
+    },
+    "loginForm": {
+        "email": "Почта",
+		"emailPlaceholder": "введите свой емайл",
+        "password": "Пароль",
+        "passwordPlaceholder": "введите свой пароль",
+        "rememberMe": "Запомнить меня?",
+        "captcha": "Код с картинки",
+        "captchaPlaceholder": "введите текст с картинки",
+        "login": "Логин",
+        "otherPicture": "показать другую картинку",
+        "logout": "Вы вышли из своего аккаунта",
+        "register": "Зарегистрироваться",
+        "testAccount": "Использовать тестовый аккаунт"
+	},
+    "users": {
+        "alreadyFollow": "Вы уже подписаны на этого пользователя",
+	    "alreadyUnFollow": "Вы уже отписаны от этого пользователя",
+	    "successFollow": "Вы успешно подписались на пользователя: ",
+	    "successUnFollow": "Вы успешно отписались от пользователя: "
+    },
+	"footer": {
+		"date": "Сегодня {{date, DATE_HUGE}}",
+		"date_morning": "Доброе утро! Сегодня {{date, DATE_HUGE}} | Хорошего дня!",
+		"date_afternoon": "Добрый день! Сейчас {{date, DATE_HUGE}}",
+        "date_evening": "Добрый вечер! Сегодня {{date, DATE_HUGE}}"
+	}
+}
