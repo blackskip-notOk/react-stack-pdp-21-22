@@ -76,11 +76,11 @@ export const App = () => {
 		<ErrorBoundary fallbackRender={({ error }) => <ErrorMessage error={error} />}>
 			<Suspense fallback={<Loader />}>
 				<div className={appStyles.appWrapper}>
-					{isAuth && (
-						<header className={appStyles.headerWrapper}>
-							<Header />
-						</header>
-					)}
+					{/* {isAuth && ( */}
+					<header className={appStyles.headerWrapper}>
+						<Header />
+					</header>
+					{/* )} */}
 					{isAuth && (
 						<nav className={appStyles.navBarWrapper}>
 							<NavBar />

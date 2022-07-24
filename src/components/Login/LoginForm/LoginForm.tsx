@@ -1,4 +1,4 @@
-import { FC, useEffect, useReducer } from 'react';
+import { FC, useEffect, useReducer, useTransition } from 'react';
 import buttonStyles from '@/styles/Button.module.less';
 import inputStyles from '@/styles/Input.module.less';
 import { preventDefault } from '@/utils';
@@ -37,8 +37,10 @@ import { initialState, setLoginRequestData } from '@/store/slices/loginRequestSl
 import { useFetchCaptchaQuery, useLoginMutation } from '@/store/slices/apiSlice';
 import { setLoginResponseData } from '@/store/slices/loginResponseSlice';
 import { setCaptchaData } from '@/store/slices/captchaSlice';
+import { useTranslation } from 'react-i18next';
 
 export const LoginForm: FC<LoginProps> = ({ setShowGreeting }) => {
+	const { t } = useTranslation();
 	const navigate = useNavigate();
 
 	const dispatch = useAppDispatch();
@@ -113,7 +115,7 @@ export const LoginForm: FC<LoginProps> = ({ setShowGreeting }) => {
 								color='success'
 								margin='normal'
 								focused
-								placeholder='enter your email'
+								placeholder={t('loginForm.emailPlaceholder')}
 							/>
 						</Box>
 					)}
