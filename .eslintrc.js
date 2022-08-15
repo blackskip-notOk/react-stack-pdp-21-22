@@ -26,7 +26,7 @@ module.exports = {
 		'plugin:@typescript-eslint/recommended',
 		'plugin:prettier/recommended',
 	],
-	plugins: ['react', 'react-hooks', 'jsx-a11y', '@typescript-eslint', 'prettier', 'effector'],
+	plugins: ['react', 'react-hooks', 'jsx-a11y', '@typescript-eslint', 'prettier'],
 	rules: {
 		'linebreak-style': 0,
 		'no-plusplus': 0,

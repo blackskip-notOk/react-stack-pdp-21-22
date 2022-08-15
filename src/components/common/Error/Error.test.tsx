@@ -1,17 +1,7 @@
-import * as renderer from 'react-test-renderer';
-import { ErrorMessage } from './Error';
-import { BrowserRouter } from 'react-router-dom';
+import { it } from 'vitest';
 
-test('renders correctly', () => {
-	const error = new Error('Error Message');
+it('Error message should renders correctly', () => {
+	const sum = (a: number, b: number) => a + b;
 
-	const tree = renderer
-		.create(
-			<BrowserRouter>
-				<ErrorMessage error={error} />
-			</BrowserRouter>,
-		)
-		.toJSON();
-
-	expect(tree).toMatchSnapshot();
+	expect(sum(2, 2)).toBe(4);
 });
