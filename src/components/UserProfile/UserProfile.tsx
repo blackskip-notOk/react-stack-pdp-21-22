@@ -2,7 +2,7 @@ import { FC, Suspense } from 'react';
 import { useParams } from 'react-router-dom';
 import { Avatar } from '@mui/material';
 import { DefaultAvatar } from '../common/avatar/avatar';
-// import { useGetProfile, useGetProfileStatus } from '@/api/profileApi';
+// import { useGetProfile, useGetProfileStatus } from '~/api/profileApi';
 import { ErrorBoundary } from 'react-error-boundary';
 import { ErrorMessage } from '../common/Error/Error';
 import { Loader } from '../common/loader/Loader';

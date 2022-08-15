@@ -1,4 +1,4 @@
-
+/// <reference types="vitest" />
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react';
 import path from 'path';
@@ -20,15 +20,26 @@ export default defineConfig({
 			},
 		},
 	},
-	// resolve: {
-	// 	alias: [{ find: '@', replacement: path.resolve(__dirname, './src') }],
-	// },
 	resolve: {
 		alias: {
-			'@': `${path.resolve(__dirname, 'src')}/`,
+			'~': `${path.resolve(__dirname, 'src')}`,
 		},
 	},
 	build: {
 		sourcemap: false,
+	},
+	test: {
+		css: false,
+		include: ['src/**/__tests__/*'],
+		globals: true,
+		environment: 'jsdom',
+		setupFiles: 'src/setupTests.ts',
+		clearMocks: true,
+		coverage: {
+			enabled: true,
+			'100': true,
+			reporter: ['text', 'lcov'],
+			reportsDirectory: 'coverage'
+		}
 	},
 });

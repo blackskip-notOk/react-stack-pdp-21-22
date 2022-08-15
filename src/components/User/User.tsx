@@ -1,5 +1,5 @@
-import { useFollowUserMutation, useUnFollowUserMutation } from '@/store/slices/apiSlice';
-import { getFollowResult } from '@/utils';
+import { useFollowUserMutation, useUnFollowUserMutation } from '~/store/slices/apiSlice';
+import { getFollowResult } from '~/utils';
 import {
 	Avatar,
 	FormControlLabel,

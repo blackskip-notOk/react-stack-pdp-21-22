@@ -1,9 +1,9 @@
-import { CONNECTION_STATUS, EVENT } from '@/constants/systemConstants';
-import { AppDispatch } from '@/store/store';
+import { CONNECTION_STATUS, EVENT } from '~/constants/systemConstants';
+import { AppDispatch } from '~/store/store';
 import { chatApi } from './chatApi';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { ChatMessage, ChatMessages, ChatSlice, ConnectionStatus } from './types';
-import { idGenerator } from '@/utils';
+import { idGenerator } from '~/utils';
 
 let newMessagesHandler: ((messages: ChatMessages) => void) | null = null;
 let statusChangedHandler: ((status: ConnectionStatus) => void) | null = null;

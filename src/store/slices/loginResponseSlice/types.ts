@@ -14,7 +14,7 @@ export enum ErrorCode {
 	wrongLogin = 'wrongLogin',
 	maxAttempt = 'maxAttempt',
 	unknown = 'unknown',
-};
+}
 
 type Code = keyof typeof ErrorCode;
 export interface LoginResponseState {

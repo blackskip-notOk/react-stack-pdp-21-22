@@ -1,7 +1,7 @@
 import { FC, useEffect, useReducer } from 'react';
-import buttonStyles from '@/styles/Button.module.less';
-import inputStyles from '@/styles/Input.module.less';
-import { preventDefault } from '@/utils';
+import buttonStyles from '~/styles/Button.module.less';
+import inputStyles from '~/styles/Input.module.less';
+import { preventDefault } from '~/utils';
 import { useNavigate } from 'react-router-dom';
 import styles from '../Login.module.less';
 import {
@@ -23,20 +23,20 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useLoginSchema } from '../utils/loginSchema';
 import { Box } from '@mui/system';
 import { isEmpty } from 'ramda';
-import { NAVLINKS } from '@/constants/routerConstants';
+import { NAVLINKS } from '~/constants/routerConstants';
 import { LoginProps } from '../types';
-import { useAppDispatch, useAppSelector } from '@/hooks/storeHooks';
-import { isAuthSelector } from '@/store/selectors/authSelectors';
+import { useAppDispatch, useAppSelector } from '~/hooks/storeHooks';
+import { isAuthSelector } from '~/store/selectors/authSelectors';
 import {
 	captchaStateSelector,
 	loginRequestStateSelector,
 	loginResponseStateSelector,
-} from '@/store/selectors/loginSelector';
-import { LoginRequestState } from '@/store/slices/loginRequestSlice/types';
-import { initialState, setLoginRequestData } from '@/store/slices/loginRequestSlice';
-import { useFetchCaptchaQuery, useLoginMutation } from '@/store/slices/apiSlice';
-import { setLoginResponseData } from '@/store/slices/loginResponseSlice';
-import { setCaptchaData } from '@/store/slices/captchaSlice';
+} from '~/store/selectors/loginSelector';
+import { LoginRequestState } from '~/store/slices/loginRequestSlice/types';
+import { initialState, setLoginRequestData } from '~/store/slices/loginRequestSlice';
+import { useFetchCaptchaQuery, useLoginMutation } from '~/store/slices/apiSlice';
+import { setLoginResponseData } from '~/store/slices/loginResponseSlice';
+import { setCaptchaData } from '~/store/slices/captchaSlice';
 import { useTranslation } from 'react-i18next';
 
 export const LoginForm: FC<LoginProps> = ({ setShowGreeting }) => {
@@ -218,9 +218,7 @@ export const LoginForm: FC<LoginProps> = ({ setShowGreeting }) => {
 						)}
 					/>
 				)}
-				{loginError && <Box className={styles.autorizationError}>
-					{t(`errors.${loginError}`)}
-					</Box>}
+				{loginError && <Box className={styles.autorizationError}>{t(`errors.${loginError}`)}</Box>}
 				<Box className={buttonStyles.buttonContainer}>
 					<LoadingButton
 						size='large'

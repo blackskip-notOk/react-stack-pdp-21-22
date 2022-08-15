@@ -1,8 +1,8 @@
 import { FC } from 'react';
 import { NavLink } from 'react-router-dom';
-import { NAVLINKS } from '@/constants/routerConstants';
-import { useAppSelector } from '@/hooks/storeHooks';
-import { isAuthSelector } from '@/store/selectors/authSelectors';
+import { NAVLINKS } from '~/constants/routerConstants';
+import { useAppSelector } from '~/hooks/storeHooks';
+import { isAuthSelector } from '~/store/selectors/authSelectors';
 
 export const NavBar: FC = () => {
 	const isAuth = useAppSelector(isAuthSelector);

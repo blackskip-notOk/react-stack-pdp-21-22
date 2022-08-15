@@ -1,4 +1,4 @@
-import { Slice } from '@/constants/systemConstants';
+import { Slice } from '~/constants/systemConstants';
 import { createSlice, PayloadAction, SerializedError } from '@reduxjs/toolkit';
 import { AuthState } from './types';
 

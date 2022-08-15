@@ -1,4 +1,4 @@
-import { SUCCESS_MESSAGE_DURATION } from '@/constants/systemConstants';
+import { SUCCESS_MESSAGE_DURATION } from '~/constants/systemConstants';
 import { Alert, AlertTitle, Slide, Snackbar } from '@mui/material';
 import { FC } from 'react';
 import { SuccessMessageProps, Variant } from './types';

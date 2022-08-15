@@ -21,7 +21,7 @@
 		"preserveConstEnums": true,
 		"types": ["vite/client", "vitest/globals"],
 		"paths": {
-			"@/*": ["./src/*"]
+			"~/*": ["./src/*"]
 		}
 	},
 	"include": ["src"]

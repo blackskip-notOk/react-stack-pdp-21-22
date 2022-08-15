@@ -1,13 +1,13 @@
 import { FC, useMemo } from 'react';
-import { ServerMessage } from '@/constants/serverMessages';
+import { ServerMessage } from '~/constants/serverMessages';
 import { LoginForm } from './LoginForm/LoginForm';
 import styles from './Login.module.less';
-import { API } from '@/constants/apiConstants';
+import { API } from '~/constants/apiConstants';
 import { LoginProps } from './types';
-import { useAppSelector } from '@/hooks/storeHooks';
-import { authStateSelector } from '@/store/selectors/authSelectors';
+import { useAppSelector } from '~/hooks/storeHooks';
+import { authStateSelector } from '~/store/selectors/authSelectors';
 import { Button } from '@mui/material';
-import { useLoginMutation } from '@/store/slices/apiSlice';
+import { useLoginMutation } from '~/store/slices/apiSlice';
 import { useTranslation } from 'react-i18next';
 
 export const Login: FC<LoginProps> = ({ setShowGreeting }) => {

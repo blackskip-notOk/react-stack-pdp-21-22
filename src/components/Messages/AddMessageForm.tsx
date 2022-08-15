@@ -1,6 +1,6 @@
-import { CONNECTION_STATUS } from '@/constants/systemConstants';
-import { sendMessage } from '@/store/slices/chatSlice';
-import { useAppDispatch, useAppSelector } from '@/hooks/storeHooks';
+import { CONNECTION_STATUS } from '~/constants/systemConstants';
+import { sendMessage } from '~/store/slices/chatSlice';
+import { useAppDispatch, useAppSelector } from '~/hooks/storeHooks';
 import { Button, TextareaAutosize } from '@mui/material';
 import { FC, SyntheticEvent, useState } from 'react';
 

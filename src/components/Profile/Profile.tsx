@@ -1,6 +1,6 @@
 import { Alert, Avatar, Box, Slide, Snackbar, TextField } from '@mui/material';
 import { ChangeEvent, FC, useEffect, useState } from 'react';
-import { ERROR_MESSAGE_DURATION } from '@/constants/systemConstants';
+import { ERROR_MESSAGE_DURATION } from '~/constants/systemConstants';
 import styles from './Profile.module.less';
 import { Loader } from '../common/loader/Loader';
 import { DefaultAvatar } from '../common/avatar/avatar';
@@ -9,26 +9,26 @@ import { UploadAvatar } from '../common/avatar/uploadAvatar';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { profileStatusSchema } from './utils/profileSchema';
-import inputStyles from '@/styles/Input.module.less';
-import { useAppDispatch, useAppSelector } from '@/hooks/storeHooks';
-import { isAuthSelector, isOwnerIdSelector } from '@/store/selectors/authSelectors';
+import inputStyles from '~/styles/Input.module.less';
+import { useAppDispatch, useAppSelector } from '~/hooks/storeHooks';
+import { isAuthSelector, isOwnerIdSelector } from '~/store/selectors/authSelectors';
 import {
 	useFetchProfileQuery,
 	useFetchProfileStatusQuery,
 	useSetProfileAvatarMutation,
 	useSetProfileStatusMutation,
-} from '@/store/slices/apiSlice';
-import { setProfileAvatar, setProfileData } from '@/store/slices/profileSlice';
+} from '~/store/slices/apiSlice';
+import { setProfileAvatar, setProfileData } from '~/store/slices/profileSlice';
 import {
 	profileAvatarSelector,
 	profileSelector,
 	profileStatusSelector,
-} from '@/store/selectors/profileSelector';
-import { ProfileStatusState } from '@/store/slices/profileSlice/types';
-import { setProfileStatus } from '@/store/slices/profileSlice/status';
+} from '~/store/selectors/profileSelector';
+import { ProfileStatusState } from '~/store/slices/profileSlice/types';
+import { setProfileStatus } from '~/store/slices/profileSlice/status';
 import { miniSerializeError } from '@reduxjs/toolkit';
 import { useNavigate } from 'react-router-dom';
-import { NAVLINKS } from '@/constants/routerConstants';
+import { NAVLINKS } from '~/constants/routerConstants';
 
 export const Profile: FC = () => {
 	const navigate = useNavigate();

@@ -11,4 +11,4 @@ export const useLoginSchema = () => {
 		serverError: string(),
 		captcha: string(),
 	});
-}
+};

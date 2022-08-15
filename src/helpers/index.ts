@@ -1,7 +1,11 @@
-import { Description, ServerMessage } from '@/constants/serverMessages';
-import { ReultCode } from '@/constants/systemConstants';
-import { Auth, AuthState } from '@/store/slices/authSlice/types';
-import { ErrorCode, LoginResponse, LoginResponseState } from '@/store/slices/loginResponseSlice/types';
+import { Description, ServerMessage } from '~/constants/serverMessages';
+import { ReultCode } from '~/constants/systemConstants';
+import { Auth, AuthState } from '~/store/slices/authSlice/types';
+import {
+	ErrorCode,
+	LoginResponse,
+	LoginResponseState,
+} from '~/store/slices/loginResponseSlice/types';
 
 export const getAuthResponse = (authResponse: Auth): AuthState => {
 	const { data, messages, resultCode } = authResponse;

@@ -1,4 +1,4 @@
-import { useAppSelector } from '@/hooks/storeHooks';
+import { useAppSelector } from '~/hooks/storeHooks';
 import { FC, useEffect, useRef, useState } from 'react';
 import { Message } from '../Message/Message';
 import styles from './Messages.module.less';

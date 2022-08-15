@@ -1,16 +1,16 @@
 import LogoutIcon from '@mui/icons-material/Logout';
 import { Button, Dialog, DialogContent, DialogTitle, Typography } from '@mui/material';
 import { FC, type SyntheticEvent, useReducer, type MouseEvent, useEffect } from 'react';
-import logo from '@/image/React-icon.svg.png';
+import logo from '~/image/React-icon.svg.png';
 import styles from './Header.module.less';
-import { MODAL_SHOW_DURATION } from '@/constants/systemConstants';
-import { ReasonModalClose } from '@/commonTypes';
+import { MODAL_SHOW_DURATION } from '~/constants/systemConstants';
+import { ReasonModalClose } from '~/commonTypes';
 import { useNavigate } from 'react-router-dom';
-import { NAVLINKS } from '@/constants/routerConstants';
+import { NAVLINKS } from '~/constants/routerConstants';
 import { LoadingButton } from '@mui/lab';
-import { useLogoutMutation } from '@/store/slices/apiSlice';
+import { useLogoutMutation } from '~/store/slices/apiSlice';
 import { useTranslation } from 'react-i18next';
-import { Language, languages } from '@/i18n/types';
+import { Language, languages } from '~/i18n/types';
 
 export const Header: FC = () => {
 	const { i18n } = useTranslation();

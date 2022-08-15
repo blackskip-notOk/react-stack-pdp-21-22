@@ -136,7 +136,9 @@ export const App = () => {
 							/>
 						</Routes>
 					</main>
-						<footer className={appStyles.footerWrapper}><Footer /></footer>
+					<footer className={appStyles.footerWrapper}>
+						<Footer />
+					</footer>
 				</div>
 			</Suspense>
 		</ErrorBoundary>
