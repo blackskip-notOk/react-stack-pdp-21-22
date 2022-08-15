@@ -15,7 +15,7 @@
 		"test": "vitest",
 		"test:coverge": "vitest run --coverage",
 		"test:no-watch": "vitest run",
-		"test:push": "vitest --ui --open --coverage",
+		"test:push": "vitest",
 		"lint": "eslint --debug src/",
 		"lint:write": "eslint --debug src/ --fix",
 		"prettier": "prettier --write src/**/*.{ts,tsx}",
