@@ -18,8 +18,6 @@ export const Header: FC = () => {
 
 	const [logout, { isLoading: loadingLogout, isSuccess: successLogout }] = useLogoutMutation();
 
-	const [logout, { isLoading: loadingLogout, isSuccess: successLogout }] = useLogoutMutation();
-
 	const [openModal, setOpenModal] = useReducer((openModal: boolean) => !openModal, false);
 
 	useEffect(() => {

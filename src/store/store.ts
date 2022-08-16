@@ -1,4 +1,5 @@
-import { configureStore } from '@reduxjs/toolkit';
+import { combineReducers, configureStore } from '@reduxjs/toolkit';
+import type { PreloadedState } from '@reduxjs/toolkit';
 import { setupListeners } from '@reduxjs/toolkit/dist/query';
 import chatReducer from './slices/chatSlice';
 import { appApi } from './slices/apiSlice';
@@ -12,25 +13,34 @@ import profileStatusReducer from './slices/profileSlice/status';
 import usersReducer from './slices/usersSlice';
 import usersRequestReducer from './slices/usersSlice/request';
 
+const rootReducer = combineReducers({
+	[appApi.reducerPath]: appApi.reducer,
+	auth: authReducer,
+	initialize: initializeReducer,
+	loginRequest: loginRequestReducer,
+	loginResponse: loginResponseReducer,
+	captcha: captchaReducer,
+	profile: profileReducer,
+	status: profileStatusReducer,
+	users: usersReducer,
+	usersRequest: usersRequestReducer,
+	chat: chatReducer,
+});
+
 export const store = configureStore({
-	reducer: {
-		[appApi.reducerPath]: appApi.reducer,
-		auth: authReducer,
-		initialize: initializeReducer,
-		loginRequest: loginRequestReducer,
-		loginResponse: loginResponseReducer,
-		captcha: captchaReducer,
-		profile: profileReducer,
-		status: profileStatusReducer,
-		users: usersReducer,
-		usersRequest: usersRequestReducer,
-		chat: chatReducer,
-	},
+	reducer: rootReducer,
 	middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(appApi.middleware),
 });
 
 setupListeners(store.dispatch);
 
-export type RootState = ReturnType<typeof store.getState>;
-export type AppDispatch = typeof store.dispatch;
-export type AppStore = typeof store;
+export const setupStore = (preloadedState?: PreloadedState<RootState>) => {
+	return configureStore({
+		reducer: rootReducer,
+		preloadedState,
+	});
+};
+
+export type RootState = ReturnType<typeof rootReducer>;
+export type AppStore = ReturnType<typeof setupStore>;
+export type AppDispatch = AppStore['dispatch'];
