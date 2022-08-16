@@ -24,6 +24,11 @@ export const User: FC<UserProps> = ({ user }) => {
 	const [unFollow, { data: unFollowData, isLoading: unFollowLoading, isSuccess: unFollowSuccess }] =
 		useUnFollowUserMutation();
 
+	const [follow, { data: followData, isLoading: followLoading, isSuccess: followSuccess }] =
+		useFollowUserMutation();
+	const [unFollow, { data: unFollowData, isLoading: unFollowLoading, isSuccess: unFollowSuccess }] =
+		useUnFollowUserMutation();
+
 	const [checked, setChecked] = useState(false);
 	const [isShowMessage, setIsShowMessage] = useState(false);
 	const [result, setResult] = useState({ message: '', variant: Variant.success });

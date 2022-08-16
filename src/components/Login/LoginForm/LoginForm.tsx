@@ -66,9 +66,16 @@ export const LoginForm: FC<LoginProps> = ({ setShowGreeting }) => {
 		if (isAuth) {
 			setShowGreeting(true);
 			dispatch(setLoginRequestData(initialState));
+			dispatch(setLoginRequestData(initialState));
 			navigate(NAVLINKS.HOME);
 		}
 	}, [isAuth]);
+
+	useEffect(() => {
+		if (captchaData) {
+			dispatch(setCaptchaData(captchaData));
+		}
+	}, [captchaData]);
 
 	useEffect(() => {
 		if (captchaData) {

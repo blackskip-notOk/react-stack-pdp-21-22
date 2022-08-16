@@ -1,28 +1,28 @@
 import { FC, Suspense } from 'react';
-import { useParams } from 'react-router-dom';
-import { Avatar } from '@mui/material';
-import { DefaultAvatar } from '../common/avatar/avatar';
+// import { useParams } from 'react-router-dom';
+// import { Avatar } from '@mui/material';
+// import { DefaultAvatar } from '../common/avatar/avatar';
 // import { useGetProfile, useGetProfileStatus } from '~/api/profileApi';
 import { ErrorBoundary } from 'react-error-boundary';
 import { ErrorMessage } from '../common/Error/Error';
 import { Loader } from '../common/loader/Loader';
 
 export const UserProfile: FC = () => {
-	const params = useParams();
+	// const params = useParams();
 
-	// const { data, error, isError, isFetching, isLoading, isRefetching, isSuccess } = useGetProfile(
-	// 	params.userId,
-	// );
+	// // const { data, error, isError, isFetching, isLoading, isRefetching, isSuccess } = useGetProfile(
+	// // 	params.userId,
+	// // );
 
-	// const { data: userStatus } = useGetProfileStatus(Number(params.userId));
+	// // const { data: userStatus } = useGetProfileStatus(Number(params.userId));
 
-	// if (isLoading || isFetching || isRefetching) {
-	// 	return <Loader />;
-	// }
+	// // if (isLoading || isFetching || isRefetching) {
+	// // 	return <Loader />;
+	// // }
 
-	// if (isError) {
-	// 	return <ErrorMessage error={error} />;
-	// }
+	// // if (isError) {
+	// // 	return <ErrorMessage error={error} />;
+	// // }
 
 	return (
 		<ErrorBoundary fallbackRender={({ error }) => <ErrorMessage error={error} />}>
