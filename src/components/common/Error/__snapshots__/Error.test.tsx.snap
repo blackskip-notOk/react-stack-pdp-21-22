@@ -1,0 +1,14 @@
+// Vitest Snapshot v1
+
+exports[`ErrorMessage.tsx > Error message should renders correctly 1`] = `
+<div
+  role="alert"
+>
+  <div>
+    Error
+  </div>
+  <pre>
+    test error
+  </pre>
+</div>
+`;

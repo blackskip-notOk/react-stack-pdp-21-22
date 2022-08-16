@@ -29,17 +29,19 @@ export default defineConfig({
 		sourcemap: false,
 	},
 	test: {
+		include: ['**/*.{test,spec}.{ts,tsx,js,jsx}'],
+		exclude: ['**/node_modules/**', '**/dist/**', '**/.{idea,git,cache,output,temp}/**'],
 		css: false,
-		include: ['src/**/__tests__/*'],
 		globals: true,
+		update: true,
 		environment: 'jsdom',
-		setupFiles: 'src/setupTests.ts',
-		clearMocks: true,
+		outputTruncateLength: 100,
+		open: true,
+		passWithNoTests: true,
+		logHeapUsage: true,
 		coverage: {
-			enabled: true,
-			'100': true,
-			reporter: ['text', 'lcov'],
-			reportsDirectory: 'coverage'
+			provider: 'c8',
+			reporter: ['text', 'json', 'html'],
 		}
 	},
 });
