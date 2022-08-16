@@ -19,10 +19,10 @@
 		"noEmit": true,
 		"jsx": "react-jsx",
 		"preserveConstEnums": true,
-		"types": ["vite/client", "jest"],
+		"types": ["vite/client", "vitest/globals"],
 		"paths": {
-			"@/*": ["./src/*"]
+			"~/*": ["./src/*"]
 		}
 	},
-	"include": ["src"]
+	"include": ["src", "./vite.config.ts"],
 }

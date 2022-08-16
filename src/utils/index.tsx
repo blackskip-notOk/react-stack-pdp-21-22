@@ -1,7 +1,7 @@
 import { SyntheticEvent } from 'react';
 import { ServerMessage, Description } from '../constants/serverMessages';
 import { ReultCode } from '../constants/systemConstants';
-import { FollowResponse, FollowResult, UsersRequestState } from '@/store/slices/usersSlice/types';
+import { FollowResponse, FollowResult, UsersRequestState } from '~/store/slices/usersSlice/types';
 import { isEmpty } from 'ramda';
 import { ClearObject } from './types';
 

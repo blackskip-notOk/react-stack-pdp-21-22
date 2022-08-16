@@ -4,7 +4,7 @@ import { API } from '../constants/apiConstants';
 const isAuth = false;
 
 export const handlers = [
-	rest.get(`${API.baseURL}/${API.authMe}`, (req, res, ctx) => {
+	rest.get(`${API.baseURL}/${API.authMe}`, (_, res, ctx) => {
 		if (!isAuth) {
 			return res(
 				ctx.status(200),
@@ -22,8 +22,8 @@ export const handlers = [
 			ctx.json({
 				data: {
 					id: 2,
-					email: 'blabla@bla.bla',
-					login: 'samurai',
+					email: 'testEmail@gmail.com',
+					login: 'testLogin',
 				},
 				fieldsErrors: [],
 				messages: [],
@@ -32,7 +32,7 @@ export const handlers = [
 		);
 	}),
 
-	rest.post(`${API.baseURL}/${API.login}`, (req, res, ctx) => {
+	rest.post(`${API.baseURL}/${API.login}`, (_, res, ctx) => {
 		return res(
 			ctx.status(200),
 			ctx.json({

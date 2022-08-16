@@ -1,21 +1,32 @@
 import LogoutIcon from '@mui/icons-material/Logout';
 import { Button, Dialog, DialogContent, DialogTitle, Typography } from '@mui/material';
 import { FC, type SyntheticEvent, useReducer, type MouseEvent, useEffect } from 'react';
-import logo from '@/image/React-icon.svg.png';
+import logo from '~/image/React-icon.svg.png';
 import styles from './Header.module.less';
-import { MODAL_SHOW_DURATION } from '@/constants/systemConstants';
-import { ReasonModalClose } from '@/commonTypes';
+import { MODAL_SHOW_DURATION } from '~/constants/systemConstants';
+import { ReasonModalClose } from '~/commonTypes';
 import { useNavigate } from 'react-router-dom';
-import { NAVLINKS } from '@/constants/routerConstants';
+import { NAVLINKS } from '~/constants/routerConstants';
 import { LoadingButton } from '@mui/lab';
-import { useLogoutMutation } from '@/store/slices/apiSlice';
+import { useLogoutMutation } from '~/store/slices/apiSlice';
+import { useTranslation } from 'react-i18next';
+import { Language, languages } from '~/i18n/types';
 
 export const Header: FC = () => {
+	const { i18n } = useTranslation();
 	const navigate = useNavigate();
 
 	const [logout, { isLoading: loadingLogout, isSuccess: successLogout }] = useLogoutMutation();
 
+	const [logout, { isLoading: loadingLogout, isSuccess: successLogout }] = useLogoutMutation();
+
 	const [openModal, setOpenModal] = useReducer((openModal: boolean) => !openModal, false);
+
+	useEffect(() => {
+		if (successLogout) {
+			navigate(NAVLINKS.LOGIN);
+		}
+	}, [successLogout]);
 
 	useEffect(() => {
 		if (successLogout) {
@@ -83,6 +94,18 @@ export const Header: FC = () => {
 					</Button>
 				</DialogContent>
 			</Dialog>
+			<div>
+				{Object.keys(languages).map((lng: Language) => (
+					<Button
+						key={lng}
+						style={{ fontWeight: i18n.resolvedLanguage === lng ? 'bold' : 'normal' }}
+						type='submit'
+						onClick={() => i18n.changeLanguage(lng)}
+					>
+						{languages[lng].nativeName}
+					</Button>
+				))}
+			</div>
 		</div>
 	);
 };

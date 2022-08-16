@@ -1,4 +1,4 @@
-import { Slice } from '@/constants/systemConstants';
+import { Slice } from '~/constants/systemConstants';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { UsersRequestState } from './types';
 

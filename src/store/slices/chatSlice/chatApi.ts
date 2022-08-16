@@ -1,8 +1,8 @@
 import { ConnectionStatus } from '../chatSlice/types';
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-import { CONNECTION_STATUS, EVENT } from '@/constants/systemConstants';
+import { CONNECTION_STATUS, EVENT } from '~/constants/systemConstants';
 import { MessagesReceivedSubscribers, StatusChangedSubscribers, SubscriberCallBack } from './types';
-import { API } from '@/constants/apiConstants';
+import { API } from '~/constants/apiConstants';
 
 const subscribers = {
 	'messages-received': [] as MessagesReceivedSubscribers,

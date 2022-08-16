@@ -6,10 +6,10 @@ import {
 	ProfileStatusState,
 	Status,
 	UserId,
-} from '@/store/slices/profileSlice/types';
-import { ApiName, API } from '@/constants/apiConstants';
-import { Method, Tag } from '@/constants/systemConstants';
-import { getAuthResponse, getLoginResponse } from '@/helpers';
+} from '~/store/slices/profileSlice/types';
+import { ApiName, API } from '~/constants/apiConstants';
+import { Method, Tag } from '~/constants/systemConstants';
+import { getAuthResponse, getLoginResponse } from '~/helpers';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { Auth, AuthState } from '../authSlice/types';
 import { CaptchaState, CaptchaUrlResponse } from '../captchaSlice/types';

@@ -1,4 +1,4 @@
-import { ReultCode, Tag } from '@/constants/systemConstants';
+import { ReultCode, Tag } from '~/constants/systemConstants';
 
 type ResultCodeKeys = keyof typeof ReultCode;
 type ResultCodeValues = typeof ReultCode[ResultCodeKeys];

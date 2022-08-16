@@ -24,20 +24,20 @@ import { User } from '../User/User';
 import styles from './Users.module.less';
 import SearchIcon from '@mui/icons-material/Search';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
-import { getFriendParam, getSearchParamsFromUrl, searchParamsSerializer } from '@/utils';
+import { getFriendParam, getSearchParamsFromUrl, searchParamsSerializer } from '~/utils';
 import { ErrorBoundary } from 'react-error-boundary';
 import { ErrorMessage } from '../common/Error/Error';
 import { useSearchParams } from 'react-router-dom';
 import { equals } from 'ramda';
-import { useAppDispatch, useAppSelector } from '@/hooks/storeHooks';
-import { usersSelector, usersRequestSelector } from '@/store/selectors/usersSelector';
-import { useFetchUsersQuery } from '@/store/slices/apiSlice';
-import { setUsersData } from '@/store/slices/usersSlice';
+import { useAppDispatch, useAppSelector } from '~/hooks/storeHooks';
+import { usersSelector, usersRequestSelector } from '~/store/selectors/usersSelector';
+import { useFetchUsersQuery } from '~/store/slices/apiSlice';
+import { setUsersData } from '~/store/slices/usersSlice';
 import {
 	setUsersRequest,
 	setRequestPage,
 	setRequestCount,
-} from '@/store/slices/usersSlice/request';
+} from '~/store/slices/usersSlice/request';
 
 export const Users: FC = () => {
 	const dispatch = useAppDispatch();

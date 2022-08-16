@@ -1,5 +1,5 @@
-import { useFollowUserMutation, useUnFollowUserMutation } from '@/store/slices/apiSlice';
-import { getFollowResult } from '@/utils';
+import { useFollowUserMutation, useUnFollowUserMutation } from '~/store/slices/apiSlice';
+import { getFollowResult } from '~/utils';
 import {
 	Avatar,
 	FormControlLabel,
@@ -18,6 +18,11 @@ import { UserProps } from './types';
 
 export const User: FC<UserProps> = ({ user }) => {
 	const { id, name, photos, status, followed } = user;
+
+	const [follow, { data: followData, isLoading: followLoading, isSuccess: followSuccess }] =
+		useFollowUserMutation();
+	const [unFollow, { data: unFollowData, isLoading: unFollowLoading, isSuccess: unFollowSuccess }] =
+		useUnFollowUserMutation();
 
 	const [follow, { data: followData, isLoading: followLoading, isSuccess: followSuccess }] =
 		useFollowUserMutation();

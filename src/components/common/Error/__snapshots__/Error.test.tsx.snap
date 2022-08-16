@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1
 
-exports[`renders correctly 1`] = `
+exports[`ErrorMessage.tsx > Error message should renders correctly 1`] = `
 <div
   role="alert"
 >
@@ -8,7 +8,7 @@ exports[`renders correctly 1`] = `
     Error
   </div>
   <pre>
-    Error Message
+    test error
   </pre>
 </div>
 `;

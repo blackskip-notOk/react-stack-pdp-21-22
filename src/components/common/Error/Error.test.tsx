@@ -1,17 +1,19 @@
-import * as renderer from 'react-test-renderer';
 import { ErrorMessage } from './Error';
-import { BrowserRouter } from 'react-router-dom';
+import { render, screen } from '@testing-library/react';
+import renderer from 'react-test-renderer';
 
-test('renders correctly', () => {
-	const error = new Error('Error Message');
+describe('ErrorMessage.tsx', () => {
+	const error = new Error('test error');
 
-	const tree = renderer
-		.create(
-			<BrowserRouter>
-				<ErrorMessage error={error} />
-			</BrowserRouter>,
-		)
-		.toJSON();
+	test('Error message should show correct message', () => {
+		render(<ErrorMessage error={error} />);
 
-	expect(tree).toMatchSnapshot();
+		expect(screen.getAllByText(/test error/i)).toBeDefined();
+	});
+
+	test('Error message should renders correctly', () => {
+		const wrapper = renderer.create(<ErrorMessage error={error} />).toJSON();
+
+		expect(wrapper).toMatchSnapshot();
+	});
 });

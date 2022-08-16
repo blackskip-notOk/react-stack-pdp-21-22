@@ -1,5 +1,5 @@
-import { CONNECTION_STATUS } from '@/constants/systemConstants';
-import { EVENT } from '@/constants/systemConstants';
+import { CONNECTION_STATUS } from '~/constants/systemConstants';
+import { EVENT } from '~/constants/systemConstants';
 
 export interface ChatMessageApi {
 	message: string;

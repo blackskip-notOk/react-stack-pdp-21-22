@@ -1,14 +1,14 @@
 import { Alert, Slide, Snackbar } from '@mui/material';
 import { FC, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { NAVLINKS } from '@/constants/routerConstants';
-import { ERROR_MESSAGE_DURATION } from '@/constants/systemConstants';
+import { NAVLINKS } from '~/constants/routerConstants';
+import { ERROR_MESSAGE_DURATION } from '~/constants/systemConstants';
 import { Posts } from '../Post/Posts';
 import styles from './Home.module.less';
 import { HomeProps } from './types';
-import { BackgroundUniverse } from '@/components/common/Background/BackgroundUniverse';
-import { useAppSelector } from '@/hooks/storeHooks';
-import { isAuthSelector } from '@/store/selectors/authSelectors';
+import { BackgroundUniverse } from '~/components/common/Background/BackgroundUniverse';
+import { useAppSelector } from '~/hooks/storeHooks';
+import { isAuthSelector } from '~/store/selectors/authSelectors';
 
 export const Home: FC<HomeProps> = ({ showGreeting, setShowGreeting }) => {
 	const navigate = useNavigate();

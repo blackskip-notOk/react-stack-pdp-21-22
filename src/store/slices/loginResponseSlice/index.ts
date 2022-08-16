@@ -1,9 +1,8 @@
-import { Slice } from '@/constants/systemConstants';
+import { Slice } from '~/constants/systemConstants';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { LoginResponseState } from './types';
 
 const initialState: LoginResponseState = {
-	error: '',
 	isNeedCaptcha: false,
 };
 

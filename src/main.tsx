@@ -4,6 +4,7 @@ import { HashRouter } from 'react-router-dom';
 import { AppMessage } from './constants/serverMessages';
 import { store } from './store/store';
 import { Provider } from 'react-redux';
+import './i18n/i18n';
 
 const container = document.getElementById('root');
 
