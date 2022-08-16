@@ -8,7 +8,7 @@ describe('ErrorMessage.tsx', () => {
 	test('Error message should show correct message', () => {
 		render(<ErrorMessage error={error} />);
 
-		expect(screen.getAllByText(/test error/i)).toBeDefined();
+		expect(screen.getByText(/test error/i)).toBeInTheDocument();
 	});
 
 	test('Error message should renders correctly', () => {

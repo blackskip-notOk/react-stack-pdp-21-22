@@ -1,10 +1,12 @@
 import { setupStore } from '~/store/store';
 import type { RootState, AppStore } from '~/store/store';
 import type { PreloadedState } from '@reduxjs/toolkit';
-import type { RenderOptions } from '@testing-library/react';
+import { RenderOptions } from '@testing-library/react';
 import type { PropsWithChildren, ReactElement } from 'react';
 import { Provider } from 'react-redux';
 import { render } from '@testing-library/react';
+import { HashRouter } from 'react-router-dom';
+import '~/i18n/i18n';
 
 interface ExtendedRenderOptions extends Omit<RenderOptions, 'queries'> {
 	preloadedState?: PreloadedState<RootState>;
@@ -21,7 +23,11 @@ export function renderWithProviders(
 	}: ExtendedRenderOptions = {},
 ) {
 	function Wrapper({ children }: PropsWithChildren<Record<string, unknown>>): JSX.Element {
-		return <Provider store={store}>{children}</Provider>;
+		return (
+			<HashRouter>
+				<Provider store={store}>{children}</Provider>
+			</HashRouter>
+		);
 	}
 	// Return an object with the store and all of RTL's query functions
 	return { store, ...render(ui, { wrapper: Wrapper, ...renderOptions }) };

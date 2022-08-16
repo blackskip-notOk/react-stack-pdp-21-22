@@ -14,6 +14,7 @@ export const handlers = [
 					messages: ['You are not authorized'],
 					resultCode: 1,
 				}),
+				ctx.delay(100),
 			);
 		}
 
@@ -21,7 +22,7 @@ export const handlers = [
 			ctx.status(200),
 			ctx.json({
 				data: {
-					id: 2,
+					id: 1,
 					email: 'testEmail@gmail.com',
 					login: 'testLogin',
 				},
@@ -29,6 +30,7 @@ export const handlers = [
 				messages: [],
 				resultCode: 0,
 			}),
+			ctx.delay(100),
 		);
 	}),
 

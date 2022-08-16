@@ -54,6 +54,7 @@
 	},
 	"devDependencies": {
 		"@reactivex/rxjs": "^6.6.7",
+		"@testing-library/jest-dom": "^5.16.5",
 		"@testing-library/react": "^13.1.1",
 		"@testing-library/user-event": "^14.0.4",
 		"@types/luxon": "^3.0.0",
@@ -70,6 +71,7 @@
 		"eslint-config-prettier": "^8.5.0",
 		"eslint-import-resolver-alias": "^1.1.2",
 		"eslint-plugin-import": "^2.25.4",
+		"eslint-plugin-jest-dom": "^4.0.2",
 		"eslint-plugin-jsx-a11y": "^6.5.1",
 		"eslint-plugin-prettier": "^4.0.0",
 		"eslint-plugin-react": "^7.29.4",

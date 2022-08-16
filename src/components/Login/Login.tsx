@@ -20,7 +20,7 @@ export const Login: FC<LoginProps> = ({ setShowGreeting }) => {
 	const localMessage = useMemo(() => {
 		return authMessage === ServerMessage.notAutorized
 			? t('auth.notAutorized')
-			: t('auth.someError');
+			: t('errors.unknown');
 	}, [authMessage, t]);
 
 	const handleSendTestAccount = () => {
