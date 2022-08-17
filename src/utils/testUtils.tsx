@@ -7,6 +7,8 @@ import { Provider } from 'react-redux';
 import { render } from '@testing-library/react';
 import { HashRouter } from 'react-router-dom';
 import '~/i18n/i18n';
+import userEvents from '@testing-library/user-event';
+import type { Options } from '@testing-library/user-event/dist/types/options';
 
 interface ExtendedRenderOptions extends Omit<RenderOptions, 'queries'> {
 	preloadedState?: PreloadedState<RootState>;
@@ -31,4 +33,15 @@ export function renderWithProviders(
 	}
 	// Return an object with the store and all of RTL's query functions
 	return { store, ...render(ui, { wrapper: Wrapper, ...renderOptions }) };
+}
+
+export function setup(
+	jsx: ReactElement,
+	renderOptions: ExtendedRenderOptions = {},
+	setupOptions?: Options,
+) {
+	return {
+		user: userEvents.setup(setupOptions),
+		...renderWithProviders(jsx, renderOptions),
+	};
 }
