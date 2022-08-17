@@ -1,7 +1,4 @@
 import { setupStore } from '~/store/store';
-import type { RootState, AppStore } from '~/store/store';
-import type { PreloadedState } from '@reduxjs/toolkit';
-import { RenderOptions } from '@testing-library/react';
 import type { PropsWithChildren, ReactElement } from 'react';
 import { Provider } from 'react-redux';
 import { render } from '@testing-library/react';
@@ -9,11 +6,7 @@ import { HashRouter } from 'react-router-dom';
 import '~/i18n/i18n';
 import userEvents from '@testing-library/user-event';
 import type { Options } from '@testing-library/user-event/dist/types/options';
-
-interface ExtendedRenderOptions extends Omit<RenderOptions, 'queries'> {
-	preloadedState?: PreloadedState<RootState>;
-	store?: AppStore;
-}
+import type { ExtendedRenderOptions } from './types';
 
 export function renderWithProviders(
 	ui: ReactElement,
@@ -35,6 +28,7 @@ export function renderWithProviders(
 	return { store, ...render(ui, { wrapper: Wrapper, ...renderOptions }) };
 }
 
+// function to setup user-events with wrapped in providers react element
 export function setup(
 	jsx: ReactElement,
 	renderOptions: ExtendedRenderOptions = {},

@@ -81,6 +81,7 @@
 		"identity-obj-proxy": "^3.0.0",
 		"jsdom": "^20.0.0",
 		"less": "^4.1.2",
+		"lint-staged": "^13.0.3",
 		"msw": "^0.44.2",
 		"pre-commit": "^1.2.2",
 		"prettier": "2.6.2",
