@@ -25,7 +25,7 @@ describe('LoginForm.tsx', () => {
 		});
 	});
 
-	describe('dispatching actions to a redux store', () => {
-		// test('if user is auth, should set login request data to initial', () => {});
-	});
+	// describe('dispatching actions to a redux store', () => {
+	// test('if user is auth, should set login request data to initial', () => {});
+	// });
 });
