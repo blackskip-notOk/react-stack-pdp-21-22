@@ -91,4 +91,10 @@ describe('Login.tsx', () => {
 		// expect(await screen.findByText(/enter valid email/i)).toBeInTheDocument();
 		expect(container).toHaveTextContent(/errorEmail/i); // TODO research how to find a correct error message
 	});
+
+	test('should contain a register link', () => {
+		renderWithProviders(<Login setShowGreeting={setShowGreeting} />);
+
+		expect(screen.getByRole('link', { name: /register/i })).toBeInTheDocument();
+	});
 });
