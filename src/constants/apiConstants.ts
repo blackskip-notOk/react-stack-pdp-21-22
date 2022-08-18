@@ -23,7 +23,7 @@ export const API = {
 	baseWebSocketUrl: 'wss://social-network.samuraijs.com/handlers/ChatHandler.ashx',
 	withCredentials: 'withCredentials',
 	apiKey: 'API-KEY',
-	apiToken: '2e033ec1-c683-45a9-bc19-12d1729d43cd',
+	apiToken: 'a4af1902-25f0-4736-91b5-89fa2233a13d',
 	testLogin: 'free@samuraijs.com',
 	testPassword: 'free',
 	authMe: `${AUTH}/${ME}`,
