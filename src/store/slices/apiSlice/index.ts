@@ -27,6 +27,7 @@ export const appApi = createApi({
 			return headers;
 		},
 		credentials: 'include',
+		mode: 'cors',
 	}),
 	refetchOnReconnect: true,
 	tagTypes: [Tag.auth, Tag.captcha, Tag.profile, Tag.status],

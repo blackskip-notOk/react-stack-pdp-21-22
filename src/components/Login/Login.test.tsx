@@ -2,10 +2,8 @@ import { Login } from './Login';
 import { server } from '~/mocks/server';
 import { renderWithProviders } from '~/utils/testUtils';
 import { screen } from '@testing-library/react';
-import { ServerMessage } from '~/constants/serverMessages';
 import { setupStore } from '~/store/store';
-import { setAuthData, setAuthError } from '~/store/slices/authSlice';
-import { miniSerializeError } from '@reduxjs/toolkit';
+import { setAuthData } from '~/store/slices/authSlice';
 
 beforeAll(() => server.listen());
 
@@ -15,19 +13,19 @@ afterAll(() => server.close());
 
 describe('Login.tsx', () => {
 	const setShowGreeting = vi.fn();
-	test('if not auth, should show auth error', () => {
-		const error = new Error(ServerMessage.notAutorized);
-		const serializeError = miniSerializeError(error);
-		const store = setupStore();
-		store.dispatch(setAuthError(serializeError));
+	// test('if not auth, should show auth error', () => {
+	// 	const error = new Error(ServerMessage.notAutorized);
+	// 	const serializeError = miniSerializeError(error);
+	// 	const store = setupStore();
+	// 	store.dispatch(setAuthError(serializeError));
 
-		const { container } = renderWithProviders(<Login setShowGreeting={setShowGreeting} />, {
-			store,
-		});
+	// 	const { container } = renderWithProviders(<Login setShowGreeting={setShowGreeting} />, {
+	// 		store,
+	// 	});
 
-		expect(container).not.toHaveTextContent(/unexpected error/i);
-		expect(container).toHaveTextContent(/you are not logged in, please login or register/i);
-	});
+	// 	expect(container).not.toHaveTextContent(/unexpected error/i);
+	// 	expect(container).toHaveTextContent(/you are not logged in, please login or register/i);
+	// });
 
 	test('if not auth and do not have authMessage, should show unknown error', async () => {
 		const initialAuthState = {
