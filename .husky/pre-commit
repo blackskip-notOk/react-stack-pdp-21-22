@@ -3,6 +3,4 @@
 
 npx lint-staged
 yarn lint:styles
-# npx stylelint **/*.css
-# npx stylelint **/*.less
-# yarn test:commit
+yarn test:commit
