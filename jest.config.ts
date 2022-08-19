@@ -3,7 +3,7 @@ import type { Config } from '@jest/types';
 const config: Config.InitialOptions = {
   automock: true,
   bail: true,
-  // clearMocks: true,
+  clearMocks: true,
   collectCoverage: true,
   collectCoverageFrom: [
     '**/*.{test,spec}.{ts,tsx,js,jsx}',
@@ -39,21 +39,19 @@ const config: Config.InitialOptions = {
   notify: true,
   notifyMode: 'failure-change',
   reporters: ['default', 'github-actions'],
-  // resetMocks: true,
-  // resetModules: true,
-  // restoreMocks: true,
-  setupFiles: ['<rootDir>/test/setupTests.ts'],
+  resetMocks: true,
+  resetModules: true,
+  restoreMocks: true,
   setupFilesAfterEnv: ['./test/setupTests.ts'],
   slowTestThreshold: 5,
   testEnvironment: 'jsdom',
   testMatch: [ "**/?(*.)+(spec|test).[jt]s?(x)"],
   testTimeout: 5000,
   transform: {
-    // '^.+\\.(ts|js|tsx|jsx)$': '@swc/jest',
     '^.+\\.(ts|js|tsx|jsx)$': '@swc/jest',
-    // '^.+\\.css$': '<rootDir>/test/cssTransform.js',
-    // '^(?!.*\\.(js|jsx|mjs|cjs|ts|tsx|css|json)$)':
-      // '<rootDir>/test/fileTransform.js',
+    '^.+\\.css$': '<rootDir>/test/cssTransform.js',
+    '^(?!.*\\.(js|jsx|mjs|cjs|ts|tsx|css|json)$)':
+      '<rootDir>/test/fileTransform.js',
   },
   transformIgnorePatterns: [
     '[/\\\\]node_modules[/\\\\].+\\.(js|jsx|mjs|cjs|ts|tsx)$',
@@ -64,7 +62,12 @@ const config: Config.InitialOptions = {
     'jest-watch-typeahead/filename',
     'jest-watch-typeahead/testname',
   ],
-  // unmockedModulePathPatterns: ['/<rootDir>/node_modules/**//']
+  unmockedModulePathPatterns: [
+    "lodash",
+    "react",
+    "react-dom",
+    "react-addons-test-utils"
+  ]
 };
 
 export default config;
