@@ -24,9 +24,6 @@ const config: Config.InitialOptions = {
 		name: 'APP',
 		color: 'magenta',
 	},
-  globals: {
-    __DEV__: true
-  },
   maxConcurrency: 3,
   maxWorkers: '40%',
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node', 'mjs', 'cjs'],
