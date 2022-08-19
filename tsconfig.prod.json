@@ -1,0 +1,9 @@
+// exclude test files from the project:
+{
+    "extends": "./tsconfig.json",
+    "exclude": [
+        "**/*.{test,spec}.{ts,tsx,js,jsx}",
+        "./src/mocks/**",
+        "./src/utils/testUtils.tsx"
+    ]
+}
