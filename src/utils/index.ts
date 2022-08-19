@@ -36,8 +36,10 @@ export const getFollowResult = (
 		};
 	}
 	if (resultCode === ReultCode.error) {
+		const message = messages.join();
+
 		const errorMessage =
-			messages.join() === (ServerMessage.alreadyUnfollow || ServerMessage.alreadyFollow)
+			message === ServerMessage.alreadyUnfollow || message === ServerMessage.alreadyFollow
 				? unSuccessMessage
 				: Description.someError;
 
