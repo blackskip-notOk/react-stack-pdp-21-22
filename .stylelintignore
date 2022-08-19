@@ -1,1 +1,8 @@
-coverage
+dist;
+build;
+coverage;
+node_modules;
+dist.idea / yarn - debug.log;
+yarn - error.log;
+/.git;
+/.vscode;

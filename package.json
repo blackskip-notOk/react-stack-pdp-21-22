@@ -20,7 +20,7 @@
 		"lint": "eslint --debug src/",
 		"lint:write": "eslint --debug src/ --fix",
 		"prettier": "prettier --write src/**/*.{ts,tsx}",
-		"stylelint": "npx stylelint **/*.(css|less)",
+		"lint:styles": "stylelint \"src/**/*.(css|less)\"",
 		"postinstall": "husky install"
 	},
 	"dependencies": {

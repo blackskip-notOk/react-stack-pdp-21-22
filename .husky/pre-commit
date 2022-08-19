@@ -2,6 +2,7 @@
 . "$(dirname "$0")/_/husky.sh"
 
 npx lint-staged
-npx stylelint **/*.css
-npx stylelint **/*.less
+yarn lint:styles
+# npx stylelint **/*.css
+# npx stylelint **/*.less
 # yarn test:commit
