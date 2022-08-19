@@ -3,7 +3,7 @@ import type { Config } from '@jest/types';
 const config: Config.InitialOptions = {
   automock: true,
   bail: true,
-  clearMocks: true,
+  // clearMocks: true,
   collectCoverage: true,
   collectCoverageFrom: [
     '**/*.{test,spec}.{ts,tsx,js,jsx}',
@@ -39,9 +39,9 @@ const config: Config.InitialOptions = {
   notify: true,
   notifyMode: 'failure-change',
   reporters: ['default', 'github-actions'],
-  resetMocks: true,
-  resetModules: true,
-  restoreMocks: true,
+  // resetMocks: true,
+  // resetModules: true,
+  // restoreMocks: true,
   setupFiles: ['<rootDir>/test/setupTests.ts'],
   setupFilesAfterEnv: ['./test/setupTests.ts'],
   slowTestThreshold: 5,

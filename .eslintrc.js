@@ -6,6 +6,7 @@ module.exports = {
 		},
 		ecmaVersion: 'latest',
 		sourceType: 'module',
+		// project: './tsconfig.json',
 	},
 	settings: {
 		react: {

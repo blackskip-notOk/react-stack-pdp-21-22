@@ -5,10 +5,10 @@
   box-sizing: border-box;
 }
 
-/* Убираем внутренние отступы */
 ul[class],
 ol[class] {
   padding: 0;
+  list-style: none;
 }
 
 /* Убираем внешние отступы */
@@ -33,14 +33,8 @@ dd {
 body {
   min-height: 100vh;
   scroll-behavior: smooth;
-  text-rendering: optimizeSpeed;
+  text-rendering: optimizespeed;
   line-height: 1.5;
-}
-
-/* Удаляем стандартную стилизацию для всех ul и il, у которых есть атрибут class*/
-ul[class],
-ol[class] {
-  list-style: none;
 }
 
 /* Элементы a, у которых нет класса, сбрасываем до дефолтных стилей */
@@ -54,7 +48,7 @@ img {
   display: block;
 }
 
-/* Указываем понятную периодичность в потоке данных у article*/
+/* Указываем понятную периодичность в потоке данных у article */
 article > * + * {
   margin-top: 1em;
 }

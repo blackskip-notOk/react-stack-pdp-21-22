@@ -12,7 +12,7 @@ afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
 
 describe('Login.tsx', () => {
-	const setShowGreeting = vi.fn();
+	const setShowGreeting = jest.fn();
 	// test('if not auth, should show auth error', () => {
 	// 	const error = new Error(ServerMessage.notAutorized);
 	// 	const serializeError = miniSerializeError(error);
@@ -41,7 +41,7 @@ describe('Login.tsx', () => {
 		const store = setupStore();
 		store.dispatch(setAuthData(initialAuthState));
 
-		const { container } = renderWithProviders(<Login setShowGreeting={setShowGreeting} />, {
+		renderWithProviders(<Login setShowGreeting={setShowGreeting} />, {
 			store,
 		});
 
