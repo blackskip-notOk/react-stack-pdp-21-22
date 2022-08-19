@@ -1,3 +1,4 @@
+import { idGenerator } from '~/utils';
 import { FollowResponse } from '~/store/slices/usersSlice/types';
 import { Description, ServerMessage } from '~/constants/serverMessages';
 import { getFollowResult } from '.';
@@ -100,40 +101,20 @@ describe('app utils functions', () => {
 			});
 		});
 	});
+
+	describe('idGenerator', () => {
+		it('should return a sequence of numbers', () => {
+			const it = idGenerator();
+
+			expect(it.next().value).toBe(1);
+
+			it.next();
+			it.next();
+			it.next();
+			it.next();
+			it.next();
+
+			expect(it.next().value).toBe(7);
+		});
+	});
 });
-
-// export const getFollowResult = (
-//     response: FollowResponse | undefined,
-//     user: string,
-//     isFollow: boolean,
-// ): FollowResult => {
-
-//     const { messages, resultCode } = response;
-
-//     const successMessage = `${
-//         isFollow ? Description.successFollow : Description.successUnFollow
-//     } ${user}`;
-
-//     const unSuccessMessage = `${isFollow ? Description.alreadyFollow : Description.alreadyUnFollow}`;
-
-//     if (resultCode === ReultCode.success) {
-//         return {
-//             isSuccess: true,
-//             message: successMessage,
-//         };
-//     }
-//     if (resultCode === ReultCode.error) {
-//         const errorMessage =
-//             messages.join() === (ServerMessage.alreadyUnfollow || ServerMessage.alreadyFollow)
-//                 ? unSuccessMessage
-//                 : Description.someError;
-
-//         return {
-//             isSuccess: false,
-//             message: errorMessage,
-//         };
-//     }
-//     return {
-//         isSuccess: false,
-//         message: Description.someError,
-//     };

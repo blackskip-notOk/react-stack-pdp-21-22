@@ -56,7 +56,7 @@ export const getFollowResult = (
 
 export function* idGenerator() {
 	let id = 0;
-	while (true) yield id++;
+	while (true) yield ++id;
 }
 
 export const clearObject: ClearObject = (obj) => {
