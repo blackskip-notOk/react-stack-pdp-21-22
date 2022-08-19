@@ -1,12 +1,12 @@
-import { render, screen } from '@testing-library/react'
-import { App } from './App'
+import { render, screen } from '@testing-library/react';
+import { App } from './App';
 
-jest.dontMock('./App.tsx')
+jest.dontMock('./App.tsx');
 
 describe('App', () => {
 	it('should work as expected', () => {
-		render(<App />)
-		expect(1 + 2).toBe(3)
-		expect(screen.getByText('English')).toBeInTheDocument()
-	})
-})
+		render(<App />);
+		expect(1 + 2).toBe(3);
+		expect(screen.getByText('English')).toBeInTheDocument();
+	});
+});
