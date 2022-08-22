@@ -1,18 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ErrorMessage.tsx > Error message should renders correctly 1`] = `
-<div
-  role="alert"
->
-  <div>
-    Error
-  </div>
-  <pre>
-    test error
-  </pre>
-</div>
-`;
-
 exports[`ErrorMessage.tsx Error message should renders correctly 1`] = `
 <div
   role="alert"

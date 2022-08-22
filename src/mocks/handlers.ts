@@ -15,6 +15,10 @@ export const usersResponse: UsersState = {
 };
 
 export const handlers = [
+	rest.get('http://localhost/locales/en-US/translation.json', (_, res, ctx) => {
+		return res(ctx.status(200), ctx.body('../../public/locales/en/translation.json'));
+	}),
+
 	rest.get(`${API.baseURL}/${API.authMe}`, (_, res, ctx) => {
 		if (!isAuth) {
 			return res(
