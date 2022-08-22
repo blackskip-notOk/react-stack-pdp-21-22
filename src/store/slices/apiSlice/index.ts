@@ -1,22 +1,18 @@
 import type {
 	Photos,
-	ProfilePhotoResponse,
 	ProfileState,
 	ProfileStatusResponse,
 	ProfileStatusState,
 	Status,
 	UserID,
-	UserId,
 } from '~/store/slices/profileSlice/types';
 import { ApiName, API } from '~/constants/apiConstants';
-import { Method, Tag } from '~/constants/systemConstants';
-import { getAuthResponse, getLoginResponse } from '~/helpers';
+import { Tag } from '~/constants/systemConstants';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { Auth, AuthState } from '../authSlice/types';
-import { CaptchaState, CaptchaUrlResponse } from '../captchaSlice/types';
+import { AuthState } from '../authSlice/types';
+import { CaptchaState } from '../captchaSlice/types';
 import { LoginRequestState } from '../loginRequestSlice/types';
-import { LoginResponse, LoginResponseState, LogoutResponse } from '../loginResponseSlice/types';
-import { TagValues } from '../types';
+import { LoginResponseState, LogoutResponse } from '../loginResponseSlice/types';
 import { FollowResponse, UsersRequestState, UsersState } from '../usersSlice/types';
 import { authApi } from './auth';
 import { fetchCaptchaApi, loginApi, logoutApi } from './login';

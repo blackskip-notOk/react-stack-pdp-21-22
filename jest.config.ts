@@ -6,13 +6,12 @@ const config: Config.InitialOptions = {
   clearMocks: true,
   collectCoverage: true,
   collectCoverageFrom: [
-    '**/*.{ts,tsx,js,jsx}',
+    'src/**/*.{ts,tsx,js,jsx}',
     '!**/node_modules/**',
     '!src/**/*.d.ts',
     '!src/mocks/**',
   ],
   coverageDirectory: 'coverage',
-  coveragePathIgnorePatterns: ['**/node_modules/**', '**/dist/**', '**/.{idea,git,cache,output,temp}/**'],
   coverageProvider: 'v8',
   coverageReporters: [
     'json',
@@ -39,7 +38,7 @@ const config: Config.InitialOptions = {
   resetMocks: true,
   resetModules: true,
   restoreMocks: true,
-  setupFilesAfterEnv: ['./test/setupTests.ts'],
+  setupFilesAfterEnv: ['@testing-library/jest-dom', './test/setupTests.ts'],
   slowTestThreshold: 5,
   testEnvironment: 'jsdom',
   testMatch: [ "**/?(*.)+(spec|test).[jt]s?(x)"],

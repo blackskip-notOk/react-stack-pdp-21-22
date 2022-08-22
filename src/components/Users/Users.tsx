@@ -141,7 +141,6 @@ export const Users: FC = () => {
 	return (
 		<ErrorBoundary fallbackRender={({ error }) => <ErrorMessage error={error} />}>
 			<div className={styles.usersContainer}>
-				{(isFetching || isLoading) && <Loader />}
 				<Stack spacing={2}>
 					<div className={styles.searchContainer}>
 						<TextField
@@ -201,6 +200,7 @@ export const Users: FC = () => {
 						onRowsPerPageChange={handleOnRowPerPageChange}
 						showFirstButton
 						showLastButton
+						data-testid='pagination'
 					/>
 				</Stack>
 			</div>
