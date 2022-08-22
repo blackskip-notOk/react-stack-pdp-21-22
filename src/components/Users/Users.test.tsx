@@ -21,8 +21,6 @@ const usersResponse: UsersState = {
 
 const handlers = [
 	rest.get(`${API.baseURL}/${API.users}`, (req, res, ctx) => {
-		const resp = res(ctx.json(usersResponse));
-
 		return res(ctx.json(usersResponse), ctx.delay(150));
 	}),
 ];
