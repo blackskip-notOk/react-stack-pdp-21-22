@@ -19,7 +19,6 @@ import {
 	useState,
 	type KeyboardEvent,
 } from 'react';
-import { Loader } from '../common/loader/Loader';
 import { User } from '../User/User';
 import styles from './Users.module.less';
 import SearchIcon from '@mui/icons-material/Search';

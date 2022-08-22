@@ -1,7 +1,18 @@
 import { rest } from 'msw';
+import { UserID } from '~/store/slices/profileSlice/types';
+import type { UsersState } from '~/store/slices/usersSlice/types';
 import { API } from '../constants/apiConstants';
+import users from './users.json';
 
 const isAuth = false;
+
+const usersWithId = users.items.map((item) => ({ ...item, id: UserID(item.id) }));
+
+export const usersResponse: UsersState = {
+	error: null,
+	items: usersWithId.slice(0, 10),
+	totalCount: 100,
+};
 
 export const handlers = [
 	rest.get(`${API.baseURL}/${API.authMe}`, (_, res, ctx) => {
@@ -43,5 +54,9 @@ export const handlers = [
 				data: { userId: 2 },
 			}),
 		);
+	}),
+
+	rest.get(`${API.baseURL}/${API.users}`, (req, res, ctx) => {
+		return res(ctx.json(usersResponse), ctx.delay(150));
 	}),
 ];

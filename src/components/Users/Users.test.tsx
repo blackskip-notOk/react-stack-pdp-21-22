@@ -1,31 +1,11 @@
 import { screen, waitFor } from '@testing-library/react';
-import { rest } from 'msw';
-import { setupServer } from 'msw/lib/node';
-import { API } from '~/constants/apiConstants';
-import users from '~/mocks/users.json';
-import { UserID } from '~/store/slices/profileSlice/types';
+import { usersResponse } from '~/mocks/handlers';
+import { server } from '~/mocks/server';
 import { setUsersData } from '~/store/slices/usersSlice';
-import type { UsersState } from '~/store/slices/usersSlice/types';
 import { setupStore } from '~/store/store';
 import { renderWithProviders } from '~/utils/testUtils';
 import { Loader } from '../common/loader/Loader';
 import { Users } from './Users';
-
-const usersWithId = users.items.map((item) => ({ ...item, id: UserID(item.id) })).slice(0, 10);
-
-const usersResponse: UsersState = {
-	error: null,
-	items: usersWithId,
-	totalCount: 10,
-};
-
-const handlers = [
-	rest.get(`${API.baseURL}/${API.users}`, (req, res, ctx) => {
-		return res(ctx.json(usersResponse), ctx.delay(150));
-	}),
-];
-
-const server = setupServer(...handlers);
 
 beforeAll(() => server.listen());
 
