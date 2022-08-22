@@ -1,3 +1,4 @@
+import { UserID } from './../profileSlice/types';
 import { Photos } from '../profileSlice/types';
 import { BaseResponse } from '../types';
 
@@ -12,7 +13,7 @@ export interface UsersRequestState {
 
 export interface User {
 	name: string;
-	id: number;
+	id: UserID;
 	photos: Photos;
 	status?: string | null;
 	followed: boolean;

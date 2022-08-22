@@ -6,7 +6,7 @@ const config: Config.InitialOptions = {
   clearMocks: true,
   collectCoverage: true,
   collectCoverageFrom: [
-    '**/*.{test,spec}.{ts,tsx,js,jsx}',
+    '**/*.{ts,tsx,js,jsx}',
     '!**/node_modules/**',
     '!src/**/*.d.ts',
     '!src/mocks/**',
