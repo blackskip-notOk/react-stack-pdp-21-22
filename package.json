@@ -14,6 +14,7 @@
     "test": "cross-env NODE_ENV=test jest --watch --logHeapUsage",
     "test:update": "cross-env NODE_ENV=test jest --updateSnapshot",
     "test:coverage": "cross-env NODE_ENV=test jest --coverage=true",
+    "posttest:coverage": "start coverage/lcov-report/index.html",
     "test:commit": "cross-env NODE_ENV=test jest --lastCommit --logHeapUsage",
     "test:clear": "cross-env NODE_ENV=test jest --clearCache",
     "cypress:open": "cypress open",

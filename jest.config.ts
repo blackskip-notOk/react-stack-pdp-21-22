@@ -8,6 +8,10 @@ const config: Config.InitialOptions = {
   collectCoverageFrom: [
     'src/**/*.{ts,tsx,js,jsx}',
     '!**/node_modules/**',
+    '!src/commonTypes/*.ts',
+    '!src/constants/*.ts',
+    '!src/i18n/*.ts',
+    '!src/mocks/*.ts',
     '!src/**/*.d.ts',
     '!src/mocks/**',
   ],
