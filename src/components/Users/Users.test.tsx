@@ -2,7 +2,7 @@ import { screen, waitFor } from '@testing-library/react';
 import { usersResponse } from '~/mocks/handlers';
 import { setUsersData } from '~/store/slices/usersSlice';
 import { setupStore } from '~/store/store';
-import { renderWithProviders } from '~/utils/testUtils';
+import { renderWithProviders, setup } from '~/utils/testUtils';
 import { Loader } from '../common/loader/Loader';
 import { Users } from './Users';
 
@@ -40,6 +40,39 @@ describe('Users.tsx', () => {
 			expect(list).toHaveLength(10);
 			expect(checkboxes).toHaveLength(10);
 			expect(firstUserInList).toBeInTheDocument();
+		});
+	});
+
+	test('search user', async () => {
+		const store = setupStore();
+		store.dispatch(setUsersData(usersResponse));
+
+		const { container: loaderContainer } = renderWithProviders(<Loader />);
+		const loader = loaderContainer.querySelector('.loader');
+
+		const { getAllByRole, getByText } = renderWithProviders(<Users />);
+
+		expect(screen.getByTestId('suspense-loader')).toBeInTheDocument();
+		expect(loader).toBeInTheDocument();
+
+		await waitFor(() => {
+			const list = getAllByRole('listitem');
+			const firstUserInList = getByText('Kariben');
+
+			expect(list).toHaveLength(10);
+			expect(firstUserInList).toBeInTheDocument();
+		});
+
+		await waitFor(() => {
+			const searchInput = screen.getByPlaceholderText('Поиск по никнэйму');
+			const searchButton = screen.getByRole('button', { name: 'Поиск' });
+
+			const { user, getAllByRole, getByText } = setup(<Users />);
+
+			expect(searchInput).toBeInTheDocument();
+			expect(searchButton).toBeInTheDocument();
+
+			// user.keyboard()
 		});
 	});
 });
