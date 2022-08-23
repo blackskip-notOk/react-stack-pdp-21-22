@@ -10,10 +10,13 @@ i18n
 	.use(initReactI18next)
 	.init({
 		debug: true,
-		fallbackLng: 'ru',
+		fallbackLng: ['ru', 'en'],
+		supportedLngs: ['ru', 'en'],
+		preload: ['ru', 'en'],
 		interpolation: {
 			escapeValue: false,
 		},
+		load: 'languageOnly',
 	});
 
 i18n.services.formatter?.add('DATE_HUGE', (value, lng) => {

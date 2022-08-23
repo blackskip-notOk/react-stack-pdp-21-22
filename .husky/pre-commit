@@ -3,4 +3,4 @@
 
 npx lint-staged
 yarn lint:styles
-# yarn test:commit
+yarn test:commit

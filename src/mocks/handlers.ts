@@ -29,7 +29,6 @@ export const handlers = [
 					messages: ['You are not authorized'],
 					resultCode: 1,
 				}),
-				ctx.delay(100),
 			);
 		}
 
@@ -45,7 +44,6 @@ export const handlers = [
 				messages: [],
 				resultCode: 0,
 			}),
-			ctx.delay(100),
 		);
 	}),
 
@@ -60,7 +58,7 @@ export const handlers = [
 		);
 	}),
 
-	rest.get(`${API.baseURL}/${API.users}`, (req, res, ctx) => {
-		return res(ctx.json(usersResponse), ctx.delay(150));
+	rest.get(`${API.baseURL}/${API.users}`, (_, res, ctx) => {
+		return res(ctx.status(200), ctx.json(usersResponse));
 	}),
 ];

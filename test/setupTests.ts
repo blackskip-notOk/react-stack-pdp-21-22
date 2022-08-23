@@ -1,7 +1,9 @@
 import "whatwg-fetch";
 import '@testing-library/jest-dom';
-import { cleanup } from '@testing-library/react';
+import { server } from '~/mocks/server';
 
-// afterEach(() => {
-// 	cleanup();
-// });
+beforeAll(() => server.listen({
+    onUnhandledRequest: 'bypass',
+}));
+afterEach(() => server.resetHandlers());
+afterAll(() => server.close());
